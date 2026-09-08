@@ -1,0 +1,1953 @@
+% ======================================================================
+%  MODERN AI FOUNDATIONS -- A COMPLETE OVERVIEW
+%  A self-contained course / study guide in LaTeX.
+%
+%  HOW TO COMPILE (pdfLaTeX + Biber):
+%      1) pdflatex ai-foundations.tex
+%      2) biber    ai-foundations
+%      3) pdflatex ai-foundations.tex
+%      4) pdflatex ai-foundations.tex
+%
+%  Requirements: TeX Live 2019+ (or MiKTeX) with the packages
+%  tcolorbox, fontawesome5, pgfplots, FiraSans, FiraMono, biblatex
+%  (biber), listings, titlesec, booktabs, enumitem, fancyhdr, csquotes.
+%
+%  If the Fira fonts are unavailable, replace the two font packages
+%  below with \usepackage{lmodern}.
+% ======================================================================
+\begin{filecontents*}[overwrite]{ai-foundations.bib}
+	@article{turing1950,
+		author  = {Turing, Alan M.},
+		title   = {Computing Machinery and Intelligence},
+		journal = {Mind},
+		volume  = {59}, number = {236}, pages = {433--460}, year = {1950}}
+	@article{searle1980,
+		author  = {Searle, John R.},
+		title   = {Minds, Brains, and Programs},
+		journal = {Behavioral and Brain Sciences},
+		volume  = {3}, number = {3}, pages = {417--424}, year = {1980}}
+	@book{russell2021,
+		author  = {Russell, Stuart J. and Norvig, Peter},
+		title   = {Artificial Intelligence: A Modern Approach},
+		edition = {4}, publisher = {Pearson}, address = {Hoboken, NJ}, year = {2021}}
+	@book{mitchell1997,
+		author  = {Mitchell, Tom M.},
+		title   = {Machine Learning},
+		publisher = {McGraw-Hill}, address = {New York}, year = {1997}}
+	@book{goodfellow2016,
+		author  = {Goodfellow, Ian and Bengio, Yoshua and Courville, Aaron},
+		title   = {Deep Learning},
+		publisher = {MIT Press}, address = {Cambridge, MA}, year = {2016}}
+	@book{bishop2006,
+		author  = {Bishop, Christopher M.},
+		title   = {Pattern Recognition and Machine Learning},
+		publisher = {Springer}, address = {New York}, year = {2006}}
+	@book{bishop2024,
+		author  = {Bishop, Christopher M. and Bishop, Hugh},
+		title   = {Deep Learning: Foundations and Concepts},
+		publisher = {Springer}, address = {Cham}, year = {2024}}
+	@book{hastie2009,
+		author  = {Hastie, Trevor and Tibshirani, Robert and Friedman, Jerome},
+		title   = {The Elements of Statistical Learning: Data Mining, Inference, and Prediction},
+		edition = {2}, publisher = {Springer}, address = {New York}, year = {2009}}
+	@book{strang2019,
+		author  = {Strang, Gilbert},
+		title   = {Linear Algebra and Learning from Data},
+		publisher = {Wellesley--Cambridge Press}, address = {Wellesley, MA}, year = {2019}}
+	@book{wasserman2004,
+		author  = {Wasserman, Larry},
+		title   = {All of Statistics: A Concise Course in Statistical Inference},
+		publisher = {Springer}, address = {New York}, year = {2004}}
+	@book{boyd2004,
+		author  = {Boyd, Stephen and Vandenberghe, Lieven},
+		title   = {Convex Optimization},
+		publisher = {Cambridge University Press}, address = {Cambridge}, year = {2004}}
+	@book{christian2020,
+		author  = {Christian, Brian},
+		title   = {The Alignment Problem: Machine Learning and Human Values},
+		publisher = {W.\,W.\,Norton \& Company}, address = {New York}, year = {2020}}
+	@book{vanderplas2016,
+		author  = {VanderPlas, Jake},
+		title   = {Python Data Science Handbook: Essential Tools for Working with Data},
+		publisher = {O'Reilly Media}, address = {Sebastopol, CA}, year = {2016}}
+	@article{lecun2015,
+		author  = {LeCun, Yann and Bengio, Yoshua and Hinton, Geoffrey},
+		title   = {Deep Learning},
+		journal = {Nature},
+		volume  = {521}, number = {7553}, pages = {436--444}, year = {2015}}
+	@inproceedings{krizhevsky2012,
+		author  = {Krizhevsky, Alex and Sutskever, Ilya and Hinton, Geoffrey E.},
+		title   = {ImageNet Classification with Deep Convolutional Neural Networks},
+		booktitle = {Advances in Neural Information Processing Systems 25},
+		pages   = {1097--1105}, year = {2012}}
+	@article{silver2016,
+		author  = {Silver, David and Huang, Aja and Maddison, Chris J. and others},
+		title   = {Mastering the Game of {Go} with Deep Neural Networks and Tree Search},
+		journal = {Nature},
+		volume  = {529}, number = {7587}, pages = {484--489}, year = {2016}}
+	@inproceedings{jouppi2017,
+		author  = {Jouppi, Norman P. and Young, Cliff and Patil, Nishant and others},
+		title   = {In-Datacenter Performance Analysis of a Tensor Processing Unit},
+		booktitle = {Proceedings of the 44th Annual International Symposium on Computer Architecture (ISCA)},
+		pages   = {1--12}, year = {2017}}
+	@article{harris2020,
+		author  = {Harris, Charles R. and Millman, K. Jarrod and van der Walt, St{\'e}fan J. and others},
+		title   = {Array Programming with {NumPy}},
+		journal = {Nature},
+		volume  = {585}, pages = {357--362}, year = {2020}}
+	@inproceedings{mckinney2010,
+		author  = {McKinney, Wes},
+		title   = {Data Structures for Statistical Computing in {Python}},
+		booktitle = {Proceedings of the 9th Python in Science Conference (SciPy)},
+		pages   = {56--61}, year = {2010}}
+	@article{pedregosa2011,
+		author  = {Pedregosa, Fabian and Varoquaux, Ga{\"e}l and Gramfort, Alexandre and others},
+		title   = {Scikit-learn: Machine Learning in {Python}},
+		journal = {Journal of Machine Learning Research},
+		volume  = {12}, pages = {2825--2830}, year = {2011}}
+	@article{rosenblatt1958,
+		author  = {Rosenblatt, Frank},
+		title   = {The Perceptron: A Probabilistic Model for Information Storage and Organization in the Brain},
+		journal = {Psychological Review},
+		volume  = {65}, number = {6}, pages = {386--408}, year = {1958}}
+	@book{minsky1969,
+		author  = {Minsky, Marvin and Papert, Seymour},
+		title   = {Perceptrons: An Introduction to Computational Geometry},
+		publisher = {MIT Press}, address = {Cambridge, MA}, year = {1969}}
+	@article{rumelhart1986,
+		author  = {Rumelhart, David E. and Hinton, Geoffrey E. and Williams, Ronald J.},
+		title   = {Learning Representations by Back-Propagating Errors},
+		journal = {Nature},
+		volume  = {323}, number = {6088}, pages = {533--536}, year = {1986}}
+	@article{hornik1989,
+		author  = {Hornik, Kurt and Stinchcombe, Maxwell and White, Halbert},
+		title   = {Multilayer Feedforward Networks Are Universal Approximators},
+		journal = {Neural Networks},
+		volume  = {2}, number = {5}, pages = {359--366}, year = {1989}}
+	@inproceedings{nair2010,
+		author  = {Nair, Vinod and Hinton, Geoffrey E.},
+		title   = {Rectified Linear Units Improve Restricted {Boltzmann} Machines},
+		booktitle = {Proceedings of the 27th International Conference on Machine Learning (ICML)},
+		pages   = {807--814}, year = {2010}}
+	@article{lecun1998,
+		author  = {LeCun, Yann and Bottou, L{\'e}on and Bengio, Yoshua and Haffner, Patrick},
+		title   = {Gradient-Based Learning Applied to Document Recognition},
+		journal = {Proceedings of the IEEE},
+		volume  = {86}, number = {11}, pages = {2278--2324}, year = {1998}}
+	@article{hochreiter1997,
+		author  = {Hochreiter, Sepp and Schmidhuber, J{\"u}rgen},
+		title   = {Long Short-Term Memory},
+		journal = {Neural Computation},
+		volume  = {9}, number = {8}, pages = {1735--1780}, year = {1997}}
+	@inproceedings{vaswani2017,
+		author  = {Vaswani, Ashish and Shazeer, Noam and Parmar, Niki and Uszkoreit, Jakob
+			and Jones, Llion and Gomez, Aidan N. and Kaiser, {\L}ukasz and Polosukhin, Illia},
+		title   = {Attention Is All You Need},
+		booktitle = {Advances in Neural Information Processing Systems 30},
+		pages   = {5998--6008}, year = {2017}}
+	@inproceedings{mikolov2013,
+		author  = {Mikolov, Tom{\'a}{\v{s}} and Sutskever, Ilya and Chen, Kai
+			and Corrado, Greg S. and Dean, Jeffrey},
+		title   = {Distributed Representations of Words and Phrases and Their Compositionality},
+		booktitle = {Advances in Neural Information Processing Systems 26},
+		pages   = {3111--3119}, year = {2013}}
+	@inproceedings{kingma2014,
+		author  = {Kingma, Diederik P. and Welling, Max},
+		title   = {Auto-Encoding Variational {Bayes}},
+		booktitle = {International Conference on Learning Representations (ICLR)},
+		year = {2014}}
+	@inproceedings{goodfellow2014,
+		author  = {Goodfellow, Ian and Pouget-Abadie, Jean and Mirza, Mehdi and Xu, Bing
+			and Warde-Farley, David and Ozair, Sherjil and Courville, Aaron and Bengio, Yoshua},
+		title   = {Generative Adversarial Nets},
+		booktitle = {Advances in Neural Information Processing Systems 27},
+		pages   = {2672--2680}, year = {2014}}
+	@inproceedings{brown2020,
+		author  = {Brown, Tom B. and Mann, Benjamin and Ryder, Nick and others},
+		title   = {Language Models Are Few-Shot Learners},
+		booktitle = {Advances in Neural Information Processing Systems 33},
+		pages   = {1877--1901}, year = {2020}}
+	@article{kaplan2020,
+		author  = {Kaplan, Jared and McCandlish, Sam and Henighan, Tom and others},
+		title   = {Scaling Laws for Neural Language Models},
+		journal = {arXiv preprint arXiv:2001.08361},
+		year = {2020}}
+	@inproceedings{ouyang2022,
+		author  = {Ouyang, Long and Wu, Jeffrey and Jiang, Xu and others},
+		title   = {Training Language Models to Follow Instructions with Human Feedback},
+		booktitle = {Advances in Neural Information Processing Systems 35},
+		pages   = {27730--27744}, year = {2022}}
+	@inproceedings{christiano2017,
+		author  = {Christiano, Paul F. and Leike, Jan and Brown, Tom B.
+			and Martic, Miljan and Legg, Shane and Amodei, Dario},
+		title   = {Deep Reinforcement Learning from Human Preferences},
+		booktitle = {Advances in Neural Information Processing Systems 30},
+		pages   = {4299--4307}, year = {2017}}
+	@inproceedings{bender2021,
+		author  = {Bender, Emily M. and Gebru, Timnit and McMillan-Major, Angelina
+			and Shmitchell, Shmargaret},
+		title   = {On the Dangers of Stochastic Parrots: Can Language Models Be Too Big?},
+		booktitle = {Proceedings of the 2021 ACM Conference on Fairness, Accountability, and Transparency (FAccT)},
+		pages   = {610--623}, year = {2021}}
+	@inproceedings{buolamwini2018,
+		author  = {Buolamwini, Joy and Gebru, Timnit},
+		title   = {Gender Shades: Intersectional Accuracy Disparities in Commercial Gender Classification},
+		booktitle = {Proceedings of the 1st Conference on Fairness, Accountability and Transparency},
+		pages   = {77--91}, year = {2018}}
+	@article{amodei2016,
+		author  = {Amodei, Dario and Olah, Chris and Steinhardt, Jacob and others},
+		title   = {Concrete Problems in {AI} Safety},
+		journal = {arXiv preprint arXiv:1606.06565},
+		year = {2016}}
+	@inproceedings{strubell2019,
+		author  = {Strubell, Emma and Ganesh, Ananya and McCallum, Andrew},
+		title   = {Energy and Policy Considerations for Deep Learning in {NLP}},
+		booktitle = {Proceedings of the 57th Annual Meeting of the Association for Computational Linguistics (ACL)},
+		pages   = {3645--3650}, year = {2019}}
+	@inproceedings{patterson2021,
+		author  = {Patterson, David and Gonzalez, Joseph and Le, Quoc and others},
+		title   = {Carbon Emissions and Large Neural Network Training},
+		booktitle = {Advances in Neural Information Processing Systems 34},
+		pages   = {13470--13481}, year = {2021}}
+	@article{cortes1995,
+		author  = {Cortes, Corinna and Vapnik, Vladimir},
+		title   = {Support-Vector Networks},
+		journal = {Machine Learning},
+		volume  = {20}, number = {3}, pages = {273--297}, year = {1995}}
+	@article{breiman2001,
+		author  = {Breiman, Leo},
+		title   = {Random Forests},
+		journal = {Machine Learning},
+		volume  = {45}, number = {1}, pages = {5--32}, year = {2001}}
+	@inproceedings{chen2016,
+		author  = {Chen, Tianqi and Guestrin, Carlos},
+		title   = {{XGBoost}: A Scalable Tree Boosting System},
+		booktitle = {Proceedings of the 22nd ACM SIGKDD International Conference on Knowledge Discovery and Data Mining},
+		pages   = {785--794}, year = {2016}}
+	@inproceedings{macqueen1967,
+		author  = {MacQueen, James},
+		title   = {Some Methods for Classification and Analysis of Multivariate Observations},
+		booktitle = {Proceedings of the Fifth Berkeley Symposium on Mathematical Statistics and Probability},
+		volume  = {1}, pages = {281--297}, year = {1967}}
+	@inproceedings{liu2008,
+		author  = {Liu, Fei Tony and Ting, Kai Ming and Zhou, Zhi-Hua},
+		title   = {Isolation Forest},
+		booktitle = {Proceedings of the 8th IEEE International Conference on Data Mining (ICDM)},
+		pages   = {413--422}, year = {2008}}
+	@article{fawcett2006,
+		author  = {Fawcett, Tom},
+		title   = {An Introduction to {ROC} Analysis},
+		journal = {Pattern Recognition Letters},
+		volume  = {27}, number = {8}, pages = {861--874}, year = {2006}}
+	@book{zhang2023,
+		author  = {Zhang, Aston and Lipton, Zachary C. and Li, Mu and Smola, Alexander J.},
+		title   = {Dive into Deep Learning},
+		publisher = {Cambridge University Press}, address = {Cambridge}, year = {2023}}
+	@online{fastai,
+		author  = {Howard, Jeremy and others},
+		title   = {Practical Deep Learning for Coders},
+		organization = {fast.ai},
+		url = {https://course.fast.ai},
+		urldate = {2024-12-01}}
+	@online{huggingface,
+		author  = {{Hugging Face}},
+		title   = {Transformers Documentation},
+		url = {https://huggingface.co/docs/transformers},
+		urldate = {2024-12-01}}
+	@inproceedings{kingma2015,
+		author  = {Kingma, Diederik P. and Ba, Jimmy},
+		title   = {Adam: A Method for Stochastic Optimization},
+		booktitle = {International Conference on Learning Representations (ICLR)},
+		year = {2015}}
+	@inproceedings{he2016,
+		author  = {He, Kaiming and Zhang, Xiangyu and Ren, Shaoqing and Sun, Jian},
+		title   = {Deep Residual Learning for Image Recognition},
+		booktitle = {Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition (CVPR)},
+		pages   = {770--778}, year = {2016}}
+	@article{su2024,
+		author  = {Su, Jianlin and Ahmed, Murtadha and Lu, Yu and Pan, Shengfeng and Bo, Wen and Liu, Yunfeng},
+		title   = {RoFormer: Enhanced Transformer with Rotary Position Embedding},
+		journal = {Neurocomputing},
+		volume  = {568}, pages = {127063}, year = {2024}}
+	@article{rousseeuw1987,
+		author  = {Rousseeuw, Peter J.},
+		title   = {Silhouettes: A Graphical Aid to the Interpretation and Validation of Cluster Analysis},
+		journal = {Journal of Computational and Applied Mathematics},
+		volume  = {20}, pages = {53--65}, year = {1987}}
+\end{filecontents*}
+
+\documentclass[11pt,a4paper]{article}
+
+% ---------------------------------------------------------------------
+% Fonts & typography
+% ---------------------------------------------------------------------
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[sfdefault]{FiraSans}   % fallback: \usepackage{lmodern}
+\usepackage[scaled=0.86]{FiraMono} % fallback: remove this line
+\usepackage{microtype}
+
+% ---------------------------------------------------------------------
+% Layout
+% ---------------------------------------------------------------------
+\usepackage[a4paper,margin=2.35cm,headheight=15pt]{geometry}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{4.5pt plus 1pt}
+\raggedbottom
+\emergencystretch=1.5em
+
+% ---------------------------------------------------------------------
+% Colour palette & tables
+% ---------------------------------------------------------------------
+\usepackage[table]{xcolor}
+\definecolor{primary}{RGB}{38,60,114}   % deep indigo
+\definecolor{secondary}{RGB}{0,150,136} % teal
+\definecolor{accent}{RGB}{230,126,34}   % amber
+\definecolor{dpurple}{RGB}{108,52,158}  % deep purple
+\definecolor{textgray}{RGB}{75,80,90}
+
+\usepackage{booktabs,array}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+
+\usepackage{enumitem}
+\setlist[itemize]{topsep=2.5pt,itemsep=2.5pt,parsep=0pt,leftmargin=1.5em}
+\setlist[enumerate]{topsep=2.5pt,itemsep=2.5pt,parsep=0pt,leftmargin=1.7em}
+\setlist[description]{topsep=2.5pt,itemsep=3pt,parsep=0pt}
+
+% ---------------------------------------------------------------------
+% Math, graphics, diagrams
+% ---------------------------------------------------------------------
+\usepackage{amsmath,amssymb,mathtools}
+\DeclareMathOperator{\softmax}{softmax}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,calc}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.16}
+
+% timeline milestone macro (used in Module 1)
+\newcommand{\ms}[5]{% x, year, label, y-offset, anchor
+	\draw[secondary, line width=1.1pt] (#1,-0.06) -- (#1,0.06);
+	\node[align=center, font=\scriptsize\sffamily, anchor=#5] at (#1,#4)
+	{\textbf{#2}\\#3};
+}
+
+% ---------------------------------------------------------------------
+% Modern callout boxes
+% ---------------------------------------------------------------------
+\usepackage[most]{tcolorbox}
+\usepackage{fontawesome5}
+
+\newtcolorbox{modulecard}[2]{%
+	enhanced, breakable,
+	colback=#2!5, colframe=#2, boxrule=0.8pt, arc=2mm,
+	left=10pt, right=10pt, top=8pt, bottom=8pt,
+	toptitle=6pt, bottomtitle=6pt,
+	fonttitle=\sffamily\bfseries\large,
+	coltitle=white, colbacktitle=#2,
+	before skip=12pt, after skip=10pt,
+	title={#1}}
+
+\newtcolorbox{keyconcept}[1][Key concept]{%
+	enhanced, breakable,
+	colback=primary!7, colframe=primary,
+	boxrule=0pt, leftrule=3.5pt, arc=1.2mm,
+	left=10pt, right=9pt, top=5pt, bottom=5pt,
+	toptitle=3pt, bottomtitle=2pt,
+	fonttitle=\sffamily\bfseries, coltitle=primary, colbacktitle=primary!7,
+	title={\faLightbulb\ #1},
+	before skip=10pt, after skip=12pt}
+
+\newtcolorbox{practicebox}[1][Hands-on with Python]{%
+	enhanced,
+	colback=secondary!7, colframe=secondary,
+	boxrule=0pt, leftrule=3.5pt, arc=1.2mm,
+	left=10pt, right=9pt, top=5pt, bottom=5pt,
+	toptitle=3pt, bottomtitle=2pt,
+	fonttitle=\sffamily\bfseries, coltitle=secondary, colbacktitle=secondary!7,
+	title={\faPython\ #1},
+	before skip=10pt, after skip=12pt}
+
+\newtcolorbox{ethicsbox}[1][Ethics \& safety spotlight]{%
+	enhanced, breakable,
+	colback=accent!8, colframe=accent,
+	boxrule=0pt, leftrule=3.5pt, arc=1.2mm,
+	left=10pt, right=9pt, top=5pt, bottom=5pt,
+	toptitle=3pt, bottomtitle=2pt,
+	fonttitle=\sffamily\bfseries, coltitle=accent!60!black, colbacktitle=accent!8,
+	title={\faBalanceScale\ #1},
+	before skip=10pt, after skip=12pt}
+
+\newtcolorbox{checkpoint}[1][Check your understanding]{%
+	enhanced, breakable,
+	colback=dpurple!6, colframe=dpurple!70,
+	boxrule=0.7pt, arc=1.2mm,
+	left=10pt, right=9pt, top=5pt, bottom=5pt,
+	toptitle=3pt, bottomtitle=2pt,
+	fonttitle=\sffamily\bfseries, coltitle=dpurple, colbacktitle=dpurple!6,
+	title={\faQuestionCircle\ #1},
+	before skip=10pt, after skip=12pt}
+
+\newtcolorbox{sourcesbox}[1][Sources \& further reading]{%
+	enhanced, breakable,
+	colback=black!4, colframe=black!35,
+	boxrule=0.5pt, arc=1mm,
+	left=9pt, right=9pt, top=5pt, bottom=5pt,
+	toptitle=3pt, bottomtitle=2pt,
+	fonttitle=\sffamily\bfseries, coltitle=black!70, colbacktitle=black!4,
+	title={\faBookOpen\ #1},
+	before skip=10pt, after skip=14pt}
+
+% ---------------------------------------------------------------------
+% Code listings
+% ---------------------------------------------------------------------
+\usepackage{listings}
+\lstset{
+	language=Python,
+	basicstyle=\ttfamily\footnotesize,
+	keywordstyle=\color{secondary}\bfseries,
+	keywordstyle=[2]\color{primary},
+	morekeywords=[2]{np,pd,plt,sklearn,rng},
+	stringstyle=\color{accent!85!black},
+	commentstyle=\color{textgray}\itshape,
+	showstringspaces=false,
+	breaklines=true,
+	breakatwhitespace=true,
+	columns=flexible,
+	keepspaces=true,
+	frame=leftline,
+	framerule=1.2pt,
+	rulecolor=\color{secondary!55},
+	xleftmargin=1em,
+	aboveskip=0.7em, belowskip=0.7em}
+
+% ---------------------------------------------------------------------
+% Headings, headers, captions
+% ---------------------------------------------------------------------
+\usepackage{titlesec}
+\titleformat{\section}
+{\Large\bfseries\sffamily\color{primary}}{\thesection}{0.7em}{}
+[{\color{secondary}\titlerule[1.1pt]}]
+\titleformat{\subsection}
+{\large\bfseries\sffamily\color{primary!85!black}}{\thesubsection}{0.6em}{}
+\titleformat{\subsubsection}
+{\normalsize\bfseries\sffamily\color{secondary}}{\thesubsubsection}{0.5em}{}
+\titlespacing*{\section}{0pt}{3.2ex plus 1ex}{2.2ex}
+\titlespacing*{\subsection}{0pt}{2.6ex plus 0.8ex}{1.4ex}
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\sffamily\color{primary}\faBrain\ Modern AI Foundations}
+\fancyhead[R]{\small\sffamily\color{textgray}\nouppercase\rightmark}
+\fancyfoot[C]{\small\sffamily\color{textgray}\thepage}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\headrule}{{\color{secondary!60}\hrule width\headwidth height 0.8pt}}
+\renewcommand{\sectionmark}[1]{\markright{\thesection.\ #1}}
+
+\usepackage{caption}
+\captionsetup{font=small, labelfont={bf,color=primary}, labelsep=period}
+\captionsetup[table]{skip=5pt}
+
+% ---------------------------------------------------------------------
+% Bibliography (biblatex + biber)
+% ---------------------------------------------------------------------
+\usepackage{csquotes}
+\usepackage[backend=biber, style=authoryear, giveninits=true,
+maxcitenames=2, maxbibnames=6, uniquename=false,
+uniquelist=false, dashed=false]{biblatex}
+\addbibresource{ai-foundations.bib}
+\renewcommand{\bibfont}{\small}
+\setlength{\bibitemsep}{4pt}
+
+% ---------------------------------------------------------------------
+% Hyperlinks (load last)
+% ---------------------------------------------------------------------
+\usepackage[colorlinks=true, linkcolor=primary, citecolor=secondary,
+urlcolor=secondary, bookmarksnumbered=true,
+pdftitle={Modern AI Foundations: A Complete Overview},
+pdfauthor={Course Design Team},
+pdfsubject={Artificial Intelligence, Machine Learning, Deep Learning},
+pdfkeywords={AI, machine learning, deep learning, transformers, LLM}]{hyperref}
+\urlstyle{same}
+
+% =====================================================================
+\begin{document}
+	% =====================================================================
+	
+	% ---------------------------------------------------------------------
+	% Title page
+	% ---------------------------------------------------------------------
+	\hypersetup{pageanchor=false}
+	\begin{titlepage}
+		\centering
+		\begin{tikzpicture}[remember picture, overlay]
+			\fill[primary]   (current page.north west) rectangle ([yshift=-4.7cm]current page.north east);
+			\fill[secondary] ([yshift=-4.7cm]current page.north west) rectangle ([yshift=-5.0cm]current page.north east);
+			\fill[primary]   (current page.south west) rectangle ([yshift=1.9cm]current page.south east);
+			\fill[secondary] ([yshift=1.9cm]current page.south west) rectangle ([yshift=2.15cm]current page.south east);
+			\node[align=center, text=white, font=\sffamily\bfseries\fontsize{28}{33}\selectfont]
+			at ([yshift=-2.1cm]current page.north) {Modern AI Foundations};
+			\node[align=center, text=white!85!primary, font=\sffamily\Large, text width=14.5cm]
+			at ([yshift=-3.7cm]current page.north)
+			{A Complete Overview: From Classical Machine Learning\\to Large Language Models};
+		\end{tikzpicture}
+		\vspace*{5.4cm}
+		
+		{\color{secondary}\large\faGlobe\hspace{1.2em}\faChartLine\hspace{1.2em}
+			\faCogs\hspace{1.2em}\faRobot\hspace{1.2em}\faBrain}\\[1.0em]
+		{\color{primary}\rule{0.55\textwidth}{1pt}}\\[1.6em]
+		
+		\begin{minipage}{0.86\textwidth}
+			\centering\small\itshape
+			A structured, code-first guide to the ideas behind modern artificial
+			intelligence: the mathematics that powers it, the classical
+			machine-learning engine at its heart, and the deep-learning revolution
+			that brought us transformers and large language models --- with curated
+			sources for every step of the journey.
+		\end{minipage}\\[2.4em]
+		
+		{\sffamily\color{primary}\bfseries
+			Prerequisites: Python (intermediate) \textbullet{}
+			NumPy \& Pandas (basic) \textbullet{} Calculus (basic)}\\[0.9em]
+		
+		\vfill
+		{\sffamily\color{textgray}\large Course Design Team}\\[0.4em]
+		{\sffamily\color{textgray}\small\today}
+		\vspace*{2.7cm}
+	\end{titlepage}
+	\hypersetup{pageanchor=true}
+	
+	% ---------------------------------------------------------------------
+	\clearpage
+	\tableofcontents
+	\clearpage
+	
+	% =====================================================================
+	\section*{About this course}
+	\markright{About this course}
+	\phantomsection
+	\addcontentsline{toc}{section}{About this course}
+	% =====================================================================
+	
+	This document develops a four-module overview of modern artificial
+	intelligence into a complete, self-contained study guide. It assumes no
+	prior machine-learning experience, but it does assume the background
+	summarised in the prerequisite matrix on the next page: comfortable
+	\textbf{Python}, basic \textbf{NumPy \& Pandas}, and \textbf{high-school
+		calculus}. Everything else --- from eigenvectors to attention --- is built
+	from scratch, in context, with citations to the primary literature and
+	standard textbooks.
+	
+	The four modules are deliberately sequential, as the roadmap below shows:
+	the landscape and its ethics (\emph{Module~1}), the mathematical
+	foundations (\emph{Module~2}), the classical machine-learning engine that
+	still powers most industry deployments (\emph{Module~3}), and the deep
+	learning and generative-AI frontier (\emph{Module~4}). All code snippets
+	assume Python 3.9+ with \texttt{numpy}, \texttt{pandas},
+	\texttt{scikit-learn}, and (for Module~4) \texttt{transformers} installed.
+	
+	\begin{figure}[ht]
+		\centering
+		\begin{tikzpicture}[
+			stage/.style={rounded corners=2mm, align=center, font=\sffamily\small,
+				minimum height=1.05cm, inner sep=3pt, text width=3.05cm},
+			>=Stealth]
+			\node[stage, draw=primary,   fill=primary!8]   (m1) {\textbf{Module 1}\\[2pt] The AI landscape\\ \scriptsize context \& ethics};
+			\node[stage, draw=secondary, fill=secondary!8, right=0.45cm of m1] (m2)
+			{\textbf{Module 2}\\[2pt] Math \& data\\ \scriptsize the language of ML};
+			\node[stage, draw=accent,    fill=accent!8,    right=0.45cm of m2] (m3)
+			{\textbf{Module 3}\\[2pt] Classical ML\\ \scriptsize the core engine};
+			\node[stage, draw=dpurple,   fill=dpurple!8,   right=0.45cm of m3] (m4)
+			{\textbf{Module 4}\\[2pt] Deep learning\\ \scriptsize \& generative AI};
+			\draw[->, thick, primary!70]   (m1) -- (m2);
+			\draw[->, thick, secondary!80] (m2) -- (m3);
+			\draw[->, thick, accent!90]    (m3) -- (m4);
+		\end{tikzpicture}
+		\caption{The learning path: each module builds directly on the one before it.}
+		\label{fig:roadmap}
+	\end{figure}
+	
+	Throughout the guide you will meet the following recurring callout boxes:
+	
+	\begin{table}[ht]
+		\centering
+		\small\sffamily
+		\renewcommand{\arraystretch}{1.3}
+		\begin{tabular}{@{}L{5.2cm} L{9.6cm}@{}}
+			\toprule
+			\rowcolor{primary}
+			\textcolor{white}{\textbf{Box}} & \textcolor{white}{\textbf{What it gives you}} \\
+			\midrule
+			\textcolor{primary}{\faInfoCircle}\ Module --- at a glance & Focus, key concepts, and learning goals for each module. \\
+			\textcolor{primary}{\faLightbulb}\ Key concept & Definitions and intuitions worth memorising. \\
+			\textcolor{secondary}{\faPython}\ Hands-on with Python & Short, runnable code tied to the prerequisite skills. \\
+			\textcolor{accent}{\faBalanceScale}\ Ethics \& safety spotlight & Responsible-AI notes and open questions. \\
+			\textcolor{dpurple}{\faQuestionCircle}\ Check your understanding & A quick self-test before moving on. \\
+			\textcolor{textgray}{\faBookOpen}\ Sources \& further reading & Curated references backing each module. \\
+			\bottomrule
+		\end{tabular}
+		\caption{The callout boxes used throughout this guide.}
+	\end{table}
+	
+	% =====================================================================
+	\section*{Prerequisites and required background}
+	\markright{Prerequisites and required background}
+	\phantomsection
+	\addcontentsline{toc}{section}{Prerequisites and required background}
+	% =====================================================================
+	
+	The table below is the assumed starting point. None of the three rows
+	requires expert mastery; the goal of each is narrow and practical.
+	
+	\begin{table}[ht]
+		\centering
+		\small\sffamily
+		\renewcommand{\arraystretch}{1.35}
+		\rowcolors{2}{white}{primary!7}
+		\begin{tabular}{@{}L{4.4cm} L{3.6cm} L{6.4cm}@{}}
+			\toprule
+			\rowcolor{primary}
+			\textcolor{white}{\textbf{Skill}} &
+			\textcolor{white}{\textbf{Required level}} &
+			\textcolor{white}{\textbf{Primary use case}} \\
+			\midrule
+			Python programming & Intermediate & Implementing algorithms, data manipulation \\
+			NumPy \& Pandas & Basic & Matrix operations and data cleaning \\
+			High-school calculus & Basic & Understanding how models learn (derivatives) \\
+			\bottomrule
+		\end{tabular}
+		\caption{Prerequisite matrix: the background assumed by this guide.}
+		\label{tab:prereq}
+	\end{table}
+	
+	\textbf{Python (intermediate).} You should be comfortable writing
+	functions, loops, list comprehensions, and simple classes, and know your
+	way around a virtual environment. The course is deliberately code-first:
+	every mathematical idea is paired with a few lines of Python. A good
+	refresher, free to read online, is \textcite{vanderplas2016}.
+	
+	\textbf{NumPy \& Pandas (basic).} You should be able to create arrays,
+	slice them, and compute with them (\texttt{A @ B} for matrix products),
+	and load a CSV into a DataFrame to clean and summarise it
+	\parencite{harris2020, mckinney2010}. The practice boxes assume exactly
+	this level and no more.
+	
+	\textbf{Calculus (basic).} You need the derivative as a slope, the power
+	rule, and the chain rule. That is genuinely all --- gradients, the engine
+	of all learning in this course, are just derivatives collected into a
+	vector.
+	
+	\begin{keyconcept}[The two calculus ideas you actually need]
+		\begin{itemize}
+			\item \textbf{A derivative is a local slope:}
+			$\;f'(x) \approx \dfrac{f(x+h)-f(x)}{h}$ --- it tells you which
+			direction is \emph{downhill} and how steeply.
+			\item \textbf{The chain rule composes slopes:}
+			$\;\dfrac{d}{dx}\,f(g(x)) = f'(g(x))\,g'(x)$.
+		\end{itemize}
+		Backpropagation (Module~4) --- the algorithm that trains every modern
+		neural network --- is nothing more than this second rule applied
+		systematically, layer by layer.
+	\end{keyconcept}
+	
+	\textbf{Self-check before starting.}
+	\begin{itemize}
+		\item Can you write a Python function that returns the mean and standard
+		deviation of a list of numbers?
+		\item Given two NumPy arrays, can you compute their dot product and the
+		shape of \texttt{A @ B}?
+		\item Can you differentiate $f(w) = w^2$ and say what $f'(3)$ means
+		geometrically?
+	\end{itemize}
+	If any answer is ``not yet'', spend a week with \textcite{vanderplas2016}
+	and any standard calculus refresher; then return --- everything else is
+	built for you from here.
+	
+	% =====================================================================
+	\clearpage
+	\section{Introduction and the AI Landscape}
+	% =====================================================================
+	
+	\begin{modulecard}{\faGlobe\ Module 1 --- at a glance}{primary}
+		\textbf{Focus.} What artificial intelligence is (and is not), how the
+		field evolved from hand-written rules to learning from data, and the
+		infrastructure and ethical questions that shape modern practice.
+		
+		\medskip
+		\textbf{Key concepts.} Defining intelligence; weak vs.\ strong AI; expert
+		systems vs.\ data-driven AI; GPUs, TPUs, cloud ecosystems and data
+		pipelines; bias, alignment, copyright and environmental impact.
+		
+		\medskip
+		\textbf{After this module you will be able to} explain the difference
+		between narrow and general AI, describe the paradigm shift from rules to
+		data, sketch an end-to-end machine-learning pipeline, and name the main
+		ethical questions attached to deploying an AI system.
+	\end{modulecard}
+	
+	\subsection{Defining intelligence: weak vs.\ strong AI}
+	
+	Before we can build artificial intelligence we have to say what we mean
+	by \emph{intelligence}. \textcite{russell2021} organise the many
+	definitions along two axes: are we concerned with \emph{thought
+		processes} or with \emph{behaviour}, and should the benchmark be
+	\emph{human-like} performance or \emph{rationality} --- acting so as to
+	achieve the best expected outcome? Alan Turing sidestepped the
+	philosophy in 1950 with an operational test: if a machine's written
+	answers are indistinguishable from a human's, is it not, for practical
+	purposes, intelligent? \parencite{turing1950}. Modern AI research
+	mostly aims at rational behaviour on well-defined tasks --- exactly what
+	the learning algorithms of Modules~2--4 deliver.
+	
+	\begin{keyconcept}[Weak (narrow) AI vs.\ strong AI]
+		\begin{center}
+			\small\sffamily
+			\renewcommand{\arraystretch}{1.25}
+			\begin{tabular}{@{}L{6.6cm} L{7.9cm}@{}}
+				\toprule
+				\rowcolor{primary}
+				\textcolor{white}{\textbf{Weak / narrow AI (today)}} &
+				\textcolor{white}{\textbf{Strong AI / AGI (hypothetical)}} \\
+				\midrule
+				Excels at one well-defined task: spam filters, image classifiers, next-token prediction &
+				Reasons, plans and learns across arbitrary domains, as a human can \\
+				Learns from task-specific data; capability does not transfer &
+				Would transfer knowledge flexibly to novel problems \\
+				Every deployed system, including today's LLMs, is narrow in this sense &
+				Unknown whether or when it is achievable; an active research and policy debate \\
+				\bottomrule
+			\end{tabular}
+		\end{center}
+	\end{keyconcept}
+	
+	A second classical debate is worth knowing. Philosopher John Searle's
+	\emph{Chinese room} argument holds that symbol manipulation alone is
+	not understanding: a person following rules could answer questions in
+	Chinese without knowing any Chinese \parencite{searle1980}. The argument
+	has returned with force in the era of large language models, because
+	fluent output is cheap while grounded understanding is hard to verify
+	--- a theme we revisit in the ethics spotlight below.
+	
+	\subsection{From expert systems to data-driven AI}
+	
+	The term \emph{artificial intelligence} was coined at the 1956 Dartmouth
+	workshop. For roughly the next three decades the dominant paradigm was
+	\emph{symbolic}: human knowledge was hand-encoded as if--then rules.
+	Expert systems such as MYCIN encoded several hundred rules elicited
+	from physicians and impressed clinicians in blind evaluations --- yet
+	only inside their narrow domain. Rules are brittle, and extracting them
+	from experts (the \emph{knowledge-acquisition bottleneck}) is slow and
+	expensive.
+	
+	Machine learning inverts the pipeline: instead of programming rules, we
+	collect examples of the desired behaviour and let an algorithm discover
+	the rules. In \textcite{mitchell1997}'s classic formulation, a program
+	\emph{learns} from experience $E$ with respect to task $T$ and
+	performance measure $P$ if its performance at $T$, measured by $P$,
+	improves with $E$. Deep learning pushes the inversion one step further
+	by learning not only the rules but the \emph{features} they operate on
+	\parencite{lecun2015}. Three results announced the new era: AlexNet cut
+	the ImageNet top-5 error rate from roughly 26\% to 16\% by training a
+	deep network on two consumer GPUs \parencite{krizhevsky2012}; AlphaGo
+	defeated the world Go champion using deep networks combined with search
+	\parencite{silver2016}; and transformer language models (Module~4)
+	turned plain text prediction into a general-purpose technology.
+	
+	\begin{keyconcept}[The paradigm shift: from rules to data]
+		\textbf{Classical programming:}\quad rules $+$ data $\longrightarrow$ answers\\
+		\textbf{Machine learning:}\quad data $+$ answers $\longrightarrow$ rules (the model)
+		
+		\smallskip
+		Instead of hand-crafting the logic, we specify an objective and let an
+		algorithm search for parameters that meet it --- which is precisely why
+		the mathematics of Modules~2 and~3 matters so much.
+	\end{keyconcept}
+	
+	\begin{figure}[ht]
+		\centering
+		\begin{tikzpicture}[x=1cm, y=1cm, >=Stealth]
+			\draw[primary, line width=2pt] (0,0) -- (14.3,0);
+			\draw[primary, -{Stealth}, line width=2pt] (14.3,0) -- (14.75,0);
+			\ms{0.55}{1950}{Turing's test}{0.18}{south}
+			\ms{2.50}{1956}{Dartmouth: ``AI''}{-0.18}{north}
+			\ms{4.45}{1980s}{expert systems}{0.18}{south}
+			\ms{6.40}{1997}{Deep Blue}{-0.18}{north}
+			\ms{8.35}{2012}{AlexNet}{0.18}{south}
+			\ms{10.30}{2017}{Transformers}{-0.18}{north}
+			\ms{12.25}{2020}{GPT-3}{0.18}{south}
+			\ms{14.20}{2022}{ChatGPT}{-0.18}{north}
+		\end{tikzpicture}
+		\caption{A selective history: from the founding of the field to the generative-AI era.}
+		\label{fig:timeline}
+	\end{figure}
+	
+	\subsection{The modern stack: compute, cloud, and data pipelines}
+	
+	\textbf{Compute: GPUs and TPUs.} Training a modern model is,
+	computationally, one thing: enormous numbers of matrix--vector
+	products. A CPU optimises a handful of fast, sequential cores; a GPU
+	packs thousands of simpler cores that perform these products in
+	parallel. That is why \textcite{krizhevsky2012} could train a vision
+	network that CPU-era attempts could not, and why hardware co-design now
+	shapes chip roadmaps --- Google's Tensor Processing Units, for instance,
+	execute the tensor algebra of neural networks directly
+	\parencite{jouppi2017}. Memory bandwidth is the other half of the story:
+	modern accelerators are as much about feeding data as about computing
+	with it.
+	
+	\textbf{Cloud ecosystems.} The same hardware is available to anyone,
+	rented by the hour: a laptop, a browser, and a credit card are enough
+	to requisition a cluster of GPUs with a reproducible software image.
+	This democratised experimentation --- and concentrated an enormous
+	amount of AI capability in a handful of providers.
+	
+	\textbf{Data pipelines.} Models live inside a loop, not a vacuum
+	(Figure~\ref{fig:pipeline}). Practitioners routinely spend the majority
+	of project time collecting, cleaning, and validating data --- which is
+	exactly why Pandas is a prerequisite rather than an afterthought
+	\parencite{mckinney2010}.
+	
+	\begin{practicebox}
+		\begin{lstlisting}
+			import pandas as pd
+			
+			df = pd.read_csv("orders.csv", parse_dates=["created"])
+			df = df.dropna(subset=["amount"])           # basic cleaning
+			df["revenue"] = df["amount"] * df["quantity"]
+			summary = (df.groupby("region")["revenue"]
+			.agg(["count", "mean", "sum"]))
+			print(summary)
+		\end{lstlisting}
+		Five lines of Pandas cover the ingest, clean, transform, aggregate loop
+		that occupies most of a data scientist's day.
+	\end{practicebox}
+	
+	\begin{figure}[ht]
+		\centering
+		\begin{tikzpicture}[
+			font=\sffamily\scriptsize,
+			stage/.style={draw=primary, fill=primary!8, rounded corners=1.8mm,
+				minimum height=9mm, minimum width=2.55cm, align=center},
+			>=Stealth]
+			\node[stage] (a) {Data\\collection};
+			\node[stage] (b) [right=0.45cm of a] {Cleaning \&\\preparation};
+			\node[stage] (c) [right=0.45cm of b] {Model\\training};
+			\node[stage] (d) [right=0.45cm of c] {Evaluation};
+			\node[stage] (e) [right=0.45cm of d] {Deployment \&\\monitoring};
+			\draw[->, thick, secondary] (a) -- (b);
+			\draw[->, thick, secondary] (b) -- (c);
+			\draw[->, thick, secondary] (c) -- (d);
+			\draw[->, thick, secondary] (d) -- (e);
+			\draw[->, thick, accent, dashed]
+			(e.south) .. controls ($(e.south)+(0,-0.75)$) and ($(a.south)+(0,-0.75)$) .. (a.south);
+			\node[font=\sffamily\scriptsize, text=accent, align=center]
+			at ($(c.south)+(0,-0.78)$) {feedback: monitor, retrain on fresh data};
+		\end{tikzpicture}
+		\caption{A modern data pipeline: the machine-learning lifecycle as a loop, not a line.}
+		\label{fig:pipeline}
+	\end{figure}
+	
+	\subsection{Ethics and safety: the non-optional module}
+	
+	Technical capability has outpaced governance. Four questions should
+	accompany every system you build:
+	
+	\begin{ethicsbox}[Four questions to ask of any AI system]
+		\begin{description}[font=\sffamily\bfseries]
+			\item[Bias.] Models inherit the patterns --- including the unjust ones
+			--- in their training data. Commercial gender-classification
+			systems were shown to misclassify darker-skinned women at far
+			higher rates than lighter-skinned men \parencite{buolamwini2018}.
+			Audit data for representation gaps before, not after, deployment.
+			\item[Alignment.] Does the optimised objective match what humans
+			actually want? Specification gaming and reward hacking are
+			documented failure modes \parencite{amodei2016, christian2020};
+			human-feedback training (Module~4) is one partial remedy.
+			\item[Copyright.] Models are trained on scraped text, images, and code.
+			Provenance, licensing, and attribution of training data remain
+			unsettled legal and ethical territory.
+			\item[Environment.] Training large models consumes substantial energy
+			and emits carbon \parencite{strubell2019, patterson2021}.
+			Mitigations: efficient hardware, right-sized models, and
+			transparency about training costs.
+		\end{description}
+	\end{ethicsbox}
+	
+	A fifth concern is specific to language models: fluency without
+	grounding. \textcite{bender2021} famously warned that large language
+	models are \emph{stochastic parrots} --- they reproduce statistical
+	patterns of language, which is not the same as knowing anything. The
+	practical consequence is cultural: verify outputs, cite sources, and
+	treat generated text as a draft, never as evidence.
+	
+	\textbf{A practitioner's checklist.}
+	\begin{itemize}
+		\item Define the task, the population served, and the failure modes
+		\emph{before} modelling.
+		\item Audit training data for representation gaps and label quality.
+		\item Choose metrics that price both error types (Module~3 shows how).
+		\item Document limitations --- model cards, datasheets, plain language.
+		\item Plan for monitoring and human oversight after deployment.
+	\end{itemize}
+	
+	\begin{checkpoint}
+		\begin{enumerate}
+			\item A chess engine, a spam filter, and a claimed ``fully autonomous
+			reasoning'' startup demo: classify each as weak or strong AI, and
+			justify the label.
+			\item Why did GPUs unlock deep learning roughly a decade before CPUs
+			could? Answer in terms of the arithmetic that training requires.
+			\item Your model screens job applications. Name two concrete harms and
+			one mitigation for each.
+		\end{enumerate}
+	\end{checkpoint}
+	
+	\begin{sourcesbox}
+		\small
+		\begin{itemize}[nosep]
+			\item \fullcite{russell2021}
+			\item \fullcite{turing1950}
+			\item \fullcite{searle1980}
+			\item \fullcite{lecun2015}
+			\item \fullcite{krizhevsky2012}
+			\item \fullcite{silver2016}
+			\item \fullcite{jouppi2017}
+			\item \fullcite{buolamwini2018}
+			\item \fullcite{amodei2016}
+			\item \fullcite{christian2020}
+			\item \fullcite{strubell2019}
+			\item \fullcite{patterson2021}
+			\item \fullcite{bender2021}
+		\end{itemize}
+	\end{sourcesbox}
+	
+	% =====================================================================
+	\clearpage
+	\section{Mathematics and Data Foundations}
+	% =====================================================================
+	
+	\begin{modulecard}{\faRulerCombined\ Module 2 --- at a glance}{secondary}
+		\textbf{Focus.} The small mathematical toolkit that quietly powers
+		everything else in the course: linear algebra to \emph{represent} data,
+		probability to \emph{quantify} uncertainty, and optimisation to
+		\emph{learn} from mistakes.
+		
+		\medskip
+		\textbf{Key concepts.} Vectors, matrices, eigenvalues and dimensionality
+		reduction; Bayes' theorem, distributions and hypothesis testing; loss
+		and cost functions, gradients, and gradient descent.
+		
+		\medskip
+		\textbf{After this module you will be able to} describe any dataset as
+		linear-algebra objects, reason correctly about conditional
+		probabilities, and explain --- and implement --- gradient descent from
+		scratch.
+	\end{modulecard}
+	
+	Mathematics here is a working tool, not an exam subject. Each concept is
+	introduced the moment it earns its keep, and each is paired with NumPy
+	code that uses it.
+	
+	\subsection{Linear algebra: the language of data}
+	
+	Machine-learning data lives in vectors, matrices, and tensors. A house
+	becomes a vector of measurements
+	$\mathbf{x} = [\text{area}, \text{rooms}, \text{age}]$; a dataset of $m$ houses a matrix $X \in \mathbb{R}^{m \times n}$; a colour image a
+	$H \times W \times 3$ tensor. The dot product measures alignment
+	between vectors (its normalised version, cosine similarity, is the workhorse
+	of recommendation systems and semantic search), and a matrix--vector
+	product $W\mathbf{x}$ is a \emph{change of representation}: it rotates,
+	stretches, and mixes coordinates. In Module~4 this becomes literal ---
+	every neural-network layer \emph{is} one such matrix.
+	
+	\textbf{Eigenvalues and dimensionality reduction.} Eigenvectors are the
+	directions a matrix leaves unchanged except for scaling:
+	\begin{equation}
+		A\mathbf{v} = \lambda \mathbf{v}.
+	\end{equation}
+	The covariance matrix $\Sigma$ of a dataset is symmetric, so its
+	eigenvectors are mutually orthogonal, and the eigenvector with the
+	largest eigenvalue points along the direction of greatest variance.
+	Projecting the data onto the top eigenvectors is \emph{principal
+		component analysis} (PCA):
+	\begin{equation}
+		\mathbf{v}_1 = \arg\max_{\|\mathbf{v}\| = 1}\ \mathbf{v}^{\!\top}\Sigma\,\mathbf{v},
+	\end{equation}
+	i.e.\ the first principal component is the top eigenvector of $\Sigma$.
+	Dropping low-variance directions keeps most of the signal in far fewer
+	coordinates --- compression, de-noising, and two-dimensional plots of
+	hundred-dimensional data \parencite{strang2019}. NumPy makes all of it
+	concrete, and its compiled vector operations are orders of magnitude
+	faster than Python loops \parencite{harris2020}.
+	
+	\begin{practicebox}
+		\begin{lstlisting}
+			import numpy as np
+			
+			X = np.random.default_rng(0).normal(size=(500, 20))
+			Xc = X - X.mean(axis=0)             # centre the columns
+			C  = (Xc.T @ Xc) / (X.shape[0]-1)   # covariance matrix
+			evals, evecs = np.linalg.eigh(C)    # symmetric solver
+			pcs = evecs[:, ::-1][:, :2]         # top-2 principal components
+			X2  = Xc @ pcs                      # 20-D data projected to 2-D
+			print(X2.shape, evals[::-1][:2])    # (500, 2) and the top variances
+		\end{lstlisting}
+	\end{practicebox}
+	
+	\subsection{Probability and statistics: the language of uncertainty}
+	
+	Real data is noisy and the future is unknown, so every prediction in
+	this course is ultimately a probability statement. A handful of
+	distributions covers most of the terrain: the \emph{Bernoulli} for
+	yes/no outcomes, the \emph{categorical} for classes (and, we shall see,
+	for tokens), and the \emph{Gaussian} for measurement noise and natural
+	variation:
+	\begin{equation}
+		p(x) = \frac{1}{\sigma\sqrt{2\pi}}\,
+		\exp\!\left(-\frac{(x-\mu)^2}{2\sigma^2}\right).
+	\end{equation}
+	
+	The single most useful formula in the toolkit is Bayes' theorem:
+	\begin{equation}
+		P(A \mid B) \;=\; \frac{P(B \mid A)\,P(A)}{P(B)}.
+		\label{eq:bayes}
+	\end{equation}
+	
+	\begin{keyconcept}[Bayes' theorem, in words]
+		Posterior $\propto$ likelihood $\times$ prior: what you believe
+		\emph{after} seeing evidence is proportional to how well each
+		hypothesis would have produced that evidence, weighted by what you
+		believed \emph{before}.
+	\end{keyconcept}
+	
+	A medical example shows why intuition fails without it. A test with 99\%
+	sensitivity and a 5\% false-positive rate, applied to a disease with 1\%
+	prevalence, yields
+	\begin{align}
+		P(\text{disease}\mid +)
+		&= \frac{P(+\mid\text{disease})\,P(\text{disease})}{P(+)}\\[2pt]
+		&= \frac{0.99 \times 0.01}{0.99 \times 0.01 + 0.05 \times 0.99}
+		\;\approx\; 0.17 :
+	\end{align}
+	only one positive in six is a true case, because the disease is rare to
+	begin with. The same base-rate reasoning governs fraud alerts, security
+	scanners, and classifier performance on imbalanced classes.
+	
+	\textbf{Hypothesis testing} disciplines the question ``is this pattern
+	real?''. State a null hypothesis (no effect), compute a test statistic,
+	and report a $p$-value: the probability of data at least this extreme
+	\emph{if the null were true}. Conventions like $p < 0.05$ are useful
+	servants and terrible masters --- multiple comparisons and selective
+	reporting (``p-hacking'') invalidate them silently. Prefer effect sizes
+	and confidence intervals whenever possible \parencite{wasserman2004}.
+	Finally, the \emph{central limit theorem}: averages of many independent
+	draws become approximately Gaussian, with standard error
+	$\sigma/\sqrt{n}$ --- the reason bigger samples shrink error bars, and
+	the intuition underlying both A/B testing and the scaling laws of
+	Module~4.
+	
+	\begin{practicebox}
+		\begin{lstlisting}
+			import numpy as np
+			
+			rng = np.random.default_rng(42)
+			# 10,000 experiments: average of 40 Exponential(1) draws each
+			means = rng.exponential(scale=1.0, size=(10_000, 40)).mean(axis=1)
+			print(means.mean(), means.std())   # ~1.0 and ~1/sqrt(40) = 0.158
+		\end{lstlisting}
+		The standard deviation of the means matches $\sigma/\sqrt{n}$: the
+		central limit theorem, verified in three lines.
+	\end{practicebox}
+	
+	\subsection{Optimisation: how models learn}
+	
+	A \textbf{loss function} scores the error of a prediction on a single
+	example; the \textbf{cost function} (or empirical risk) averages it over
+	the dataset. For regression, the default is mean squared error,
+	\begin{equation}
+		J(\boldsymbol{\theta}) = \frac{1}{2m}\sum_{i=1}^{m}
+		\bigl(h_{\boldsymbol{\theta}}(\mathbf{x}_i) - y_i\bigr)^{2}.
+	\end{equation}
+	The entire game of machine learning is then: choose a flexible family of
+	functions, define a loss, and find the parameters that minimise it.
+	
+	The \textbf{gradient} $\nabla_{\!\boldsymbol{\theta}} J$ collects all
+	partial derivatives into a vector --- the direction of steepest
+	\emph{ascent}. Learning therefore walks the other way:
+	\begin{equation}
+		\boldsymbol{\theta}_{t+1} \;=\;
+		\boldsymbol{\theta}_t \;-\; \eta\,\nabla_{\!\boldsymbol{\theta}}
+		J(\boldsymbol{\theta}_t),
+		\label{eq:gd}
+	\end{equation}
+	where $\eta$ is the \emph{learning rate}. Too small and training crawls;
+	too large and it overshoots and diverges
+	(Figure~\ref{fig:gd}). In practice the gradient is estimated on small
+	random \emph{mini-batches} of data --- stochastic gradient descent
+	(SGD) --- trading a little noise for a lot of speed. 
+	
+	\textbf{Adam and adaptive optimisers.} Standard SGD uses a fixed step
+	size for all parameters. The \textbf{Adam} optimiser \parencite{kingma2015}
+	adapts learning rates individually by maintaining exponential moving
+	averages of the gradient $g_t = \nabla_{\!\boldsymbol{\theta}} J$ (first moment $m_t$) and its square (second moment $v_t$):
+	\begin{equation}
+		m_t = \beta_1 m_{t-1} + (1-\beta_1)g_t, \qquad
+		v_t = \beta_2 v_{t-1} + (1-\beta_2)g_t^{2},
+	\end{equation}
+	\begin{equation}
+		\hat{m}_t = \frac{m_t}{1-\beta_1^{t}}, \qquad
+		\hat{v}_t = \frac{v_t}{1-\beta_2^{t}}, \qquad
+		\boldsymbol{\theta}_{t+1} = \boldsymbol{\theta}_t - \frac{\eta}{\sqrt{\hat{v}_t} + \epsilon}\,\hat{m}_t,
+	\end{equation}
+	where $\beta_1=0.9$, $\beta_2=0.999$, and $\epsilon=10^{-8}$. First-moment momentum accelerates along constant directions, while second-moment scaling dampens steps for features with frequently large gradients, making Adam the default choice for deep learning and Transformers.
+
+	\textbf{Vanishing and exploding gradients.} In deep architectures, backpropagating loss gradients across $L$ layers involves repeated matrix multiplication:
+	\begin{equation}
+		\frac{\partial \mathcal{L}}{\partial \mathbf{h}^{(1)}} = \frac{\partial \mathcal{L}}{\partial \mathbf{h}^{(L)}} \prod_{\ell=2}^{L} W^{(\ell)\top} \mathrm{diag}\!\left(\phi'\!\left(\mathbf{z}^{(\ell)}\right)\right).
+	\end{equation}
+	If the eigenvalues of $W^{(\ell)}$ or activation slopes $\phi'$ are strictly less than 1, gradients decay exponentially to zero (\emph{vanishing gradients}), leaving early layers untrained. If greater than 1, gradients blow up to infinity (\emph{exploding gradients}). Linear models avoid this because they lack hidden depth; neural networks require architectural safeguards (residual connections, normalization, ReLU) to survive depth. Linear models have
+	convex, bowl-shaped costs, so descent finds the unique minimum; neural
+	networks do not, yet SGD and Adam reliably find good solutions anyway --- one of
+	the field's pleasant empirical surprises.
+	
+	\begin{figure}[ht]
+		\centering
+		\begin{tikzpicture}[x=1.55cm, y=0.82cm, >=Stealth]
+			\draw[textgray!60] (-2.75,0) -- (2.75,0)
+			node[below, font=\scriptsize\sffamily, textgray] {$w$};
+			\draw[textgray!60] (0,-0.15) -- (0,6.7)
+			node[left, font=\scriptsize\sffamily, textgray] {$J(w)$};
+			\draw[primary, very thick, domain=-2.55:2.55, smooth, samples=60]
+			plot (\x, \x*\x);
+			\foreach \a/\b in {2.2/1.54, 1.54/1.08, 1.08/0.755, 0.755/0.528,
+				0.528/0.37, 0.37/0.259, 0.259/0.181}
+			\draw[->, accent, thick] (\a, \a*\a) -- (\b, \b*\b);
+			\foreach \w in {2.2, 1.54, 1.08, 0.755, 0.528, 0.37, 0.259, 0.181}
+			\fill[secondary] (\w, \w*\w) circle (1.8pt);
+			\node[font=\scriptsize\sffamily, anchor=west, text=primary] at (2.35, 4.45) {$w_0$};
+			\node[font=\scriptsize\sffamily, anchor=west, text=primary] at (1.68, 2.40) {$w_1$};
+			\node[font=\scriptsize\sffamily, anchor=west, text=primary] at (0.15, 5.55) {$J(w)=w^2$};
+			\node[font=\scriptsize\sffamily, anchor=north, text=secondary] at (0, 0.10) {$w^{\star}=0$};
+		\end{tikzpicture}
+		\caption{Gradient descent on $J(w)=w^2$ with learning rate $\eta=0.15$:
+			each step $w \leftarrow w - \eta\,2w$ shrinks the distance to the
+			minimum by 30\%.}
+		\label{fig:gd}
+	\end{figure}
+	
+	\begin{practicebox}
+		\begin{lstlisting}
+			w, lr = 5.0, 0.15
+			for step in range(8):
+			grad = 2 * w            # derivative of f(w) = w**2
+			w = w - lr * grad       # the update rule, eq. (8)
+			print(f"step {step}:  w = {w:.4f}")
+			# w -> 0.2882: convergence toward the minimum
+		\end{lstlisting}
+	\end{practicebox}
+	
+	\begin{checkpoint}
+		\begin{enumerate}
+			\item In plain words, what does an eigenvector of the covariance matrix
+			tell you about a dataset?
+			\item In the medical-test example, what happens to
+			$P(\text{disease}\mid +)$ as prevalence rises to 10\%?
+			\item What goes wrong, mechanically, when the learning rate in
+			equation~\eqref{eq:gd} is set to $1.1$ for $J(w)=w^2$?
+		\end{enumerate}
+	\end{checkpoint}
+	
+	\begin{sourcesbox}
+		\small
+		\begin{itemize}[nosep]
+			\item \fullcite{strang2019}
+			\item \fullcite{wasserman2004}
+			\item \fullcite{boyd2004}
+			\item \fullcite{goodfellow2016}
+			\item \fullcite{bishop2006}
+			\item \fullcite{harris2020}
+			\item \fullcite{mckinney2010}
+			\item \fullcite{vanderplas2016}
+		\end{itemize}
+	\end{sourcesbox}
+	
+	% =====================================================================
+	\clearpage
+	\section{Classical Machine Learning: The Core Engine}
+	% =====================================================================
+	
+	\begin{modulecard}{\faRobot\ Module 3 --- at a glance}{accent}
+		\textbf{Focus.} The algorithms that still run the majority of
+		real-world, structured-data workloads --- and the evaluation discipline
+		that separates real learning from memorisation.
+		
+		\medskip
+		\textbf{Key concepts.} Supervised learning: regression, decision trees,
+		SVMs, ensembles. Unsupervised learning: K-Means clustering and anomaly
+		detection. Evaluation: accuracy, precision, recall, F1, ROC-AUC.
+		
+		\medskip
+		\textbf{After this module you will be able to} choose an appropriate
+		classical algorithm for a task, cluster unlabelled data, and --- most
+		importantly --- evaluate any model honestly.
+	\end{modulecard}
+	
+	On the tabular, structured data of business (customers, transactions,
+	sensors), classical machine learning frequently still beats glamorous
+	deep models. It is also the best place to internalise the habits ---
+	splits, metrics, baselines --- that govern everything later
+	\parencite{hastie2009, pedregosa2011}.
+	
+	\subsection{Supervised learning}
+	
+	Supervised learning starts from labelled pairs
+	$\mathcal{D} = \{(\mathbf{x}_i, y_i)\}_{i=1}^{m}$ and a split into
+	\emph{training}, \emph{validation}, and \emph{test} sets. If $y$ is a
+	number the task is \emph{regression}; if $y$ is a category it is
+	\emph{classification}.
+	
+	\textbf{Regression.} The linear model
+	$\hat{y} = \beta_0 + \boldsymbol{\beta}^{\!\top}\mathbf{x}$ has a
+	closed-form least-squares solution,
+	\begin{equation}
+		\hat{\boldsymbol{\beta}} = (X^{\!\top}X)^{-1}X^{\!\top}\mathbf{y},
+	\end{equation}
+	in practice computed by QR factorisation or gradient descent for
+	numerical stability. \emph{Regularisation} fights overfitting by
+	penalising large coefficients --- ridge regression,
+	\begin{equation}
+		\hat{\boldsymbol{\beta}} = \arg\min_{\boldsymbol{\beta}}\;
+		\|\mathbf{y} - X\boldsymbol{\beta}\|_2^{2} + \alpha
+		\|\boldsymbol{\beta}\|_2^{2},
+	\end{equation}
+	shrinks them smoothly; the lasso ($\ell_1$) drives some exactly to zero,
+	performing feature selection. \emph{Logistic regression} turns a linear
+	score into a class probability with the sigmoid function and is trained
+	with the cross-entropy loss --- the very same loss family that trains
+	large language models in Module~4.
+	
+	\textbf{Decision trees and ensembles.} A tree asks a sequence of
+	yes/no questions (``area $>$ 120?''), choosing at each split the feature
+	and threshold that most reduce impurity. Trees are fast, handle mixed
+	data types, and are interpretable --- and, alone, they overfit badly.
+	\emph{Random forests} average many de-correlated trees grown on random
+	subsamples of rows and features \parencite{breiman2001};
+	\emph{gradient boosting} builds trees sequentially, each correcting the
+	residual errors of the ensemble so far \parencite{chen2016}. On tabular
+	data these two are frequently the strongest off-the-shelf learners
+	available.
+	
+	\textbf{Support vector machines.} The SVM seeks the separating
+	hyperplane with the \emph{maximum margin} to the closest points,
+	minimising the hinge loss
+	\begin{equation}
+		L = \max\bigl(0,\; 1 - y\,f(\mathbf{x})\bigr),
+		\qquad y \in \{-1, +1\},
+	\end{equation}
+	and the \emph{kernel trick} lets it build non-linear boundaries
+	implicitly in high-dimensional feature space \parencite{cortes1995}.
+	
+	\begin{table}[ht]
+		\centering
+		\small\sffamily
+		\renewcommand{\arraystretch}{1.3}
+		\caption{Choosing a first algorithm for tabular data.}
+		\begin{tabular}{@{}L{3.1cm} L{3.3cm} L{3.9cm} L{3.9cm}@{}}
+			\toprule
+			\rowcolor{accent}
+			\textcolor{white}{\textbf{Algorithm}} &
+			\textcolor{white}{\textbf{Reach for it when}} &
+			\textcolor{white}{\textbf{Strengths}} &
+			\textcolor{white}{\textbf{Watch out}} \\
+			\midrule
+			Linear / logistic regression & Baselines; small, clean data & Fast, interpretable, statistically principled & Underfits complex nonlinear structure \\
+			Decision tree & Interpretability is the product & Human-readable rules; no feature scaling & Single trees overfit badly \\
+			Random forest & Default robust choice & Variance reduction via bagging; few knobs & Less interpretable; larger memory \\
+			Gradient boosting (XGBoost) & Maximum accuracy on tables & State of the art on structured data & Needs tuning; can overfit small data \\
+			SVM & Small--medium data, many features & Max-margin generalisation; kernels & Scales poorly to very large datasets \\
+			\bottomrule
+		\end{tabular}
+	\end{table}
+
+	\textbf{Feature scaling requirement.} Algorithms that calculate spatial distances (K-Means, SVM) or compute gradient steps (Logistic/Linear Regression, Neural Networks) are highly sensitive to feature scales: features with large magnitudes (e.g., house area in sq ft) dominate Euclidean metrics over features with small ranges (e.g., room count). Standardisation ($z = (x - \mu)/\sigma$ via \texttt{StandardScaler}) or min-max scaling is mandatory prior to training. By contrast, decision trees and tree ensembles are \emph{scale-invariant}, as splits evaluate individual feature thresholds independently.
+	
+	\subsection{Unsupervised learning}
+	
+	Unsupervised learning finds structure without labels. The canonical
+	clustering algorithm, \textbf{K-Means} \parencite{macqueen1967},
+	partitions $m$ points into $K$ clusters by minimising within-cluster
+	squared distance,
+	\begin{equation}
+		J = \sum_{k=1}^{K}\ \sum_{\mathbf{x}_i \in C_k}
+		\|\mathbf{x}_i - \boldsymbol{\mu}_k\|^{2},
+	\end{equation}
+	by alternating two steps: (1) assign each point to its nearest centroid
+	$\boldsymbol{\mu}_k$; (2) move each centroid to the mean of its members.
+	It converges quickly, but only to a \emph{local} optimum --- hence
+	multiple random restarts --- and it implicitly assumes
+	roundish, equally sized clusters. Choosing $K$ is a design decision;
+	the ``elbow'' of the cost curve offers a visual heuristic. 
+
+	\textbf{Quantitative cluster evaluation: Silhouette Score.} To evaluate clustering quality without relying solely on visual heuristics, the \textbf{Silhouette Coefficient} \parencite{rousseeuw1987} measures how tightly grouped points are within their cluster compared to neighboring clusters:
+	\begin{equation}
+		s(i) = \frac{b(i) - a(i)}{\max\bigl(a(i),\, b(i)\bigr)}, \qquad s(i) \in [-1, +1],
+	\end{equation}
+	where $a(i)$ is the mean distance between point $i$ and all other points in the same cluster, and $b(i)$ is the mean distance to points in the nearest neighboring cluster. A mean score near $+1$ indicates well-separated, dense clusters; scores near $0$ indicate overlapping clusters. Typical uses:
+	customer segmentation, topic grouping, preprocessing.
+	
+	\textbf{Anomaly detection} flags rare, suspicious items --- fraud,
+	failed sensors, rare medical readings. Statistical methods flag points
+	in the tails of fitted distributions; distance- and density-based
+	methods flag points far from any crowd; and the \emph{isolation forest}
+	exploits the fact that anomalies are easy to separate from everything
+	else with few random splits \parencite{liu2008}. Mixture models
+	\parencite{bishop2006} give a probabilistic route, and autoencoders
+	(Module~4) extend the idea to complex data.
+	
+	\subsection{Evaluation metrics: separating learning from memorising}
+	
+	A model that cannot be measured cannot be trusted. All classification
+	metrics descend from the \emph{confusion matrix}:
+	
+	\begin{table}[ht]
+		\centering
+		\small\sffamily
+		\renewcommand{\arraystretch}{1.25}
+		\caption{The confusion matrix for binary classification.}
+		\begin{tabular}{@{}lcc@{}}
+			\toprule
+			& \textbf{Predicted positive} & \textbf{Predicted negative} \\
+			\midrule
+			\textbf{Actual positive} & TP (hit)          & FN (miss) \\
+			\textbf{Actual negative} & FP (false alarm)  & TN (correct rejection) \\
+			\bottomrule
+		\end{tabular}
+	\end{table}
+	
+	\begin{equation}
+		\text{Accuracy} = \frac{TP+TN}{TP+TN+FP+FN},\qquad
+		\text{Precision} = \frac{TP}{TP+FP},\qquad
+		\text{Recall} = \frac{TP}{TP+FN},
+	\end{equation}
+	\begin{equation}
+		F_1 = 2\,\frac{\text{Precision}\cdot\text{Recall}}
+		{\text{Precision}+\text{Recall}} .
+	\end{equation}
+	The metric is a \emph{value judgement} about which errors matter. If 1\%
+	of transactions are fraudulent, a model that always says ``not fraud''
+	is 99\% accurate and perfectly useless; a fraud system should trade
+	precision for recall, while a spam filter should do the opposite. The
+	\textbf{ROC curve} traces true- vs.\ false-positive rate as the decision
+	threshold varies, and its area (AUC) --- the probability that a random
+	positive outranks a random negative --- summarises threshold-free
+	quality \parencite{fawcett2006}.
+	
+	Two further disciplines: \textbf{cross-validation} rotates the
+	train/validation split ($k$-fold) to use data efficiently and to
+	\emph{measure variance} across folds; and the \textbf{bias--variance
+		trade-off} names the two failure modes --- underfitting (too simple,
+	high bias) and overfitting (memorising the training set, high variance)
+	--- with regularisation, more data, or better inductive bias as the
+	respective remedies \parencite{hastie2009}.
+	
+	\begin{practicebox}
+		\begin{lstlisting}
+			from sklearn.model_selection import train_test_split, cross_val_score
+			from sklearn.ensemble import RandomForestClassifier
+			from sklearn.metrics import classification_report
+			
+			X_tr, X_te, y_tr, y_te = train_test_split(
+			X, y, test_size=0.2, stratify=y, random_state=0)
+			
+			clf = RandomForestClassifier(n_estimators=300, random_state=0)
+			print(cross_val_score(clf, X_tr, y_tr, cv=5))   # per-fold scores
+			clf.fit(X_tr, y_tr)
+			print(classification_report(y_te, clf.predict(X_te)))
+		\end{lstlisting}
+	\end{practicebox}
+	
+	\begin{checkpoint}
+		\begin{enumerate}
+			\item For a cancer-screening tool, which metric would you prioritise,
+			and what is the cost of that choice?
+			\item Why does K-Means struggle with two concentric rings of points,
+			and what does that reveal about its assumptions?
+			\item Your cross-validation scores vary from 0.62 to 0.91 across folds.
+			What does that variance tell you, and what would you do next?
+		\end{enumerate}
+	\end{checkpoint}
+	
+	\begin{sourcesbox}
+		\small
+		\begin{itemize}[nosep]
+			\item \fullcite{mitchell1997}
+			\item \fullcite{hastie2009}
+			\item \fullcite{bishop2006}
+			\item \fullcite{cortes1995}
+			\item \fullcite{breiman2001}
+			\item \fullcite{chen2016}
+			\item \fullcite{macqueen1967}
+			\item \fullcite{liu2008}
+			\item \fullcite{fawcett2006}
+			\item \fullcite{pedregosa2011}
+		\end{itemize}
+	\end{sourcesbox}
+	
+	% =====================================================================
+	\clearpage
+	\section{Transition to Deep Learning and Modern AI}
+	% =====================================================================
+	
+	\begin{modulecard}{\faBrain\ Module 4 --- at a glance}{dpurple}
+		\textbf{Focus.} The leap from engineered features to learned
+		representations: neural networks and backpropagation, the three
+		architectures that shaped the field, and the mechanics of generative AI
+		and large language models.
+		
+		\medskip
+		\textbf{Key concepts.} Perceptrons, activation functions,
+		backpropagation; CNNs, RNNs, and transformers; embeddings, latent
+		space, and next-token prediction.
+		
+		\medskip
+		\textbf{After this module you will be able to} explain how a neural
+		network is trained, why transformers displaced recurrence, and what
+		exactly a large language model is doing when it answers you.
+	\end{modulecard}
+	
+	The jump from classical ML to deep learning is a jump in \emph{who
+		designs the features}. A classical pipeline is given hand-crafted
+	inputs; a deep network learns a hierarchy of them --- edges, then
+	textures, then parts, then objects \parencite{lecun2015}. What
+	engineering achieved by hand, depth achieves with data and compute.
+	
+	\subsection{Neural networks: perceptrons, activations, backpropagation}
+	
+	The \textbf{perceptron} \parencite{rosenblatt1958} is a single neuron:
+	a weighted sum passed through a threshold,
+	\begin{equation}
+		\hat{y} = \mathbb{1}\{\mathbf{w}^{\!\top}\mathbf{x} + b > 0\} \in \{0, 1\}
+		\quad (\text{or }\mathrm{sgn}(\mathbf{w}^{\!\top}\mathbf{x} + b) \in \{-1, +1\}).
+	\end{equation}
+	It can learn any function that a straight line can separate --- and
+	provably cannot learn XOR, a limitation that chilled the field's first
+	winter \parencite{minsky1969}. The repair is to \emph{stack} units and
+	interleave \textbf{nonlinear activation functions} between layers:
+	\begin{equation}
+		\mathbf{a}^{(\ell)} = \phi\!\left(W^{(\ell)}\,\mathbf{a}^{(\ell-1)} +
+		\mathbf{b}^{(\ell)}\right),
+		\qquad \ell = 1, \dots, L .
+	\end{equation}
+	Without $\phi$, the stack would collapse into a single linear map. The
+	rectified linear unit, $\phi(z) = \max(0, z)$, became the default for
+	being cheap, non-saturating, and sparse in its activations
+	\parencite{nair2010}. Such networks are universal approximators
+	\parencite{hornik1989} --- a statement about \emph{capacity}, with no
+	guarantee that training finds good parameters.
+	
+	\begin{figure}[ht]
+		\centering
+		\begin{tikzpicture}[
+			x=1.35cm, y=0.9cm,
+			inp/.style={circle,  draw=primary,   fill=primary!12,   minimum size=6mm, inner sep=0pt},
+			hid/.style={circle,  draw=dpurple,   fill=dpurple!12,   minimum size=6mm, inner sep=0pt},
+			outp/.style={circle, draw=secondary, fill=secondary!12, minimum size=6mm, inner sep=0pt}]
+			\foreach \i in {1,2,3}   \node[inp]  (I\i)  at (0,    \i-2)   {};
+			\foreach \i in {1,...,4} \node[hid]  (H1\i) at (1.45, \i-2.5) {};
+			\foreach \i in {1,...,4} \node[hid]  (H2\i) at (2.9,  \i-2.5) {};
+			\foreach \i in {1,2}     \node[outp] (O\i)  at (4.35, \i-1.5) {};
+			\foreach \i in {1,2,3} \foreach \j in {1,...,4}
+			\draw[primary!35]   (I\i)  -- (H1\j);
+			\foreach \i in {1,...,4} \foreach \j in {1,...,4}
+			\draw[dpurple!35]   (H1\i) -- (H2\j);
+			\foreach \i in {1,...,4} \foreach \j in {1,2}
+			\draw[secondary!40] (H2\i) -- (O\j);
+			\node[font=\sffamily\scriptsize\bfseries, text=primary,   align=center] at (0,    1.8) {input};
+			\node[font=\sffamily\scriptsize\bfseries, text=dpurple,   align=center] at (1.45, 2.3) {hidden};
+			\node[font=\sffamily\scriptsize\bfseries, text=dpurple,   align=center] at (2.9,  2.3) {hidden};
+			\node[font=\sffamily\scriptsize\bfseries, text=secondary, align=center] at (4.35, 1.3) {output};
+		\end{tikzpicture}
+		\caption{A fully connected $3$--$4$--$4$--$2$ network. Every edge
+			carries a learnable weight; each layer applies its matrix, then a
+			nonlinearity.}
+		\label{fig:nn}
+	\end{figure}
+		
+	\begin{figure}[ht]
+		\centering
+		\begin{tikzpicture}
+			\begin{axis}[
+				width=0.72\textwidth, height=5.6cm,
+				axis lines=middle,
+				xlabel={$z$}, ylabel={$\phi(z)$},
+				xmin=-3.3, xmax=3.3, ymin=-1.4, ymax=2.4,
+				domain=-3.2:3.2, samples=101,
+				tick label style={font=\scriptsize},
+				label style={font=\small},
+				legend style={at={(0.02,0.98)}, anchor=north west,
+					legend cell align=left, font=\scriptsize\sffamily,
+					draw=none, fill=none}]
+				\addplot[primary, very thick]            {1/(1+exp(-x))};
+				\addlegendentry{sigmoid}
+				\addplot[secondary, very thick, dashed]  {2/(1+exp(-2*x))-1};
+				\addlegendentry{tanh}
+				\addplot[accent, very thick, domain=0:2.35] {max(0,x)};
+				\addlegendentry{ReLU}
+			\end{axis}
+		\end{tikzpicture}
+		\caption{Common activation functions. ReLU's lack of saturation for
+			$z>0$ helped make deep networks trainable at scale \parencite{nair2010}.}
+		\label{fig:activations}
+	\end{figure}
+	
+	\textbf{Backpropagation} \parencite{rumelhart1986} computes the
+	gradient of the loss $\mathcal{L}$ with respect to every weight 
+	(the chain rule from Module~1) organised backwards through the layers. With
+	$\delta^{(\ell)} \equiv \partial \mathcal{L}/\partial
+	\mathbf{z}^{(\ell)}$:
+	\begin{align}
+		\boldsymbol{\delta}^{(L)}
+		&= \nabla_{\mathbf{a}^{(L)}}\,\mathcal{L}\ \odot\
+		\phi'\!\bigl(\mathbf{z}^{(L)}\bigr),\\
+		\boldsymbol{\delta}^{(\ell)}
+		&= \bigl(W^{(\ell+1)\top}\boldsymbol{\delta}^{(\ell+1)}\bigr)\ \odot\
+		\phi'\!\bigl(\mathbf{z}^{(\ell)}\bigr),
+		\qquad \ell = L-1, \dots, 1,\\
+		\frac{\partial \mathcal{L}}{\partial W^{(\ell)}}
+		&= \boldsymbol{\delta}^{(\ell)}\,
+		\mathbf{a}^{(\ell-1)\top},
+	\end{align}
+	where $\odot$ is element-wise multiplication. Backprop is a
+	gradient-\emph{computation} algorithm; the learning itself is still
+	gradient descent (equation~\eqref{eq:gd}), now run on mini-batches
+	through frameworks such as PyTorch or JAX.
+	
+	\subsection{Architectures: CNNs, RNNs, and transformers}
+	
+	\textbf{Convolutional networks (CNNs)} exploit the structure of images:
+	local patterns, and translation invariance. A convolution slides a
+	small learnable filter $K$ over the input,
+	\begin{equation}
+		(I \ast K)(i,j) = \sum_{m}\sum_{n} I(i{-}m,\, j{-}n)\,K(m,n),
+	\end{equation}
+	so the \emph{same} few weights detect the same pattern everywhere ---
+	drastically fewer parameters than a dense layer, plus built-in
+	equivariance. Pooling layers shrink resolution. LeNet established the
+	recipe for document recognition \parencite{lecun1998}; AlexNet's
+	GPU-trained depth ignited the modern era \parencite{krizhevsky2012}.
+	
+	\textbf{Recurrent networks (RNNs)} handle sequences by carrying a
+	hidden state from step to step:
+	\begin{equation}
+		\mathbf{h}_t = \tanh\!\bigl(W_h\,\mathbf{h}_{t-1} +
+		W_x\,\mathbf{x}_t + \mathbf{b}\bigr).
+	\end{equation}
+	Training them across long sequences suffers from vanishing gradients;
+	the \textbf{LSTM}'s gated memory cells were the decisive fix
+	\parencite{hochreiter1997}, dominating language, speech, and time
+	series for two decades.
+	
+	\textbf{Transformers} replaced recurrence with \emph{attention}
+	\parencite{vaswani2017}. Each token emits a query, a key, and a value;
+	the output for each position is a weighted average of all values, with
+	weights given by query--key compatibility:
+	\begin{equation}
+		\mathrm{Attention}(Q, K, V) = \softmax\!\left(
+		\frac{Q\,K^{\!\top}}{\sqrt{d_k}}\right) V .
+	\end{equation}
+	Because every token can attend to every other in a single parallel
+	step, transformers train vastly faster than RNNs on modern hardware ---
+	the property, more than any single equation, that made the modern era
+	possible.
+
+	\textbf{Positional encodings.} Plain self-attention is permutation-invariant: shuffling input tokens yields identical attention outputs (permuted correspondingly). To inject sequence order, \textbf{positional encodings} are added to input embeddings. The original Transformer used fixed sinusoidal frequencies \parencite{vaswani2017}:
+	\begin{equation}
+		PE_{(pos, 2i)} = \sin\!\left(\frac{pos}{10000^{2i/d_model}}\right), \qquad
+		PE_{(pos, 2i+1)} = \cos\!\left(\frac{pos}{10000^{2i/d_model}}\right).
+	\end{equation}
+	Modern LLMs predominantly use \textbf{Rotary Position Embeddings (RoPE)} \parencite{su2024}, which rotate query and key vectors in complex 2D planes, incorporating relative distance directly into the dot product $Q K^\top$.
+
+	\textbf{Residual connections and normalization.} Deep Transformer stacks survive vanishing gradients by wrapping every sub-layer with a \textbf{residual (skip) connection} \parencite{he2016} and \textbf{Layer Normalization}:
+	\begin{equation}
+		\mathbf{y} = \mathrm{LayerNorm}\bigl(\mathbf{x} + \mathcal{F}(\mathbf{x})\bigr).
+	\end{equation}
+	Skip connections provide an unattenuated identity gradient highway ($\partial \mathbf{y}/\partial \mathbf{x} = I + \partial \mathcal{F}/\partial \mathbf{x}$), enabling gradient flow across hundreds of layers. Within five years the architecture had absorbed language,
+	vision, audio, and protein-structure modelling.
+	
+	\begin{table}[ht]
+		\centering
+		\small\sffamily
+		\renewcommand{\arraystretch}{1.3}
+		\caption{Three architectures at a glance.}
+		\begin{tabular}{@{}L{2.6cm} L{2.9cm} L{6.2cm} L{3.2cm}@{}}
+			\toprule
+			\rowcolor{dpurple}
+			\textcolor{white}{\textbf{Architecture}} &
+			\textcolor{white}{\textbf{Designed for}} &
+			\textcolor{white}{\textbf{Key idea}} &
+			\textcolor{white}{\textbf{Landmark}} \\
+			\midrule
+			CNN & Images, video, grids & Local filters plus weight sharing yield equivariant feature hierarchies & \parencite{lecun1998, krizhevsky2012} \\
+			RNN / LSTM & Sequences, time series & Recurrence carries state; gating fights vanishing gradients & \parencite{hochreiter1997} \\
+			Transformer & Text --- and increasingly everything & Self-attention lets every token see every other; trains in parallel & \parencite{vaswani2017} \\
+			\bottomrule
+		\end{tabular}
+	\end{table}
+	
+	\subsection{Generative AI foundations: embeddings, latent space, and LLMs}
+	
+	\textbf{Embeddings.} Word2vec showed that a shallow network trained on
+	``predict the neighbours of a word'' learns vectors with striking
+	arithmetic structure: $\mathbf{w}_{\text{king}} -
+	\mathbf{w}_{\text{man}} + \mathbf{w}_{\text{woman}} \approx
+	\mathbf{w}_{\text{queen}}$ \parencite{mikolov2013}. Meaning becomes
+	geometry: similar things cluster, relations are (roughly) directions.
+	The same trick now embeds users, products, images, and code.
+	
+	\textbf{Latent space.} Generative models compress data into a
+	lower-dimensional \emph{latent} code from which they can reconstruct or
+	create. Variational autoencoders learn a probabilistic latent space and
+	sample from it \parencite{kingma2014}; GANs pit a generator against a
+	discriminator until the fakes become indistinguishable
+	\parencite{goodfellow2014}. Generation, in all cases, is decoding from
+	a point in latent space.
+	
+	\textbf{Large language models.} An LLM does one thing: predict the
+	next \emph{token} (a sub-word unit) given the previous ones. The
+	network outputs a score $z_j$ for every vocabulary entry, and the
+	softmax turns scores into a distribution,
+	\begin{equation}
+		p(y = j \mid \mathbf{x}) = \frac{\exp(z_j)}
+		{\sum_{k=1}^{V} \exp(z_k)},
+		\qquad
+		\mathcal{L}_{\text{CE}} = -\log p(y_{\text{true}} \mid \mathbf{x}),
+	\end{equation}
+	the cross-entropy loss --- logistic regression's loss, at vocabulary
+	scale. 	\textbf{Causal masking and LLM taxonomy.} For generative language modelling, transformers must not look into the future. A \textbf{causal mask} $M$ sets upper-triangular attention logits to $-\infty$:
+	\begin{equation}
+		M_{ij} = \begin{cases} 0 & \text{if } j \le i \\ -\infty & \text{if } j > i \end{cases}, \qquad
+		\mathrm{CausalAttention}(Q, K, V) = \softmax\!\left(\frac{Q K^{\!\top} + M}{\sqrt{d_k}}\right) V ,
+	\end{equation}
+	ensuring position $i$ attends only to tokens $j \le i$. This establishes the three major Transformer design families:
+
+	\begin{table}[ht]
+		\centering
+		\small\sffamily
+		\renewcommand{\arraystretch}{1.25}
+		\caption{The three Transformer architecture families.}
+		\begin{tabular}{@{}L{3.2cm} L{3.5cm} L{4.5cm} L{3.0cm}@{}}
+			\toprule
+			\rowcolor{dpurple}
+			\textcolor{white}{\textbf{Family}} &
+			\textcolor{white}{\textbf{Attention Type}} &
+			\textcolor{white}{\textbf{Primary Use Case}} &
+			\textcolor{white}{\textbf{Examples}} \\
+			\midrule
+			Decoder-only & Causal / Masked & Autoregressive text generation & GPT-4, Llama 3, Claude \\
+			Encoder-only & Bidirectional & Representation, classification, search & BERT, RoBERTa \\
+			Encoder-Decoder & Cross + Causal & Translation, summarization & T5, BART \\
+			\bottomrule
+		\end{tabular}
+	\end{table}
+
+	\emph{Pretraining} minimises cross-entropy over trillions of tokens of web
+	text; \emph{scaling laws} showed that loss falls predictably as
+	parameters, data, and compute grow \parencite{kaplan2020}; GPT-3
+	demonstrated that sufficiently large models perform new tasks from a
+	handful of in-context examples, with no weight updates
+	\parencite{brown2020}. Alignment then shapes behaviour: supervised
+	instruction tuning, followed by reinforcement learning from human
+	feedback, trains models to follow instructions and avoid harmful
+	outputs \parencite{christiano2017, ouyang2022}. At generation time a
+	\emph{temperature} knob interpolates between greedy and adventurous
+	sampling.
+	
+	\begin{keyconcept}[How an LLM writes one token]
+		\begin{enumerate}
+			\item Tokenise the prompt into sub-word tokens.
+			\item Embed each token as a vector (plus positional information).
+			\item Pass the sequence through stacked transformer blocks: each token
+			attends to all previous tokens.
+			\item Map the hidden state vector of the final sequence position through a linear layer and a softmax over the vocabulary.
+			\item Sample the next token from that distribution.
+			\item Append it to the sequence and repeat --- one full forward pass
+			per generated token.
+		\end{enumerate}
+	\end{keyconcept}
+	
+	\begin{ethicsbox}[Big models, big responsibilities]
+		The environmental and bias costs of Module~1 scale with model size
+		\parencite{strubell2019, patterson2021, bender2021}. Practical habits
+		for the LLM era: verify claims against primary sources; prefer the
+		smallest model that does the job; log and audit failures; disclose when
+		output is machine-generated; and remember that fluency is evidence of
+		statistical pattern, not of truth.
+	\end{ethicsbox}
+	
+	\begin{practicebox}
+		\begin{lstlisting}
+			from transformers import pipeline
+			
+			clf = pipeline("sentiment-analysis",
+			model="distilbert-base-uncased-finetuned-sst-2-english")
+			print(clf("This course is fantastic!"))
+			# [{'label': 'POSITIVE', 'score': 0.9998...}]
+		\end{lstlisting}
+		A fine-tuned transformer classifier in four lines --- the first run
+		downloads the model \parencite{huggingface}.
+	\end{practicebox}
+	
+	\begin{checkpoint}
+		\begin{enumerate}
+			\item Remove the nonlinearity from an MLP: what functions can the
+			resulting network represent, and why?
+			\item Give two concrete reasons transformers train faster than RNNs on
+			the same hardware.
+			\item In the next-token formulation, what does ``temperature = 0''
+			correspond to?
+		\end{enumerate}
+	\end{checkpoint}
+	
+	\begin{sourcesbox}
+		\small
+		\begin{itemize}[nosep]
+			\item \fullcite{rosenblatt1958}
+			\item \fullcite{minsky1969}
+			\item \fullcite{rumelhart1986}
+			\item \fullcite{hornik1989}
+			\item \fullcite{nair2010}
+			\item \fullcite{lecun1998}
+			\item \fullcite{hochreiter1997}
+			\item \fullcite{vaswani2017}
+			\item \fullcite{mikolov2013}
+			\item \fullcite{kingma2014}
+			\item \fullcite{goodfellow2014}
+			\item \fullcite{brown2020}
+			\item \fullcite{kaplan2020}
+			\item \fullcite{ouyang2022}
+			\item \fullcite{goodfellow2016}
+			\item \fullcite{bishop2024}
+		\end{itemize}
+	\end{sourcesbox}
+	
+	% =====================================================================
+	\clearpage
+	\section*{Where to go next}
+	\markright{Where to go next}
+	\phantomsection
+	\addcontentsline{toc}{section}{Where to go next}
+	% =====================================================================
+	
+	The guide ends; the field does not. A few well-marked paths, matched to
+	what you now know:
+	
+	\begin{itemize}
+		\item \textbf{Strengthen the mathematics:} \parencite{strang2019,
+			wasserman2004, boyd2004}.
+		\item \textbf{Go deep on classical ML:} \parencite{hastie2009,
+			bishop2006}, alongside the scikit-learn documentation
+		\parencite{pedregosa2011}.
+		\item \textbf{Deep learning proper:} \parencite{goodfellow2016,
+			bishop2024}, and the runnable-notebook textbook of
+		\textcite{zhang2023}.
+		\item \textbf{Practice-first:} the free online course of
+		\textcite{fastai}.
+		\item \textbf{Build with LLMs:} the Hugging Face ecosystem
+		\parencite{huggingface}, read alongside \parencite{vaswani2017,
+			brown2020, ouyang2022}.
+		\item \textbf{Stay grounded:} \parencite{christian2020, bender2021}.
+	\end{itemize}
+	
+	\textbf{Suggested mini-projects}, one per module transition:
+	\begin{enumerate}
+		\item Predict housing prices from a public dataset (Modules~2--3:
+		regression, regularisation, honest evaluation).
+		\item Cluster and anomaly-detect a transactions dataset (Module~3:
+		K-Means, isolation forest, and metric trade-offs).
+		\item Fine-tune a small transformer classifier on your own texts
+		(Module~4: embeddings, cross-entropy, transfer learning).
+	\end{enumerate}
+	
+	AI is not a spectator sport. The mathematics of Module~2 becomes real
+	the first time a gradient-descent loop you wrote yourself converges;
+	the abstractions of Module~4 become real the first time a model you
+	fine-tuned answers a question in your own domain. Start small, cite
+	your sources, question your metrics --- and enjoy the ride.
+	
+	% =====================================================================
+	\clearpage
+	\section*{Practical Coding Projects Series}
+	\markright{Practical Coding Projects Series}
+	\phantomsection
+	\addcontentsline{toc}{section}{Practical Coding Projects Series}
+	% =====================================================================
+	
+	To accompany the theoretical foundation developed across the four modules, a complete series of six production-grade coding projects is provided in the repository's \texttt{projects/} directory. Each project bridges theoretical concepts to runnable Python implementation using industry-standard frameworks (\texttt{NumPy}, \texttt{Pandas}, \texttt{Scikit-Learn}, \texttt{XGBoost}, \texttt{PyTorch}, and \texttt{Transformers}), with explicit emphasis on data cleaning, exploratory visualization, model diagnostics, resumable training, and inference pipelines.
+
+	% ---------------------------------------------------------------------
+	\subsection*{Project 1: Data Pipeline, Exploratory Analysis \& Algorithmic Bias Audit}
+	% ---------------------------------------------------------------------
+	\textbf{Curriculum Mapping:} Module 1 (The AI Landscape, Compute/Cloud, Data Pipelines, Ethics \& Safety).
+
+	\textbf{Overview \& Learning Objectives:} This project implements the end-to-end data engineering and ethical auditing pipeline that precedes model training. Students work with real-world clinical data (UCI Breast Cancer Diagnostic dataset) with injected corruptions and demographic proxy groups.
+	\begin{enumerate}
+		\item \textbf{Data Cleaning \& Engineering:} Ingest messy tabular data, compute imputation statistics, and handle outliers using interquartile range (IQR) clipping.
+		\item \textbf{Exploratory Data Analysis (EDA):} Build publication-quality data quality visualizations (missingness profiles, KDE distributions, and correlation matrices).
+		\item \textbf{Ethical \& Algorithmic Bias Auditing:} Audit demographic representation gaps, evaluate Disparate Impact Ratios (80\% rule), and compute Statistical Parity and Equalized Odds metrics.
+	\end{enumerate}
+
+	\textbf{Execution Command:}
+	\begin{lstlisting}[language=bash]
+python projects/01_data_analysis_and_ethics/data_pipeline_demo.py
+	\end{lstlisting}
+
+	\textbf{Hands-on Exercises:} (1) Extend \texttt{cleaning.py} to support dynamic one-hot encoding with high-cardinality handling; (2) Modify \texttt{bias\_audit.py} to compute Equal Opportunity Difference ($\text{TPR}_{\text{unpriv}} - \text{TPR}_{\text{priv}}$); (3) Document demographic representation gaps in a formal model card.
+
+	% ---------------------------------------------------------------------
+	\subsection*{Project 2: Math Engine from Scratch (Linear Algebra, Stats \& Optimization)}
+	% ---------------------------------------------------------------------
+	\textbf{Curriculum Mapping:} Module 2 (Mathematics and Data Foundations).
+
+	\textbf{Overview \& Key Topics:} Translates core mathematical mechanics into pure NumPy implementations from first principles.
+	\begin{enumerate}
+		\item \textbf{Linear Algebra \& Dimensionality Reduction:} \texttt{PCAFromScratch} via eigen-decomposition of the covariance matrix ($A\mathbf{v} = \lambda\mathbf{v}$) and Singular Value Decomposition ($X = U\Sigma V^\top$).
+		\item \textbf{First-Order Optimization Algorithms:} Pure NumPy implementation of Vanilla Gradient Descent, Momentum, RMSprop, and Adam optimizers with trajectory tracking.
+		\item \textbf{Probability \& Statistics:} Central Limit Theorem verification ($\sigma_{\bar{x}} = \sigma / \sqrt{n}$) and exact Bayesian Beta-Binomial conjugate updating.
+	\end{enumerate}
+
+	\textbf{Execution Command:}
+	\begin{lstlisting}[language=bash]
+python projects/02_math_and_optimization/run_math_sandbox.py
+	\end{lstlisting}
+
+	\textbf{Hands-on Exercises:} (1) Implement Nesterov Accelerated Gradient (NAG) in \texttt{optimizers.py}; (2) Implement automatic component selection for $\ge 95\%$ variance retention in \texttt{pca\_from\_scratch.py}; (3) Simulate vanishing and exploding gradients across a 10-layer linear transformation stack.
+
+	% ---------------------------------------------------------------------
+	\subsection*{Project 3: Production-Ready Classical Machine Learning Pipeline \& Diagnostics}
+	% ---------------------------------------------------------------------
+	\textbf{Curriculum Mapping:} Module 3 (Classical Machine Learning: The Core Engine).
+
+	\textbf{Overview \& Key Capabilities:} Constructs an end-to-end machine learning pipeline covering supervised classification, unsupervised clustering, anomaly detection, and diagnostic learning curves.
+	\begin{enumerate}
+		\item \textbf{Pipeline Preprocessing:} Scikit-Learn \texttt{ColumnTransformer} handling numerical scaling and categorical encoding.
+		\item \textbf{Model Evaluation \& Diagnostics:} Dynamic Learning Curves plotting train vs.\ validation ROC-AUC scores over dataset subsets to diagnose High Variance (overfitting) vs.\ High Bias (underfitting).
+		\item \textbf{Unsupervised Mechanics:} K-Means clustering evaluated with Silhouette Coefficients ($s(i) = \frac{b(i)-a(i)}{\max(a(i),b(i))}$) across candidate $K$, and Isolation Forest anomaly scoring.
+		\item \textbf{Production Serving:} Pipeline serialization (\texttt{joblib}) and low-latency \texttt{ClassicalInferenceService}.
+	\end{enumerate}
+
+	\textbf{Execution Command:}
+	\begin{lstlisting}[language=bash]
+python projects/03_classical_machine_learning/train_pipeline.py
+	\end{lstlisting}
+
+	\textbf{Hands-on Exercises:} (1) Add \texttt{RandomizedSearchCV} hyperparameter tuning over XGBoost trees; (2) Implement a Validation Curve for regularization strength $C$ in Logistic Regression; (3) Compare SMOTE vs.\ \texttt{class\_weight='balanced'} on imbalanced data.
+
+	% ---------------------------------------------------------------------
+	\subsection*{Project 4: Deep Learning Foundations \& Resumable Training Pipeline}
+	% ---------------------------------------------------------------------
+	\textbf{Curriculum Mapping:} Module 4 (Neural Networks, Backpropagation, PyTorch/Keras foundations).
+
+	\textbf{Overview \& Key Capabilities:} Bridges manual matrix calculus to deep learning framework primitives and enterprise checkpointing.
+	\begin{enumerate}
+		\item \textbf{NumPy Backprop Engine:} 2-layer Neural Network with manual matrix calculus derivatives ($\boldsymbol{\delta}^{(L)} = \nabla_{\mathbf{a}^{(L)}}\mathcal{L} \odot \phi'(\mathbf{z}^{(L)})$, $\boldsymbol{\delta}^{(\ell)} = (W^{(\ell+1)\top}\boldsymbol{\delta}^{(\ell+1)}) \odot \phi'(\mathbf{z}^{(\ell)})$).
+		\item \textbf{PyTorch vs.\ Keras Parity:} Modular \texttt{PyTorchMLP} implementation side-by-side with Keras functional equivalent code.
+		\item \textbf{Resumable Training Architecture:} \texttt{CheckpointManager} saving complete PyTorch state dictionaries (\texttt{model\_state\_dict}, \texttt{optimizer\_state\_dict}, \texttt{scheduler\_state\_dict}, epoch, and metric history) enabling seamless pause/resume capabilities across process interruptions.
+		\item \textbf{Inference Service:} High-throughput PyTorch batch inference pipeline.
+	\end{enumerate}
+
+	\textbf{Execution Command:}
+	\begin{lstlisting}[language=bash]
+python projects/04_deep_learning_foundations/train_resumable.py
+	\end{lstlisting}
+
+	\textbf{Hands-on Exercises:} (1) Extend \texttt{mlp\_from\_scratch.py} to support arbitrary $L$-layer deep stacks with Softmax output; (2) Add Early Stopping patience counter state persistence to \texttt{checkpoint\_manager.py}; (3) Evaluate \texttt{CosineAnnealingLR} scheduling.
+
+	% ---------------------------------------------------------------------
+	\subsection*{Project 5: Computer Vision \& Sequential Architectures (CNNs \& LSTMs)}
+	% ---------------------------------------------------------------------
+	\textbf{Curriculum Mapping:} Module 4 (Architectures: CNNs and RNNs/LSTMs).
+
+	\textbf{Overview \& Key Capabilities:} Implements the two foundational deep learning architectures for spatial grid data and temporal sequences.
+	\begin{enumerate}
+		\item \textbf{Convolutional Neural Networks (CNNs):} PyTorch 2D CNN with Residual Skip Connections ($\mathbf{y} = \text{LayerNorm}(\mathbf{x} + \mathcal{F}(\mathbf{x}))$), BatchNorm, and spatial pooling.
+		\item \textbf{Recurrent Networks (LSTMs):} Multi-layer PyTorch LSTM sequence classifier ($\mathbf{h}_t = \tanh(W_h \mathbf{h}_{t-1} + W_x \mathbf{x}_t + \mathbf{b})$) with memory gating.
+		\item \textbf{Trainer Engine:} \texttt{DeepModelTrainer} with \texttt{CosineAnnealingLR} scheduling and checkpointing.
+	\end{enumerate}
+
+	\textbf{Execution Command:}
+	\begin{lstlisting}[language=bash]
+python projects/05_vision_and_sequence_models/train_vision_sequence.py
+	\end{lstlisting}
+
+	\textbf{Hands-on Exercises:} (1) Extend \texttt{cnn\_model.py} to plot activation feature maps of intermediate convolutional layers; (2) Implement a Bidirectional LSTM in \texttt{lstm\_model.py} and compare classification metrics.
+
+	% ---------------------------------------------------------------------
+	\subsection*{Project 6: Transformer Architectures \& LLM Fine-Tuning Pipeline}
+	% ---------------------------------------------------------------------
+	\textbf{Curriculum Mapping:} Module 4 (Transformers, Generative AI \& Large Language Models).
+
+	\textbf{Overview \& Key Mechanics:} Implements self-attention from scratch, fine-tunes pretrained models, and controls next-token decoding.
+	\begin{enumerate}
+		\item \textbf{Attention from Scratch:} Scaled Dot-Product Attention ($\mathrm{Attention}(Q,K,V)=\mathrm{softmax}\left(\frac{QK^\top + M}{\sqrt{d_k}}\right)V$) and Causal Attention Masking ($M_{ij} = -\infty$ for $j > i$).
+		\item \textbf{Transformer Block:} Multi-Head Attention, Pre-Layer Normalization, GELU Feed-Forward Network, and Residual Skip Connections.
+		\item \textbf{Hugging Face Fine-Tuning:} Pretrained transformer fine-tuning pipeline (\texttt{DistilBERT}/\texttt{BERT}).
+		\item \textbf{LLM Generation Control:} Next-token sampling engine supporting Temperature scaling ($T$), Top-$k$ truncation, and Top-$p$ (nucleus) sampling.
+	\end{enumerate}
+
+	\textbf{Execution Command:}
+	\begin{lstlisting}[language=bash]
+python projects/06_transformers_and_llms/train_transformer.py
+	\end{lstlisting}
+
+	\textbf{Hands-on Exercises:} (1) Extend \texttt{transformer\_scratch.py} to implement Rotary Position Embeddings (RoPE); (2) Implement Repetition Penalty ($\text{penalty} \ge 1.0$) in \texttt{llm\_inference.py} to reduce duplicate generation.
+
+	% =====================================================================
+	\clearpage
+	\section*{Glossary}
+	\markright{Glossary}
+	\phantomsection
+	\addcontentsline{toc}{section}{Glossary}
+	% =====================================================================
+	
+	\begin{table}[ht]
+		\centering
+		\small\sffamily
+		\renewcommand{\arraystretch}{1.25}
+		\rowcolors{2}{black!2}{black!5}
+		\caption{Quick reference for the vocabulary used in this guide.}
+		\begin{tabular}{@{}L{3.8cm} L{10.8cm}@{}}
+			\toprule
+			\rowcolor{primary}
+			\textcolor{white}{\textbf{Term}} & \textcolor{white}{\textbf{Meaning}} \\
+			\midrule
+			Artificial intelligence (AI) & Broad field: systems that perform tasks associated with intelligent behaviour. \\
+			Machine learning (ML) & Sub-field: algorithms whose performance on a task improves from data. \\
+			Deep learning (DL) & ML with multi-layer neural networks that learn their own features. \\
+			Feature / label & An input measurement / the target answer supplied during supervised training. \\
+			Model & A parameterised function fitted to data. \\
+			Loss function & A scalar score of prediction error; training minimises its average. \\
+			Gradient & The vector of partial derivatives: the direction of steepest ascent. \\
+			Backpropagation & Chain-rule algorithm computing the loss gradient for every weight, layer by layer. \\
+			Overfitting & Memorising the training set; excellent training scores, poor generalisation. \\
+			Embedding & A dense vector encoding of an item's meaning; similarity becomes geometry. \\
+			Token & The sub-word unit that language models read and write. \\
+			Parameter & A learnable number inside a model; LLMs have billions. \\
+			Fine-tuning & Adapting a pretrained model to a new task with a small dataset. \\
+			Hallucination & Fluent model output that is not grounded in fact. \\
+			\bottomrule
+		\end{tabular}
+	\end{table}
+	
+	% =====================================================================
+	\clearpage
+	\printbibliography[title={References}, heading=bibintoc]
+	% =====================================================================
+	
+	\vfill
+	\begin{center}
+		{\small\sffamily\color{textgray}\rule{0.3\linewidth}{0.6pt}\\[0.5em]
+			--- End of document ---}
+	\end{center}
+	
+\end{document}

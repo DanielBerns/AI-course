@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Interactive digital library and references portal for AI Foundations book. Access papers, DOIs, arXiv preprints, and open-access PDFs for foundational AI literature.">
+  <title>AI Foundations — Reference & Sources Library</title>
+  
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/styles.css">
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+
+  <!-- Background Decorative Glows -->
+  <div class="bg-glow">
+    <div class="glow-blob glow-blob-1"></div>
+    <div class="glow-blob glow-blob-2"></div>
+    <div class="glow-blob glow-blob-3"></div>
+  </div>
+
+  <div class="container">
+    
+    <!-- Navbar -->
+    <header class="navbar">
+      <a href="#" class="logo">
+        <div class="logo-icon">
+          <i class="fa-solid fa-atom"></i>
+        </div>
+        <div class="logo-text">AI <span>Foundations</span></div>
+      </a>
+      <div class="nav-actions">
+        <button id="theme-toggle" class="theme-toggle-btn" title="Toggle Light/Dark Theme" aria-label="Toggle Light/Dark Theme">
+          <i class="fa-solid fa-moon"></i>
+        </button>
+        <a href="../ai-foundations.pdf" target="_blank" class="btn-primary">
+          <i class="fa-solid fa-file-pdf"></i> View PDF Book
+        </a>
+      </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+      <img src="images/hero.png" alt="AI Research Digital Library" class="hero-banner">
+      <div class="badge-tag">
+        <i class="fa-solid fa-book-bookmark"></i> Authoritative Sources & Literature
+      </div>
+      <h1 class="hero-title">Foundations of <span>Artificial Intelligence</span></h1>
+      <p class="hero-subtitle">
+        Explore 53 seminal papers, canonical textbooks, and foundational publications cited in <em>AI Foundations</em>. Direct access to DOIs, arXiv preprints, open-access PDFs, and BibTeX citations.
+      </p>
+    </section>
+
+    <!-- Live Statistics Counter -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-icon"><i class="fa-solid fa-book"></i></div>
+        <div>
+          <div class="stat-val" id="stat-total">53</div>
+          <div class="stat-lbl">Total References</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon"><i class="fa-solid fa-file-arrow-down"></i></div>
+        <div>
+          <div class="stat-val" id="stat-pdf">38</div>
+          <div class="stat-lbl">Direct PDFs Available</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon"><i class="fa-solid fa-calendar-days"></i></div>
+        <div>
+          <div class="stat-val">1950 – 2024</div>
+          <div class="stat-lbl">Publication Timeline</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon"><i class="fa-solid fa-layer-group"></i></div>
+        <div>
+          <div class="stat-val" id="stat-categories">13</div>
+          <div class="stat-lbl">Research Categories</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Interactive Control Bar -->
+    <div class="controls-bar">
+      <div class="search-box">
+        <i class="fa-solid fa-magnifying-glass search-icon"></i>
+        <input type="text" id="search-input" class="search-input" placeholder="Search by paper title, author, venue, or key concept..." aria-label="Search references">
+      </div>
+      <select id="sort-select" class="sort-select" aria-label="Sort references">
+        <option value="newest">Newest First</option>
+        <option value="oldest">Oldest First</option>
+        <option value="title">Title (A – Z)</option>
+        <option value="author">Primary Author (A – Z)</option>
+      </select>
+    </div>
+
+    <!-- Category Filter Pills -->
+    <div class="categories-wrapper">
+      <div class="categories-pills" id="categories-container">
+        <!-- Injected via JavaScript -->
+      </div>
+    </div>
+
+    <!-- Reference Cards Grid -->
+    <main class="references-grid" id="references-grid">
+      <!-- Injected via JavaScript -->
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <p>Curated for <strong>AI Foundations</strong> textbook by Daniel Berns &copy; 2026</p>
+      <p style="margin-top: 6px; font-size: 0.8rem;">All references linked directly to publisher DOIs, arXiv, and open science repositories.</p>
+    </footer>
+
+  </div>
+
+  <!-- BibTeX / Detail Modal Overlay -->
+  <div class="modal-overlay" id="modal-overlay">
+    <div class="modal-container">
+      <div class="modal-header">
+        <h3 class="modal-title" id="modal-paper-title">Citation Metadata</h3>
+        <button class="modal-close" id="modal-close" aria-label="Close modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div id="modal-details" style="margin-bottom: 20px;"></div>
+        <h4 style="font-size: 0.9rem; font-weight: 700; margin-bottom: 8px; color: var(--text-secondary);">BibTeX Snippet:</h4>
+        <pre class="bibtex-code" id="modal-bibtex"></pre>
+        <div style="display: flex; justify-content: flex-end; gap: 12px;">
+          <button class="btn-action" id="modal-copy-btn">
+            <i class="fa-solid fa-copy"></i> Copy BibTeX
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="toast" id="toast">BibTeX copied to clipboard!</div>
+
+  <!-- Data & Application Logic -->
+  <script src="js/references.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
