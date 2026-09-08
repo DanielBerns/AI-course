@@ -1115,6 +1115,8 @@
       \field{booktitle}{International Conference on Learning Representations (ICLR)}
       \field{title}{Adam: A Method for Stochastic Optimization}
       \field{year}{2015}
+      \field{pages}{1\bibrangedash 15}
+      \range{pages}{15}
     \endentry
     \entry{kingma2014}{inproceedings}{}{}
       \name{author}{2}{}{%
@@ -1146,6 +1148,8 @@
       \field{booktitle}{International Conference on Learning Representations (ICLR)}
       \field{title}{Auto-Encoding Variational {Bayes}}
       \field{year}{2014}
+      \field{pages}{1\bibrangedash 9}
+      \range{pages}{9}
     \endentry
     \entry{krizhevsky2012}{inproceedings}{}{}
       \name{author}{3}{}{%
