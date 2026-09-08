@@ -274,6 +274,21 @@
 		title   = {Silhouettes: A Graphical Aid to the Interpretation and Validation of Cluster Analysis},
 		journal = {Journal of Computational and Applied Mathematics},
 		volume  = {20}, pages = {53--65}, year = {1987}}
+	@inproceedings{wolf2020,
+		author  = {Wolf, Thomas and Debut, Lysandre and Sanh, Victor and Chaumond, Julien and Delangue, Clement and Moi, Anthony and Cistac, Pierric and Rault, Timoth{\'e}e and Louf, R{\'e}mi and Funtowicz, Morgan and Davison, Joe and Shleifer, Sam and von Platen, Patrick and Ma, Clara and Jernite, Yacine and Plu, Julien and Xu, Canwen and Le Scao, Teven and Gugger, Sylvain and Drame, Mariama and Lhoest, Quentin and Rush, Alexander M.},
+		title   = {Transformers: State-of-the-Art Natural Language Processing},
+		booktitle = {Proceedings of the 2020 Conference on Empirical Methods in Natural Language Processing: System Demonstrations},
+		pages   = {38--45}, year = {2020}}
+	@article{hoffmann2022,
+		author  = {Hoffmann, Jordan and Borgeaud, Sebastian and Mensch, Arthur and Buchatskaya, Elena and Cai, Trevor and Rutherford, Eliza and de Las Casas, Diego and Hendricks, Lisa Anne and Welbl, Johannes and Clark, Aidan and Hennigan, Tom and Noland, Eric and Millican, Katie and Driessche, George van den and Damoc, Bogdan and Guy, Aurelia and Osindero, Simon and Simonyan, Karen and Elsen, Erich and Rae, Jack W. and Vinyals, Oriol and Sifre, Laurent},
+		title   = {Training Compute-Optimal Large Language Models},
+		journal = {arXiv preprint arXiv:2203.15556},
+		year    = {2022}}
+	@inproceedings{ho2020,
+		author  = {Ho, Jonathan and Jain, Ajay and Abbeel, Pieter},
+		title   = {Denoising Diffusion Probabilistic Models},
+		booktitle = {Advances in Neural Information Processing Systems 33},
+		pages   = {6840--6851}, year = {2020}}
 \end{filecontents*}
 
 \documentclass[11pt,a4paper]{article}
@@ -512,9 +527,10 @@ pdfkeywords={AI, machine learning, deep learning, transformers, LLM}]{hyperref}
 			NumPy \& Pandas (basic) \textbullet{} Calculus (basic)}\\[0.9em]
 		
 		\vfill
-		{\sffamily\color{textgray}\large Course Design Team}\\[0.4em]
-		{\sffamily\color{textgray}\small\today}
-		\vspace*{2.7cm}
+		{\sffamily\color{textgray}\large Course Design Team}\\[0.3em]
+		{\sffamily\color{textgray}\small Version 1.1 \textbullet{} September 2026 \textbullet{} License: CC BY 4.0}\\[0.3em]
+		{\sffamily\color{secondary}\small Repository: \url{https://github.com/DanielBerns/AI-course}}
+		\vspace*{2.2cm}
 	\end{titlepage}
 	\hypersetup{pageanchor=true}
 	
@@ -621,6 +637,29 @@ pdfkeywords={AI, machine learning, deep learning, transformers, LLM}]{hyperref}
 		\label{tab:prereq}
 	\end{table}
 	
+	\begin{table}[ht]
+		\centering
+		\small\sffamily
+		\renewcommand{\arraystretch}{1.3}
+		\caption{Notation reference table.}
+		\begin{tabular}{@{}L{3.5cm} L{11.3cm}@{}}
+			\toprule
+			\rowcolor{primary}
+			\textcolor{white}{\textbf{Symbol / Notation}} & \textcolor{white}{\textbf{Description and Typical Context}} \\
+			\midrule
+			$\mathbf{x}, \mathbf{y}, \mathbf{z}$ & Bold lowercase letters denote column vectors (e.g., sample features $\mathbf{x} \in \mathbb{R}^n$). \\
+			$X, W, A$ & Uppercase letters denote matrices (e.g., dataset matrix $X \in \mathbb{R}^{m \times n}$, weights $W$). \\
+			$\boldsymbol{\theta}, \mathbf{w}, \boldsymbol{\beta}$ & Model parameter vectors (e.g., regression weights $\boldsymbol{\beta}$, neural net parameters $\boldsymbol{\theta}$). \\
+			$\mathcal{L}(\hat{y}, y),\; J(\boldsymbol{\theta})$ & Loss function for a single instance ($\mathcal{L}$) vs.\ cost function averaged over data ($J$). \\
+			$\nabla_{\!\boldsymbol{\theta}} J$ & Gradient vector of partial derivatives with respect to parameters $\boldsymbol{\theta}$. \\
+			$\Sigma$ vs.\ $\sum$ & Uppercase sigma $\Sigma$ denotes a Covariance Matrix; summation operator $\sum_{i=1}^m$ denotes summing series. \\
+			$\odot$ & Hadamard (element-wise) vector or matrix product. \\
+			$\phi(z), \phi'(z)$ & Activation function and its scalar derivative. \\
+			\bottomrule
+		\end{tabular}
+		\label{tab:notation}
+	\end{table}
+	
 	\textbf{Python (intermediate).} You should be comfortable writing
 	functions, loops, list comprehensions, and simple classes, and know your
 	way around a virtual environment. The course is deliberately code-first:
@@ -669,7 +708,7 @@ pdfkeywords={AI, machine learning, deep learning, transformers, LLM}]{hyperref}
 	\section{Introduction and the AI Landscape}
 	% =====================================================================
 	
-	\begin{modulecard}{\faGlobe\ Module 1 --- at a glance}{primary}
+	\begin{modulecard}{\faGlobe\ Module 1 --- at a glance \hfill \small\normalfont (Estimated Study: 4 hours \textbullet{} Level: Beginner)}{primary}
 		\textbf{Focus.} What artificial intelligence is (and is not), how the
 		field evolved from hand-written rules to learning from data, and the
 		infrastructure and ethical questions that shape modern practice.
@@ -731,8 +770,7 @@ pdfkeywords={AI, machine learning, deep learning, transformers, LLM}]{hyperref}
 	
 	\subsection{From expert systems to data-driven AI}
 	
-	The term \emph{artificial intelligence} was coined at the 1956 Dartmouth
-	workshop. For roughly the next three decades the dominant paradigm was
+	The term \emph{artificial intelligence} was coined by John McCarthy in the 1955 proposal for the 1956 Dartmouth workshop. For roughly the next three decades the dominant paradigm was
 	\emph{symbolic}: human knowledge was hand-encoded as if--then rules.
 	Expert systems such as MYCIN encoded several hundred rules elicited
 	from physicians and impressed clinicians in blind evaluations --- yet
@@ -896,8 +934,7 @@ pdfkeywords={AI, machine learning, deep learning, transformers, LLM}]{hyperref}
 			\item A chess engine, a spam filter, and a claimed ``fully autonomous
 			reasoning'' startup demo: classify each as weak or strong AI, and
 			justify the label.
-			\item Why did GPUs unlock deep learning roughly a decade before CPUs
-			could? Answer in terms of the arithmetic that training requires.
+			\item Why did GPUs unlock deep learning at scale, whereas CPUs could not supply the necessary arithmetic throughput? Answer in terms of parallel hardware architecture.
 			\item Your model screens job applications. Name two concrete harms and
 			one mitigation for each.
 		\end{enumerate}
@@ -927,7 +964,7 @@ pdfkeywords={AI, machine learning, deep learning, transformers, LLM}]{hyperref}
 	\section{Mathematics and Data Foundations}
 	% =====================================================================
 	
-	\begin{modulecard}{\faRulerCombined\ Module 2 --- at a glance}{secondary}
+	\begin{modulecard}{\faRulerCombined\ Module 2 --- at a glance \hfill \small\normalfont (Estimated Study: 8 hours \textbullet{} Level: Intermediate)}{secondary}
 		\textbf{Focus.} The small mathematical toolkit that quietly powers
 		everything else in the course: linear algebra to \emph{represent} data,
 		probability to \emph{quantify} uncertainty, and optimisation to
@@ -961,8 +998,7 @@ pdfkeywords={AI, machine learning, deep learning, transformers, LLM}]{hyperref}
 	stretches, and mixes coordinates. In Module~4 this becomes literal ---
 	every neural-network layer \emph{is} one such matrix.
 	
-	\textbf{Eigenvalues and dimensionality reduction.} Eigenvectors are the
-	directions a matrix leaves unchanged except for scaling:
+	\textbf{Eigenvalues and dimensionality reduction.} Eigenvectors are non-zero directions along which a linear transformation $A$ acts purely by scaling without changing direction:
 	\begin{equation}
 		A\mathbf{v} = \lambda \mathbf{v}.
 	\end{equation}
@@ -977,7 +1013,7 @@ pdfkeywords={AI, machine learning, deep learning, transformers, LLM}]{hyperref}
 	i.e.\ the first principal component is the top eigenvector of $\Sigma$.
 	Dropping low-variance directions keeps most of the signal in far fewer
 	coordinates --- compression, de-noising, and two-dimensional plots of
-	hundred-dimensional data \parencite{strang2019}. NumPy makes all of it
+	hundred-dimensional data \parencite[Chapters 5--6]{strang2019}. NumPy makes all of it
 	concrete, and its compiled vector operations are orders of magnitude
 	faster than Python loops \parencite{harris2020}.
 	
@@ -1027,11 +1063,11 @@ pdfkeywords={AI, machine learning, deep learning, transformers, LLM}]{hyperref}
 	\begin{align}
 		P(\text{disease}\mid +)
 		&= \frac{P(+\mid\text{disease})\,P(\text{disease})}{P(+)}\\[2pt]
-		&= \frac{0.99 \times 0.01}{0.99 \times 0.01 + 0.05 \times 0.99}
+		&= \frac{\overbrace{0.99}^{\text{sensitivity}} \times \overbrace{0.01}^{P(\text{disease})}}{\underbrace{0.99}_{\text{sensitivity}} \times \underbrace{0.01}_{P(\text{disease})} \,+\, \underbrace{0.05}_{\text{false pos rate}} \times \underbrace{0.99}_{P(\text{no disease})}}
 		\;\approx\; 0.17 :
 	\end{align}
 	only one positive in six is a true case, because the disease is rare to
-	begin with. The same base-rate reasoning governs fraud alerts, security
+	begin with. Note a crucial subtle point: the two $0.99$ factors in the denominator represent entirely different quantities --- the first is test sensitivity $P(+\mid\text{disease}) = 0.99$, whereas the second is the prior probability of being healthy $P(\text{no disease}) = 1 - 0.01 = 0.99$. The same base-rate reasoning governs fraud alerts, security
 	scanners, and classifier performance on imbalanced classes.
 	
 	\textbf{Hypothesis testing} disciplines the question ``is this pattern
@@ -1098,18 +1134,24 @@ pdfkeywords={AI, machine learning, deep learning, transformers, LLM}]{hyperref}
 	\begin{equation}
 		\hat{m}_t = \frac{m_t}{1-\beta_1^{t}}, \qquad
 		\hat{v}_t = \frac{v_t}{1-\beta_2^{t}}, \qquad
-		\boldsymbol{\theta}_{t+1} = \boldsymbol{\theta}_t - \frac{\eta}{\sqrt{\hat{v}_t} + \epsilon}\,\hat{m}_t,
+		\boldsymbol{\theta}_{t+1} = \boldsymbol{\theta}_t - \frac{\eta\,\hat{m}_t}{\sqrt{\hat{v}_t} + \epsilon},
 	\end{equation}
-	where $\beta_1=0.9$, $\beta_2=0.999$, and $\epsilon=10^{-8}$. First-moment momentum accelerates along constant directions, while second-moment scaling dampens steps for features with frequently large gradients, making Adam the default choice for deep learning and Transformers.
+	where $\beta_1=0.9$, $\beta_2=0.999$, and $\epsilon=10^{-8}$. First-moment momentum accelerates along constant directions, while second-moment scaling dampens steps for features with frequently large gradients, making Adam the default choice for deep learning and Transformers. \textit{(Note: Gradient propagation across multi-layer deep networks is detailed in Module~4.)} Linear models have convex, bowl-shaped costs, so descent finds the unique minimum; neural networks do not, yet SGD and Adam reliably find good solutions anyway --- one of the field's pleasant empirical surprises.
 
-	\textbf{Vanishing and exploding gradients.} In deep architectures, backpropagating loss gradients across $L$ layers involves repeated matrix multiplication:
-	\begin{equation}
-		\frac{\partial \mathcal{L}}{\partial \mathbf{h}^{(1)}} = \frac{\partial \mathcal{L}}{\partial \mathbf{h}^{(L)}} \prod_{\ell=2}^{L} W^{(\ell)\top} \mathrm{diag}\!\left(\phi'\!\left(\mathbf{z}^{(\ell)}\right)\right).
-	\end{equation}
-	If the eigenvalues of $W^{(\ell)}$ or activation slopes $\phi'$ are strictly less than 1, gradients decay exponentially to zero (\emph{vanishing gradients}), leaving early layers untrained. If greater than 1, gradients blow up to infinity (\emph{exploding gradients}). Linear models avoid this because they lack hidden depth; neural networks require architectural safeguards (residual connections, normalization, ReLU) to survive depth. Linear models have
-	convex, bowl-shaped costs, so descent finds the unique minimum; neural
-	networks do not, yet SGD and Adam reliably find good solutions anyway --- one of
-	the field's pleasant empirical surprises.
+	\begin{practicebox}[Adam optimiser step from scratch]
+		\begin{lstlisting}
+			import numpy as np
+
+			def adam_step(theta, grad, m, v, t, lr=0.01, beta1=0.9, beta2=0.999, eps=1e-8):
+			    m = beta1 * m + (1 - beta1) * grad
+			    v = beta2 * v + (1 - beta2) * (grad ** 2)
+			    m_hat = m / (1 - beta1 ** t)
+			    v_hat = v / (1 - beta2 ** t)
+			    theta_next = theta - (lr * m_hat) / (np.sqrt(v_hat) + eps)
+			    return theta_next, m, v
+		\end{lstlisting}
+		Adam updates each parameter using bias-corrected first and second moment estimates.
+	\end{practicebox}
 	
 	\begin{figure}[ht]
 		\centering
@@ -1177,7 +1219,7 @@ pdfkeywords={AI, machine learning, deep learning, transformers, LLM}]{hyperref}
 	\section{Classical Machine Learning: The Core Engine}
 	% =====================================================================
 	
-	\begin{modulecard}{\faRobot\ Module 3 --- at a glance}{accent}
+	\begin{modulecard}{\faRobot\ Module 3 --- at a glance \hfill \small\normalfont (Estimated Study: 10 hours \textbullet{} Level: Intermediate)}{accent}
 		\textbf{Focus.} The algorithms that still run the majority of
 		real-world, structured-data workloads --- and the evaluation discipline
 		that separates real learning from memorisation.
@@ -1227,6 +1269,12 @@ pdfkeywords={AI, machine learning, deep learning, transformers, LLM}]{hyperref}
 	with the cross-entropy loss --- the very same loss family that trains
 	large language models in Module~4.
 	
+	\textbf{Naive Bayes and $k$-NN baselines.} Bridging directly from Bayes' theorem (equation~\ref{eq:bayes}), the \textbf{Naive Bayes classifier} computes the posterior probability of class $y$ given features $\mathbf{x} = (x_1, \dots, x_n)$ by assuming features are conditionally independent given $y$:
+	\begin{equation}
+		P(y \mid \mathbf{x}) \;\propto\; P(y) \prod_{j=1}^{n} P(x_j \mid y).
+	\end{equation}
+	Despite this simplistic ("naive") assumption, it is exceptionally fast, highly effective for high-dimensional text classification (e.g., spam filtering), and requires minimal training data. The \textbf{$k$-Nearest Neighbors ($k$-NN)} algorithm is a non-parametric instance-based baseline: it stores all training samples and classifies a query point by a majority vote among its $k$ closest neighbors in Euclidean space. It requires zero training time but incurs $O(m \cdot n)$ inference cost per query.
+
 	\textbf{Decision trees and ensembles.} A tree asks a sequence of
 	yes/no questions (``area $>$ 120?''), choosing at each split the feature
 	and threshold that most reduce impurity. Trees are fast, handle mixed
@@ -1262,6 +1310,8 @@ pdfkeywords={AI, machine learning, deep learning, transformers, LLM}]{hyperref}
 			\textcolor{white}{\textbf{Watch out}} \\
 			\midrule
 			Linear / logistic regression & Baselines; small, clean data & Fast, interpretable, statistically principled & Underfits complex nonlinear structure \\
+			Naive Bayes & Text classification, fast baseline & Very fast, handles high dimensions & Strong feature independence assumption \\
+			$k$-NN & Small datasets, distance baselines & No training phase; flexible boundaries & Slow inference $O(mn)$; scale-sensitive \\
 			Decision tree & Interpretability is the product & Human-readable rules; no feature scaling & Single trees overfit badly \\
 			Random forest & Default robust choice & Variance reduction via bagging; few knobs & Less interpretable; larger memory \\
 			Gradient boosting (XGBoost) & Maximum accuracy on tables & State of the art on structured data & Needs tuning; can overfit small data \\
@@ -1270,7 +1320,17 @@ pdfkeywords={AI, machine learning, deep learning, transformers, LLM}]{hyperref}
 		\end{tabular}
 	\end{table}
 
-	\textbf{Feature scaling requirement.} Algorithms that calculate spatial distances (K-Means, SVM) or compute gradient steps (Logistic/Linear Regression, Neural Networks) are highly sensitive to feature scales: features with large magnitudes (e.g., house area in sq ft) dominate Euclidean metrics over features with small ranges (e.g., room count). Standardisation ($z = (x - \mu)/\sigma$ via \texttt{StandardScaler}) or min-max scaling is mandatory prior to training. By contrast, decision trees and tree ensembles are \emph{scale-invariant}, as splits evaluate individual feature thresholds independently.
+	\textbf{Feature scaling requirement.} Algorithms that calculate spatial distances (K-Means, $k$-NN, SVM) or compute gradient steps (Logistic/Linear Regression, Neural Networks) are highly sensitive to feature scales: features with large magnitudes (e.g., house area in sq ft) dominate Euclidean metrics over features with small ranges (e.g., room count). Standardisation ($z = (x - \mu)/\sigma$ via \texttt{StandardScaler}) or min-max scaling is mandatory prior to training. By contrast, decision trees and tree ensembles are \emph{scale-invariant}, as splits evaluate individual feature thresholds independently.
+	
+	\begin{ethicsbox}[CRITICAL: Avoid Data Leakage]
+		\textbf{Fit scalers on training data ONLY.} A ubiquitous beginner error is fitting a scaler on the entire dataset prior to splitting. This causes \emph{data leakage}: information from the test set (mean $\mu$ and standard deviation $\sigma$) leaks into the training process, yielding artificially optimistic evaluation metrics. Always compute scaling parameters using \texttt{fit\_transform()} on the training split, and apply \texttt{transform()} on validation/test splits. Use \texttt{sklearn.pipeline.Pipeline} to automate this safely.
+	\end{ethicsbox}
+
+	\begin{keyconcept}[The Third Paradigm: Reinforcement Learning]
+		While supervised learning requires explicit targets $y_i$ and unsupervised learning seeks unlabelled structure, \textbf{Reinforcement Learning (RL)} learns through trial-and-error interaction with an environment. An \emph{agent} observes state $s_t$, executes action $a_t \sim \pi(a \mid s)$, and receives scalar reward $r_t$. The goal is to learn a policy $\pi$ that maximizes expected cumulative return $G_t = \sum_{k=0}^{\infty} \gamma^k r_{t+k}$.
+		
+		RL powers AlphaGo \parencite{silver2016} and forms the core of Reinforcement Learning from Human Feedback (RLHF, Module~4) used to align LLMs. However, RL is prone to \emph{reward hacking} \parencite{amodei2016} --- exploiting flaws in reward design rather than accomplishing the intended task.
+	\end{keyconcept}
 	
 	\subsection{Unsupervised learning}
 	
@@ -1296,6 +1356,21 @@ pdfkeywords={AI, machine learning, deep learning, transformers, LLM}]{hyperref}
 	where $a(i)$ is the mean distance between point $i$ and all other points in the same cluster, and $b(i)$ is the mean distance to points in the nearest neighboring cluster. A mean score near $+1$ indicates well-separated, dense clusters; scores near $0$ indicate overlapping clusters. Typical uses:
 	customer segmentation, topic grouping, preprocessing.
 	
+	\begin{practicebox}[K-Means Clustering \& Silhouette Score]
+		\begin{lstlisting}
+			from sklearn.cluster import KMeans
+			from sklearn.metrics import silhouette_score
+			import numpy as np
+
+			# Fit K-Means and quantitatively evaluate cluster separation
+			kmeans = KMeans(n_clusters=3, n_init=10, random_state=42)
+			labels = kmeans.fit_predict(X_tr)
+			score = silhouette_score(X_tr, labels)
+			print(f"Cluster centroids shape: {kmeans.cluster_centers_.shape}")
+			print(f"Silhouette Coefficient: {score:.3f}")
+		\end{lstlisting}
+	\end{practicebox}
+
 	\textbf{Anomaly detection} flags rare, suspicious items --- fraud,
 	failed sensors, rare medical readings. Statistical methods flag points
 	in the tails of fitted distributions; distance- and density-based
@@ -1351,19 +1426,27 @@ pdfkeywords={AI, machine learning, deep learning, transformers, LLM}]{hyperref}
 	--- with regularisation, more data, or better inductive bias as the
 	respective remedies \parencite{hastie2009}.
 	
-	\begin{practicebox}
+	\begin{practicebox}[End-to-End Leakage-Safe Classification Pipeline]
 		\begin{lstlisting}
+			from sklearn.datasets import make_classification
 			from sklearn.model_selection import train_test_split, cross_val_score
+			from sklearn.preprocessing import StandardScaler
+			from sklearn.pipeline import Pipeline
 			from sklearn.ensemble import RandomForestClassifier
 			from sklearn.metrics import classification_report
 			
-			X_tr, X_te, y_tr, y_te = train_test_split(
-			X, y, test_size=0.2, stratify=y, random_state=0)
+			# Data loading stub: generate synthetic tabular dataset
+			X, y = make_classification(n_samples=1000, n_features=20, random_state=0)
+			X_tr, X_te, y_tr, y_te = train_test_split(X, y, test_size=0.2, stratify=y, random_state=0)
 			
-			clf = RandomForestClassifier(n_estimators=300, random_state=0)
-			print(cross_val_score(clf, X_tr, y_tr, cv=5))   # per-fold scores
-			clf.fit(X_tr, y_tr)
-			print(classification_report(y_te, clf.predict(X_te)))
+			# Leakage-safe pipeline: scaling parameters fit ONLY on training fold
+			pipe = Pipeline([
+			    ('scaler', StandardScaler()),
+			    ('clf', RandomForestClassifier(n_estimators=300, random_state=0))
+			])
+			print("CV ROC-AUC Scores:", cross_val_score(pipe, X_tr, y_tr, cv=5, scoring='roc_auc'))
+			pipe.fit(X_tr, y_tr)
+			print(classification_report(y_te, pipe.predict(X_te)))
 		\end{lstlisting}
 	\end{practicebox}
 	
@@ -1399,7 +1482,7 @@ pdfkeywords={AI, machine learning, deep learning, transformers, LLM}]{hyperref}
 	\section{Transition to Deep Learning and Modern AI}
 	% =====================================================================
 	
-	\begin{modulecard}{\faBrain\ Module 4 --- at a glance}{dpurple}
+	\begin{modulecard}{\faBrain\ Module 4 --- at a glance \hfill \small\normalfont (Estimated Study: 12 hours \textbullet{} Level: Advanced)}{dpurple}
 		\textbf{Focus.} The leap from engineered features to learned
 		representations: neural networks and backpropagation, the three
 		architectures that shaped the field, and the mechanics of generative AI
@@ -1408,7 +1491,7 @@ pdfkeywords={AI, machine learning, deep learning, transformers, LLM}]{hyperref}
 		\medskip
 		\textbf{Key concepts.} Perceptrons, activation functions,
 		backpropagation; CNNs, RNNs, and transformers; embeddings, latent
-		space, and next-token prediction.
+		space, diffusion, and next-token prediction.
 		
 		\medskip
 		\textbf{After this module you will be able to} explain how a neural
@@ -1522,6 +1605,41 @@ pdfkeywords={AI, machine learning, deep learning, transformers, LLM}]{hyperref}
 	gradient-\emph{computation} algorithm; the learning itself is still
 	gradient descent (equation~\eqref{eq:gd}), now run on mini-batches
 	through frameworks such as PyTorch or JAX.
+
+	\textbf{Vanishing and exploding gradients.} In deep multi-layer architectures, backpropagating loss gradients across $L$ layers involves repeated matrix products backwards:
+	\begin{equation}
+		\boldsymbol{\delta}^{(1)} = \left( \prod_{\ell=2}^{L} W^{(\ell)\top} \mathrm{diag}\!\left(\phi'\!\left(\mathbf{z}^{(\ell)}\right)\right) \right) \boldsymbol{\delta}^{(L)}.
+	\end{equation}
+	Because weight matrices $W^{(\ell)}$ in general network layers are rectangular, their scaling magnitude is governed by their \emph{spectral norm} $\|W^{(\ell)}\|_2$ (maximum singular value). If the spectral norms or activation slopes $\phi'$ are strictly bounded below 1, gradients decay exponentially to zero ($\boldsymbol{\delta}^{(1)} \to \mathbf{0}$, \emph{vanishing gradients}), leaving early layers untrained. Conversely, if spectral norms exceed 1, gradients explode exponentially ($\boldsymbol{\delta}^{(1)} \to \infty$, \emph{exploding gradients}). Shallow linear models avoid this because they lack hidden depth; deep networks require architectural safeguards --- residual skip connections \parencite{he2016}, gradient clipping, Layer Normalization, and ReLU activations \parencite{nair2010} --- to stabilize gradient flow.
+
+	\begin{practicebox}[Two-Layer MLP with Manual Backpropagation in NumPy]
+		\begin{lstlisting}
+			import numpy as np
+
+			# Runnable 2-layer MLP (Input -> Hidden -> Output) with manual backprop
+			rng = np.random.default_rng(42)
+			X_b = rng.standard_normal((100, 4))
+			y_b = rng.integers(0, 2, size=(100, 1))
+
+			W1 = rng.standard_normal((4, 8)) * 0.1; b1 = np.zeros((1, 8))
+			W2 = rng.standard_normal((8, 1)) * 0.1; b2 = np.zeros((1, 1))
+
+			for epoch in range(100):
+			    # Forward pass
+			    z1 = X_b @ W1 + b1; a1 = np.maximum(0, z1)   # ReLU activation
+			    z2 = a1 @ W2 + b2;  hat_y = 1 / (1 + np.exp(-z2)) # Sigmoid output
+			    
+			    # Backward pass (Gradient computation via chain rule)
+			    dz2 = (hat_y - y_b) / len(X_b)               # dL/dz2 for BCE loss
+			    dW2 = a1.T @ dz2; db2 = dz2.sum(axis=0, keepdims=True)
+			    da1 = dz2 @ W2.T;  dz1 = da1 * (z1 > 0)      # ReLU derivative
+			    dW1 = X_b.T @ dz1; db1 = dz1.sum(axis=0, keepdims=True)
+			    
+			    # Gradient descent update step
+			    W1 -= 0.1 * dW1; b1 -= 0.1 * db1; W2 -= 0.1 * dW2; b2 -= 0.1 * db2
+			print(f"Final BCE loss: {np.mean(-(y_b*np.log(hat_y+1e-7) + (1-y_b)*np.log(1-hat_y+1e-7))):.4f}")
+		\end{lstlisting}
+	\end{practicebox}
 	
 	\subsection{Architectures: CNNs, RNNs, and transformers}
 	
@@ -1559,12 +1677,35 @@ pdfkeywords={AI, machine learning, deep learning, transformers, LLM}]{hyperref}
 	Because every token can attend to every other in a single parallel
 	step, transformers train vastly faster than RNNs on modern hardware ---
 	the property, more than any single equation, that made the modern era
-	possible.
+	possible. However, computing pairwise attention scores across sequence length $n$ incurs $O(n^2)$ computational and memory complexity, creating a fundamental bottleneck for long \emph{context windows}.
+
+	\begin{practicebox}[Scaled Dot-Product Attention from Scratch in NumPy]
+		\begin{lstlisting}
+			import numpy as np
+
+			def scaled_dot_product_attention(Q, K, V, mask=None):
+			    d_k = Q.shape[-1]
+			    scores = (Q @ K.T) / np.sqrt(d_k)
+			    if mask is not None:
+			        scores = np.where(mask == 0, -1e9, scores)
+			    weights = np.exp(scores - np.max(scores, axis=-1, keepdims=True))
+			    weights /= weights.sum(axis=-1, keepdims=True)  # Softmax
+			    return weights @ V, weights
+
+			# Demonstrate with 4 tokens of dimension 8
+			seq_len, d_k = 4, 8
+			Q = K = V = np.random.default_rng(0).standard_normal((seq_len, d_k))
+			causal_mask = np.tril(np.ones((seq_len, seq_len))) # Lower-triangular mask
+			output, attn_weights = scaled_dot_product_attention(Q, K, V, mask=causal_mask)
+			print("Attention Output Shape:", output.shape)
+			print("Causal Attention Weights Matrix:\n", np.round(attn_weights, 3))
+		\end{lstlisting}
+	\end{practicebox}
 
 	\textbf{Positional encodings.} Plain self-attention is permutation-invariant: shuffling input tokens yields identical attention outputs (permuted correspondingly). To inject sequence order, \textbf{positional encodings} are added to input embeddings. The original Transformer used fixed sinusoidal frequencies \parencite{vaswani2017}:
 	\begin{equation}
-		PE_{(pos, 2i)} = \sin\!\left(\frac{pos}{10000^{2i/d_model}}\right), \qquad
-		PE_{(pos, 2i+1)} = \cos\!\left(\frac{pos}{10000^{2i/d_model}}\right).
+		PE_{(pos, 2i)} = \sin\!\left(\frac{pos}{10000^{2i/d\_model}}\right), \qquad
+		PE_{(pos, 2i+1)} = \cos\!\left(\frac{pos}{10000^{2i/d\_model}}\right).
 	\end{equation}
 	Modern LLMs predominantly use \textbf{Rotary Position Embeddings (RoPE)} \parencite{su2024}, which rotate query and key vectors in complex 2D planes, incorporating relative distance directly into the dot product $Q K^\top$.
 
@@ -1605,13 +1746,7 @@ pdfkeywords={AI, machine learning, deep learning, transformers, LLM}]{hyperref}
 	geometry: similar things cluster, relations are (roughly) directions.
 	The same trick now embeds users, products, images, and code.
 	
-	\textbf{Latent space.} Generative models compress data into a
-	lower-dimensional \emph{latent} code from which they can reconstruct or
-	create. Variational autoencoders learn a probabilistic latent space and
-	sample from it \parencite{kingma2014}; GANs pit a generator against a
-	discriminator until the fakes become indistinguishable
-	\parencite{goodfellow2014}. Generation, in all cases, is decoding from
-	a point in latent space.
+	\textbf{Latent space and diffusion models.} Generative models compress data into a lower-dimensional \emph{latent} code from which they can reconstruct or create. Variational autoencoders learn a probabilistic latent space and sample from it \parencite{kingma2014}; GANs pit a generator against a discriminator until fakes become indistinguishable \parencite{goodfellow2014}. \textbf{Diffusion Models} \parencite{ho2020} currently dominate image and audio synthesis by reversing a gradual noise addition process ($q(\mathbf{x}_t \mid \mathbf{x}_{t-1})$): a U-Net or Vision Transformer ($p_{\boldsymbol{\theta}}(\mathbf{x}_{t-1} \mid \mathbf{x}_t)$) is trained to iteratively predict and remove Gaussian noise, turning random noise into clear samples.
 	
 	\textbf{Large language models.} An LLM does one thing: predict the
 	next \emph{token} (a sub-word unit) given the previous ones. The
@@ -1652,16 +1787,7 @@ pdfkeywords={AI, machine learning, deep learning, transformers, LLM}]{hyperref}
 	\end{table}
 
 	\emph{Pretraining} minimises cross-entropy over trillions of tokens of web
-	text; \emph{scaling laws} showed that loss falls predictably as
-	parameters, data, and compute grow \parencite{kaplan2020}; GPT-3
-	demonstrated that sufficiently large models perform new tasks from a
-	handful of in-context examples, with no weight updates
-	\parencite{brown2020}. Alignment then shapes behaviour: supervised
-	instruction tuning, followed by reinforcement learning from human
-	feedback, trains models to follow instructions and avoid harmful
-	outputs \parencite{christiano2017, ouyang2022}. At generation time a
-	\emph{temperature} knob interpolates between greedy and adventurous
-	sampling.
+	text. Early \emph{scaling laws} \parencite{kaplan2020} suggested that parameters should grow faster than data. However, the compute-optimal \textbf{Chinchilla scaling laws} \parencite{hoffmann2022} proved that model size and training tokens should scale in equal $1:1$ proportion, steering modern LLMs toward smaller, denser architectures trained on vastly more tokens. GPT-3 demonstrated that sufficiently large models perform new tasks from a handful of in-context examples with no weight updates \parencite{brown2020}. Alignment then shapes behaviour: supervised instruction tuning, followed by reinforcement learning from human feedback, trains models to follow instructions and avoid harmful outputs \parencite{christiano2017, ouyang2022}. At generation time a \emph{temperature} knob interpolates between greedy and adventurous sampling.
 	
 	\begin{keyconcept}[How an LLM writes one token]
 		\begin{enumerate}
@@ -1671,18 +1797,13 @@ pdfkeywords={AI, machine learning, deep learning, transformers, LLM}]{hyperref}
 			attends to all previous tokens.
 			\item Map the hidden state vector of the final sequence position through a linear layer and a softmax over the vocabulary.
 			\item Sample the next token from that distribution.
-			\item Append it to the sequence and repeat --- one full forward pass
-			per generated token.
+			\item Append it to the sequence and repeat --- one forward pass per generated token.\footnote{In production, \textbf{Key-Value (KV) Caching} stores previously computed $K$ and $V$ tensors in memory, reducing per-token generation step complexity from $O(N^2)$ to $O(N)$.}
 		\end{enumerate}
 	\end{keyconcept}
 	
-	\begin{ethicsbox}[Big models, big responsibilities]
-		The environmental and bias costs of Module~1 scale with model size
-		\parencite{strubell2019, patterson2021, bender2021}. Practical habits
-		for the LLM era: verify claims against primary sources; prefer the
-		smallest model that does the job; log and audit failures; disclose when
-		output is machine-generated; and remember that fluency is evidence of
-		statistical pattern, not of truth.
+	\begin{ethicsbox}[Big models, big responsibilities: Hallucinations \& Contamination]
+		Language models frequently generate syntactically convincing but factually false claims --- known as \textbf{hallucinations}. Furthermore, because pretraining datasets scrape web data, \textbf{benchmark contamination} (test data leaking into training sets) can artificially inflate evaluation scores.
+		Practical habits for the LLM era: verify claims against primary sources; prefer the smallest model that does the job; audit benchmarks for leakage; disclose when output is machine-generated; and remember that fluency is evidence of statistical pattern, not of truth.
 	\end{ethicsbox}
 	
 	\begin{practicebox}
@@ -1695,7 +1816,7 @@ pdfkeywords={AI, machine learning, deep learning, transformers, LLM}]{hyperref}
 			# [{'label': 'POSITIVE', 'score': 0.9998...}]
 		\end{lstlisting}
 		A fine-tuned transformer classifier in four lines --- the first run
-		downloads the model \parencite{huggingface}.
+		downloads the model \parencite{wolf2020}.
 	\end{practicebox}
 	
 	\begin{checkpoint}
@@ -1719,13 +1840,19 @@ pdfkeywords={AI, machine learning, deep learning, transformers, LLM}]{hyperref}
 			\item \fullcite{nair2010}
 			\item \fullcite{lecun1998}
 			\item \fullcite{hochreiter1997}
+			\item \fullcite{he2016}
 			\item \fullcite{vaswani2017}
+			\item \fullcite{su2024}
 			\item \fullcite{mikolov2013}
 			\item \fullcite{kingma2014}
 			\item \fullcite{goodfellow2014}
+			\item \fullcite{ho2020}
 			\item \fullcite{brown2020}
 			\item \fullcite{kaplan2020}
+			\item \fullcite{hoffmann2022}
+			\item \fullcite{christiano2017}
 			\item \fullcite{ouyang2022}
+			\item \fullcite{wolf2020}
 			\item \fullcite{goodfellow2016}
 			\item \fullcite{bishop2024}
 		\end{itemize}
@@ -1753,9 +1880,9 @@ pdfkeywords={AI, machine learning, deep learning, transformers, LLM}]{hyperref}
 		\textcite{zhang2023}.
 		\item \textbf{Practice-first:} the free online course of
 		\textcite{fastai}.
-		\item \textbf{Build with LLMs:} the Hugging Face ecosystem
-		\parencite{huggingface}, read alongside \parencite{vaswani2017,
-			brown2020, ouyang2022}.
+		\item \textbf{Build with LLMs \& RAG:} the Hugging Face ecosystem
+		\parencite{wolf2020}, read alongside \parencite{vaswani2017,
+			brown2020, ouyang2022}. Combine vector embeddings with external document databases via Retrieval-Augmented Generation (RAG) to ground model responses.
 		\item \textbf{Stay grounded:} \parencite{christian2020, bender2021}.
 	\end{itemize}
 	
@@ -1783,7 +1910,7 @@ pdfkeywords={AI, machine learning, deep learning, transformers, LLM}]{hyperref}
 	\addcontentsline{toc}{section}{Practical Coding Projects Series}
 	% =====================================================================
 	
-	To accompany the theoretical foundation developed across the four modules, a complete series of six production-grade coding projects is provided in the repository's \texttt{projects/} directory. Each project bridges theoretical concepts to runnable Python implementation using industry-standard frameworks (\texttt{NumPy}, \texttt{Pandas}, \texttt{Scikit-Learn}, \texttt{XGBoost}, \texttt{PyTorch}, and \texttt{Transformers}), with explicit emphasis on data cleaning, exploratory visualization, model diagnostics, resumable training, and inference pipelines.
+	To accompany the theoretical foundation developed across the four modules, a complete series of six production-grade coding projects is provided in the repository's \texttt{projects/} directory (\url{https://github.com/DanielBerns/AI-course}). Each project bridges theoretical concepts to runnable Python implementation using industry-standard frameworks (\texttt{NumPy}, \texttt{Pandas}, \texttt{Scikit-Learn}, \texttt{XGBoost}, \texttt{PyTorch}, and \texttt{Transformers}), with explicit emphasis on data cleaning, exploratory visualization, model diagnostics, resumable training, and inference pipelines.
 
 	% ---------------------------------------------------------------------
 	\subsection*{Project 1: Data Pipeline, Exploratory Analysis \& Algorithmic Bias Audit}
@@ -1901,6 +2028,57 @@ python projects/06_transformers_and_llms/train_transformer.py
 	\end{lstlisting}
 
 	\textbf{Hands-on Exercises:} (1) Extend \texttt{transformer\_scratch.py} to implement Rotary Position Embeddings (RoPE); (2) Implement Repetition Penalty ($\text{penalty} \ge 1.0$) in \texttt{llm\_inference.py} to reduce duplicate generation.
+
+	% =====================================================================
+	\clearpage
+	\section*{Appendix: Answer Key for Check Your Understanding}
+	\markright{Appendix: Answer Key}
+	\phantomsection
+	\addcontentsline{toc}{section}{Appendix: Answer Key for Check Your Understanding}
+	% =====================================================================
+
+	This appendix provides concise model answers for all self-check exercises across the four modules.
+
+	\subsection*{Module 1: Introduction and the AI Landscape}
+	\begin{enumerate}
+		\item \textbf{Classification:}
+		\begin{itemize}
+			\item \emph{Chess engine:} Weak/Narrow AI. Excels strictly at tree search and position evaluation in chess; cannot generalize to any other task.
+			\item \emph{Spam filter:} Weak/Narrow AI. Solves binary text classification for email filtering only.
+			\item \emph{Startup demo ("autonomous reasoning"):} Weak/Narrow AI. Current commercial models (LLMs, agents) operate via statistical pattern matching and prompt orchestration; none possess true broad transfer or Artificial General Intelligence (AGI).
+		\end{itemize}
+		\item \textbf{GPU vs CPU throughput:} Deep learning training consists overwhelmingly of parallel matrix-vector products (tensor arithmetic). GPUs feature thousands of concurrent, lightweight arithmetic cores optimized for high-throughput parallel floating-point operations ($A \mathbf{x} + \mathbf{b}$), whereas CPUs feature a few heavy cores optimized for low-latency sequential logic.
+		\item \textbf{Job application screening model harms \& mitigations:}
+		\begin{itemize}
+			\item \emph{Harm 1 (Historical Bias Propagation):} Model penalizes female candidates due to historical gender imbalance in resume training data. \emph{Mitigation:} Strip demographic proxy features and audit for Equalized Odds / Disparate Impact (80\% rule).
+			\item \emph{Harm 2 (Representation Gap / Outlier Rejection):} Nontraditional career paths or non-standard university names receive falsely low scores. \emph{Mitigation:} Human-in-the-loop oversight for borderline rejections and dynamic threshold calibration.
+		\end{itemize}
+	\end{enumerate}
+
+	\subsection*{Module 2: Mathematics and Data Foundations}
+	\begin{enumerate}
+		\item \textbf{Eigenvector of Covariance Matrix:} An eigenvector specifies a principal direction (axis) along which the dataset features co-vary, such that projecting data onto this axis preserves variance without linear distortion. Its corresponding eigenvalue measures the total variance along that axis.
+		\item \textbf{Bayes' Theorem with 10\% Prevalence:}
+		Using equation~\eqref{eq:bayes}: $P(\text{disease}\mid +) = \frac{0.99 \times 0.10}{(0.99 \times 0.10) + (0.05 \times 0.90)} = \frac{0.099}{0.099 + 0.045} = \frac{0.099}{0.144} \approx 0.6875$ (68.8\%). As prevalence rises from 1\% to 10\%, the posterior probability of disease given a positive test jumps from 17\% to nearly 69\% because true positives now outweigh false alarms.
+		\item \textbf{Divergence with $\eta=1.1$ for $J(w)=w^2$:}
+		Gradient is $\nabla J(w) = 2w$. Update rule: $w_{t+1} = w_t - 1.1(2w_t) = w_t - 2.2w_t = -1.2 w_t$. The parameter flips sign and grows in magnitude by $1.2\times$ each step ($w_0 = 5 \to -6 \to 7.2 \to -8.64 \dots$), overshooting the minimum at $w=0$ and diverging to $\pm\infty$.
+	\end{enumerate}
+
+	\subsection*{Module 3: Classical Machine Learning}
+	\begin{enumerate}
+		\item \textbf{Cancer Screening Metric:} Prioritize \textbf{Recall (Sensitivity)} to minimize False Negatives (missing an actual cancer case). \emph{Cost:} Precision drops, leading to more False Positives (false alarms), requiring follow-up confirmatory testing and temporary patient anxiety.
+		\item \textbf{K-Means on Concentric Rings:} K-Means minimizes Euclidean distance to cluster centroids, implicitly assuming convex, spherical clusters of equal size. Concentric rings are non-convex and linearly non-separable in 2D Euclidean space, causing K-Means to slice through the rings radially. \emph{Remedy:} Spectral clustering or DBSCAN.
+		\item \textbf{Cross-Validation Score Variance (0.62 to 0.91):} High variance across folds indicates that the model is unstable and highly sensitive to specific training samples (overfitting / high variance), or that the dataset suffers from class imbalance or data drift across folds. \emph{Action:} Apply stratified $k$-fold cross-validation, increase regularization, or gather more training samples.
+	\end{enumerate}
+
+	\subsection*{Module 4: Transition to Deep Learning and Modern AI}
+	\begin{enumerate}
+		\item \textbf{MLP without Nonlinearity:} Without nonlinear activations $\phi$, a multi-layer network collapses mathematically into a single linear transformation: $\mathbf{a}^{(L)} = W^{(L)} W^{(L-1)} \dots W^{(1)} \mathbf{x} = W_{\text{effective}} \mathbf{x}$. It can only represent linear functions (hyperplanes) and cannot learn non-linear boundaries.
+		\item \textbf{Transformers vs RNNs Training Speed:}
+		(1) \emph{Parallelization:} Transformers process all tokens in a sequence simultaneously via matrix multiplication ($Q K^\top$), whereas RNNs must process tokens sequentially step-by-step ($\mathbf{h}_t = f(\mathbf{h}_{t-1}, \mathbf{x}_t)$), blocking GPU parallel execution;
+		(2) \emph{Direct Paths:} Self-attention connects any pair of tokens in $O(1)$ operations regardless of distance, avoiding unrolling backpropagation through time.
+		\item \textbf{Temperature = 0 in LLMs:} Setting $\text{temperature} = 0$ corresponds to \textbf{greedy decoding} (arg max sampling). The softmax probabilities approach a one-hot distribution, selecting the single highest-probability token deterministically every step.
+	\end{enumerate}
 
 	% =====================================================================
 	\clearpage

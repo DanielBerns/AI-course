@@ -9,14 +9,16 @@
 \contentsline {subsection}{\numberline {2.1}Linear algebra: the language of data}{8}{subsection.2.1}%
 \contentsline {subsection}{\numberline {2.2}Probability and statistics: the language of uncertainty}{9}{subsection.2.2}%
 \contentsline {subsection}{\numberline {2.3}Optimisation: how models learn}{10}{subsection.2.3}%
-\contentsline {section}{\numberline {3}Classical Machine Learning: The Core Engine}{12}{section.3}%
-\contentsline {subsection}{\numberline {3.1}Supervised learning}{12}{subsection.3.1}%
-\contentsline {subsection}{\numberline {3.2}Unsupervised learning}{13}{subsection.3.2}%
-\contentsline {subsection}{\numberline {3.3}Evaluation metrics: separating learning from memorising}{14}{subsection.3.3}%
-\contentsline {section}{\numberline {4}Transition to Deep Learning and Modern AI}{16}{section.4}%
-\contentsline {subsection}{\numberline {4.1}Neural networks: perceptrons, activations, backpropagation}{16}{subsection.4.1}%
-\contentsline {subsection}{\numberline {4.2}Architectures: CNNs, RNNs, and transformers}{17}{subsection.4.2}%
-\contentsline {subsection}{\numberline {4.3}Generative AI foundations: embeddings, latent space, and LLMs}{18}{subsection.4.3}%
-\contentsline {section}{Where to go next}{21}{section*.15}%
-\contentsline {section}{Practical Coding Projects Series}{22}{section*.16}%
-\contentsline {section}{Glossary}{25}{section*.17}%
+\contentsline {section}{\numberline {3}Classical Machine Learning: The Core Engine}{13}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Supervised learning}{13}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}Unsupervised learning}{15}{subsection.3.2}%
+\contentsline {subsection}{\numberline {3.3}Evaluation metrics: separating learning from memorising}{16}{subsection.3.3}%
+\contentsline {section}{\numberline {4}Transition to Deep Learning and Modern AI}{19}{section.4}%
+\contentsline {subsection}{\numberline {4.1}Neural networks: perceptrons, activations, backpropagation}{19}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}Architectures: CNNs, RNNs, and transformers}{21}{subsection.4.2}%
+\contentsline {subsection}{\numberline {4.3}Generative AI foundations: embeddings, latent space, and LLMs}{22}{subsection.4.3}%
+\contentsline {section}{Where to go next}{26}{section*.16}%
+\contentsline {section}{Practical Coding Projects Series}{27}{section*.17}%
+\contentsline {section}{Appendix: Answer Key for Check Your Understanding}{30}{section*.18}%
+\contentsline {section}{Glossary}{32}{section*.19}%
+\contentsline {section}{References}{33}{table.caption.20}%
