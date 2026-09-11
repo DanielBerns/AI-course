@@ -1,20 +1,5 @@
 [
   {
-    "id": "bishop2024",
-    "type": "book",
-    "title": "Deep Learning: Foundations and Concepts",
-    "author": "Bishop, Christopher M. and Bishop, Hugh",
-    "year": "2024",
-    "venue": "Springer",
-    "volume": "",
-    "pages": "",
-    "url": "https://www.bishopbook.com/",
-    "pdf": "https://www.bishopbook.com/",
-    "category": "Textbooks & Reference",
-    "description": "Modern comprehensive textbook on deep learning foundations and modern concepts by Chris & Hugh Bishop.",
-    "raw_bib": "@book{bishop2024,\n  author = {Bishop, Christopher M. and Bishop, Hugh},\n  title = {Deep Learning: Foundations and Concepts},\n  year = {2024}\n}"
-  },
-  {
     "id": "su2024",
     "type": "article",
     "title": "RoFormer: Enhanced Transformer with Rotary Position Embedding",
@@ -28,6 +13,21 @@
     "category": "Transformers & LLMs",
     "description": "Introduces Rotary Position Embedding (RoPE) for incorporating relative positional information via rotation matrices.",
     "raw_bib": "@article{su2024,\n  author = {Su, Jianlin and Ahmed, Murtadha and Lu, Yu and Pan, Shengfeng and Bo, Wen and Liu, Yunfeng},\n  title = {RoFormer: Enhanced Transformer with Rotary Position Embedding},\n  year = {2024}\n}"
+  },
+  {
+    "id": "bishop2024",
+    "type": "book",
+    "title": "Deep Learning: Foundations and Concepts",
+    "author": "Bishop, Christopher M. and Bishop, Hugh",
+    "year": "2024",
+    "venue": "Springer",
+    "volume": "",
+    "pages": "",
+    "url": "https://www.bishopbook.com/",
+    "pdf": "https://www.bishopbook.com/",
+    "category": "Textbooks & Reference",
+    "description": "Modern comprehensive textbook on deep learning foundations and modern concepts by Chris & Hugh Bishop.",
+    "raw_bib": "@book{bishop2024,\n  author = {Bishop, Christopher M. and Bishop, Hugh},\n  title = {Deep Learning: Foundations and Concepts},\n  year = {2024}\n}"
   },
   {
     "id": "zhang2023",
@@ -58,6 +58,21 @@
     "category": "Alignment & RLHF",
     "description": "InstructGPT paper detailing instruction fine-tuning using Reinforcement Learning from Human Feedback.",
     "raw_bib": "@inproceedings{ouyang2022,\n  author = {Ouyang, Long and Wu, Jeffrey and Jiang, Xu and others},\n  title = {Training Language Models to Follow Instructions with Human Feedback},\n  year = {2022}\n}"
+  },
+  {
+    "id": "hoffmann2022",
+    "type": "article",
+    "title": "Training Compute-Optimal Large Language Models",
+    "author": "Hoffmann, Jordan and Borgeaud, Sebastian and Mensch, Arthur and Buchatskaya, Elena and Cai, Trevor and Rutherford, Eliza and de Las Casas, Diego and Hendricks, Lisa Anne and Welbl, Johannes and Clark, Aidan and Hennigan, Tom and Noland, Eric and Millican, Katie and Driessche, George van den and Damoc, Bogdan and Guy, Aurelia and Osindero, Simon and Simonyan, Karen and Elsen, Erich and Rae, Jack W. and Vinyals, Oriol and Sifre, Laurent",
+    "year": "2022",
+    "venue": "arXiv preprint arXiv:2203.15556",
+    "volume": "",
+    "pages": "",
+    "url": "https://arxiv.org/abs/2203.15556",
+    "pdf": "https://arxiv.org/pdf/2203.15556.pdf",
+    "category": "Transformers & LLMs",
+    "description": "Chinchilla scaling paper showing compute-optimal language model training requires scaling dataset tokens 1:1 with parameters.",
+    "raw_bib": "@article{hoffmann2022,\n  author = {Hoffmann, Jordan and Borgeaud, Sebastian and Mensch, Arthur and Buchatskaya, Elena and Cai, Trevor and Rutherford, Eliza and de Las Casas, Diego and Hendricks, Lisa Anne and Welbl, Johannes and Clark, Aidan and Hennigan, Tom and Noland, Eric and Millican, Katie and Driessche, George van den and Damoc, Bogdan and Guy, Aurelia and Osindero, Simon and Simonyan, Karen and Elsen, Erich and Rae, Jack W. and Vinyals, Oriol and Sifre, Laurent},\n  title = {Training Compute-Optimal Large Language Models},\n  journal = {arXiv preprint arXiv:2203.15556},\n  year = {2022}\n}"
   },
   {
     "id": "bender2021",
@@ -105,6 +120,21 @@
     "raw_bib": "@book{russell2021,\n  author = {Russell, Stuart J. and Norvig, Peter},\n  title = {Artificial Intelligence: A Modern Approach},\n  year = {2021}\n}"
   },
   {
+    "id": "wolf2020",
+    "type": "inproceedings",
+    "title": "Transformers: State-of-the-Art Natural Language Processing",
+    "author": "Wolf, Thomas and Debut, Lysandre and Sanh, Victor and Chaumond, Julien and Delangue, Clement and Moi, Anthony and Cistac, Pierric and Rault, Timothée and Louf, Rémi and Funtowicz, Morgan and Davison, Joe and Shleifer, Sam and von Platen, Patrick and Ma, Clara and Jernite, Yacine and Plu, Julien and Xu, Canwen and Le Scao, Teven and Gugger, Sylvain and Drame, Mariama and Lhoest, Quentin and Rush, Alexander M.",
+    "year": "2020",
+    "venue": "Proceedings of the 2020 Conference on Empirical Methods in Natural Language Processing: System Demonstrations",
+    "volume": "",
+    "pages": "38–45",
+    "url": "https://aclanthology.org/2020.emnlp-demos.6/",
+    "pdf": "https://aclanthology.org/2020.emnlp-demos.6.pdf",
+    "category": "Tools & Frameworks",
+    "description": "EMNLP demonstration paper introducing the Hugging Face Transformers open-source library ecosystem.",
+    "raw_bib": "@inproceedings{wolf2020,\n  author = {Wolf, Thomas and Debut, Lysandre and Sanh, Victor and Chaumond, Julien and Delangue, Clement and Moi, Anthony and Cistac, Pierric and Rault, Timoth{'e}e and Louf, R{'e}mi and Funtowicz, Morgan and Davison, Joe and Shleifer, Sam and von Platen, Patrick and Ma, Clara and Jernite, Yacine and Plu, Julien and Xu, Canwen and Le Scao, Teven and Gugger, Sylvain and Drame, Mariama and Lhoest, Quentin and Rush, Alexander M.},\n  title = {Transformers: State-of-the-Art Natural Language Processing},\n  booktitle = {Proceedings of the 2020 Conference on Empirical Methods in Natural Language Processing: System Demonstrations},\n  pages = {38--45},\n  year = {2020}\n}"
+  },
+  {
     "id": "christian2020",
     "type": "book",
     "title": "The Alignment Problem: Machine Learning and Human Values",
@@ -148,6 +178,21 @@
     "category": "Transformers & LLMs",
     "description": "Introduces GPT-3, demonstrating strong few-shot learning capabilities at scale (175B parameters).",
     "raw_bib": "@inproceedings{brown2020,\n  author = {Brown, Tom B. and Mann, Benjamin and Ryder, Nick and others},\n  title = {Language Models Are Few-Shot Learners},\n  year = {2020}\n}"
+  },
+  {
+    "id": "ho2020",
+    "type": "inproceedings",
+    "title": "Denoising Diffusion Probabilistic Models",
+    "author": "Ho, Jonathan and Jain, Ajay and Abbeel, Pieter",
+    "year": "2020",
+    "venue": "Advances in Neural Information Processing Systems 33",
+    "volume": "",
+    "pages": "6840–6851",
+    "url": "https://arxiv.org/abs/2006.11239",
+    "pdf": "https://arxiv.org/pdf/2006.11239.pdf",
+    "category": "Generative Models",
+    "description": "DDPM paper establishing modern generative diffusion models through iterative noise reversal.",
+    "raw_bib": "@inproceedings{ho2020,\n  author = {Ho, Jonathan and Jain, Ajay and Abbeel, Pieter},\n  title = {Denoising Diffusion Probabilistic Models},\n  booktitle = {Advances in Neural Information Processing Systems 33},\n  pages = {6840--6851},\n  year = {2020}\n}"
   },
   {
     "id": "harris2020",
@@ -300,6 +345,21 @@
     "raw_bib": "@article{silver2016,\n  author = {Silver, David and Huang, Aja and Maddison, Chris J. and others},\n  title = {Mastering the Game of Go},\n  year = {2016}\n}"
   },
   {
+    "id": "he2016",
+    "type": "inproceedings",
+    "title": "Deep Residual Learning for Image Recognition",
+    "author": "He, Kaiming and Zhang, Xiangyu and Ren, Shaoqing and Sun, Jian",
+    "year": "2016",
+    "venue": "Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition (CVPR)",
+    "volume": "",
+    "pages": "770–778",
+    "url": "https://arxiv.org/abs/1512.03385",
+    "pdf": "https://arxiv.org/pdf/1512.03385.pdf",
+    "category": "Computer Vision & Architectures",
+    "description": "Landmark paper introducing Residual Networks (ResNets) and skip connections to solve vanishing gradients in ultra-deep networks.",
+    "raw_bib": "@inproceedings{he2016,\n  author = {He, Kaiming and Zhang, Xiangyu and Ren, Shaoqing and Sun, Jian},\n  title = {Deep Residual Learning for Image Recognition},\n  year = {2016}\n}"
+  },
+  {
     "id": "goodfellow2016",
     "type": "book",
     "title": "Deep Learning",
@@ -330,21 +390,6 @@
     "raw_bib": "@article{amodei2016,\n  author = {Amodei, Dario and Olah, Chris and Steinhardt, Jacob and others},\n  title = {Concrete Problems in AI},\n  year = {2016}\n}"
   },
   {
-    "id": "he2016",
-    "type": "inproceedings",
-    "title": "Deep Residual Learning for Image Recognition",
-    "author": "He, Kaiming and Zhang, Xiangyu and Ren, Shaoqing and Sun, Jian",
-    "year": "2016",
-    "venue": "Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition (CVPR)",
-    "volume": "",
-    "pages": "770–778",
-    "url": "https://arxiv.org/abs/1512.03385",
-    "pdf": "https://arxiv.org/pdf/1512.03385.pdf",
-    "category": "Computer Vision & Architectures",
-    "description": "Landmark paper introducing Residual Networks (ResNets) and skip connections to solve vanishing gradients in ultra-deep networks.",
-    "raw_bib": "@inproceedings{he2016,\n  author = {He, Kaiming and Zhang, Xiangyu and Ren, Shaoqing and Sun, Jian},\n  title = {Deep Residual Learning for Image Recognition},\n  year = {2016}\n}"
-  },
-  {
     "id": "lecun2015",
     "type": "article",
     "title": "Deep Learning",
@@ -367,12 +412,12 @@
     "year": "2015",
     "venue": "International Conference on Learning Representations (ICLR)",
     "volume": "",
-    "pages": "",
+    "pages": "1–15",
     "url": "https://arxiv.org/abs/1412.6980",
     "pdf": "https://arxiv.org/pdf/1412.6980.pdf",
     "category": "Mathematics & Optimization",
     "description": "Introduces the Adam optimization algorithm combining first and second moment adaptive learning rates.",
-    "raw_bib": "@inproceedings{kingma2015,\n  author = {Kingma, Diederik P. and Ba, Jimmy},\n  title = {Adam: A Method for Stochastic Optimization},\n  year = {2015}\n}"
+    "raw_bib": "@inproceedings{kingma2015,\n  author = {Kingma, Diederik P. and Ba, Jimmy},\n  title = {Adam: A Method for Stochastic Optimization},\n  pages = {1--15},\n  year = {2015}\n}"
   },
   {
     "id": "goodfellow2014",
@@ -397,12 +442,12 @@
     "year": "2014",
     "venue": "International Conference on Learning Representations (ICLR)",
     "volume": "",
-    "pages": "",
+    "pages": "1–9",
     "url": "https://arxiv.org/abs/1312.6114",
     "pdf": "https://arxiv.org/pdf/1312.6114.pdf",
     "category": "Generative Models",
     "description": "Introduces Variational Autoencoders (VAEs) and reparameterization trick for latent variable models.",
-    "raw_bib": "@inproceedings{kingma2014,\n  author = {Kingma, Diederik P. and Welling, Max},\n  title = {Auto-Encoding Variational Bayes},\n  year = {2014}\n}"
+    "raw_bib": "@inproceedings{kingma2014,\n  author = {Kingma, Diederik P. and Welling, Max},\n  title = {Auto-Encoding Variational Bayes},\n  pages = {1--9},\n  year = {2014}\n}"
   },
   {
     "id": "mikolov2013",

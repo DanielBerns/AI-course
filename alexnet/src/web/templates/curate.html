@@ -1,0 +1,196 @@
+{% extends "base.html" %}
+
+{% block title %}Dataset Curator - AlexNet Pipeline{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Dataset Curation Portal</h1>
+    <p>Upload, label, resize, and manage training images for your custom dataset.</p>
+</div>
+
+<div class="grid-2">
+    <!-- Upload Form Card -->
+    <div class="card">
+        <h2 class="card-title">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            Add & Curate Images
+        </h2>
+
+        <form id="uploadForm">
+            <div class="form-group">
+                <label for="className">Target Class Label</label>
+                <input type="text" id="className" placeholder="e.g. cat, dog, car, airplane" required>
+            </div>
+
+            <div class="form-group">
+                <label for="imageSize">Resize Resolution</label>
+                <select id="imageSize">
+                    <option value="224" selected>224 x 224 (Standard AlexNet)</option>
+                    <option value="128">128 x 128</option>
+                    <option value="64">64 x 64</option>
+                    <option value="0">Original Size (No Resize)</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Select Image Files</label>
+                <div class="drop-zone" id="dropZone">
+                    <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                    <p style="font-weight: 600;">Drag & drop images here or click to browse</p>
+                    <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 4px;">Supports PNG, JPG, JPEG, WEBP</p>
+                    <input type="file" id="fileInput" multiple accept="image/*" style="display: none;">
+                </div>
+                <div id="fileListInfo" style="margin-top: 8px; font-size: 0.85rem; color: var(--accent);"></div>
+            </div>
+
+            <button type="submit" class="btn btn-primary" style="width: 100%;">Upload to Dataset</button>
+        </form>
+    </div>
+
+    <!-- Dataset Overview & Gallery -->
+    <div class="card">
+        <h2 class="card-title">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+            Dataset Summary & Gallery
+        </h2>
+
+        <div id="statsSummary" style="margin-bottom: 1rem; padding: 0.75rem; background: rgba(0,0,0,0.2); border-radius: 8px; font-size: 0.9rem;">
+            Loading dataset statistics...
+        </div>
+
+        <div class="form-group">
+            <label for="filterClass">Filter Gallery by Class</label>
+            <select id="filterClass" onchange="loadGallery()">
+                <option value="all">All Classes</option>
+            </select>
+        </div>
+
+        <div class="gallery-grid" id="galleryGrid">
+            <!-- Gallery images inserted dynamically -->
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    const dropZone = document.getElementById('dropZone');
+    const fileInput = document.getElementById('fileInput');
+    const uploadForm = document.getElementById('uploadForm');
+    const fileListInfo = document.getElementById('fileListInfo');
+
+    dropZone.addEventListener('click', () => fileInput.click());
+
+    dropZone.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        dropZone.classList.add('dragover');
+    });
+
+    dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
+
+    dropZone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        dropZone.classList.remove('dragover');
+        if (e.dataTransfer.files.length > 0) {
+            fileInput.files = e.dataTransfer.files;
+            updateFileInfo();
+        }
+    });
+
+    fileInput.addEventListener('change', updateFileInfo);
+
+    function updateFileInfo() {
+        const count = fileInput.files.length;
+        fileListInfo.textContent = count > 0 ? `${count} file(s) selected.` : '';
+    }
+
+    uploadForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const className = document.getElementById('className').value.trim();
+        const imageSize = document.getElementById('imageSize').value;
+        const files = fileInput.files;
+
+        if (!className || files.length === 0) {
+            alert('Please provide a class name and select at least one image file.');
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('class_name', className);
+        formData.append('image_size', imageSize);
+        for (let i = 0; i < files.length; i++) {
+            formData.append('files', files[i]);
+        }
+
+        try {
+            const res = await fetch('/api/curate/upload', {
+                method: 'POST',
+                body: formData
+            });
+            const data = await res.json();
+            if (data.status === 'success') {
+                alert(`Successfully uploaded ${data.count} image(s) to class '${className}'!`);
+                fileInput.value = '';
+                fileListInfo.textContent = '';
+                loadStats();
+                loadGallery();
+            } else {
+                alert('Error: ' + data.message);
+            }
+        } catch (err) {
+            alert('Upload failed: ' + err.message);
+        }
+    });
+
+    async function loadStats() {
+        try {
+            const res = await fetch('/api/curate/stats');
+            const data = await res.json();
+            
+            let html = `<strong>Total Images:</strong> ${data.total_images} | <strong>Classes:</strong> ${data.classes.length}<br>`;
+            let classOptions = '<option value="all">All Classes</option>';
+            
+            data.classes.forEach(c => {
+                html += `<span class="badge" style="background: var(--primary); margin-right: 4px; display: inline-block; padding: 2px 6px; border-radius: 4px;">${c.name}: ${c.count}</span> `;
+                classOptions += `<option value="${c.name}">${c.name} (${c.count})</option>`;
+            });
+            
+            document.getElementById('statsSummary').innerHTML = html;
+            document.getElementById('filterClass').innerHTML = classOptions;
+        } catch (err) {
+            console.error('Failed to load stats:', err);
+        }
+    }
+
+    async function loadGallery() {
+        const filter = document.getElementById('filterClass').value;
+        try {
+            const res = await fetch(`/api/curate/gallery?class_name=${filter}`);
+            const data = await res.json();
+            
+            const grid = document.getElementById('galleryGrid');
+            grid.innerHTML = '';
+            
+            if (data.images.length === 0) {
+                grid.innerHTML = '<p style="color: var(--text-muted); font-size: 0.9rem;">No curated images found.</p>';
+                return;
+            }
+
+            data.images.forEach(img => {
+                const item = document.createElement('div');
+                item.className = 'gallery-item';
+                item.innerHTML = `
+                    <img src="${img.url}" alt="${img.class_name}">
+                    <span class="badge">${img.class_name}</span>
+                `;
+                grid.appendChild(item);
+            });
+        } catch (err) {
+            console.error('Failed to load gallery:', err);
+        }
+    }
+
+    loadStats();
+    loadGallery();
+</script>
+{% endblock %}

@@ -49,62 +49,54 @@
       </div>
       <h1 class="hero-title">Foundations of <span>Artificial Intelligence</span></h1>
       <p class="hero-subtitle">
-        Explore 53 seminal papers, canonical textbooks, and foundational publications cited in <em>AI Foundations</em>. Direct access to DOIs, arXiv preprints, open-access PDFs, and BibTeX citations.
+        Explore 56 seminal papers, canonical textbooks, and foundational publications cited in <em>AI Foundations</em>. Direct access to DOIs, arXiv preprints, open-access PDFs, and BibTeX citations.
       </p>
     </section>
 
-    <!-- Live Statistics Counter -->
-    <div class="stats-grid">
-      <div class="stat-card">
-        <div class="stat-icon"><i class="fa-solid fa-book"></i></div>
-        <div>
-          <div class="stat-val" id="stat-total">53</div>
-          <div class="stat-lbl">Total References</div>
+    <!-- Interactive Filter & Control Panel -->
+    <section class="filter-panel">
+      <!-- Search & Sort Bar -->
+      <div class="controls-bar">
+        <div class="search-box">
+          <i class="fa-solid fa-magnifying-glass search-icon"></i>
+          <input type="text" id="search-input" class="search-input" placeholder="Search title, author, venue, or key concept..." aria-label="Search references">
         </div>
+        <select id="sort-select" class="sort-select" aria-label="Sort references">
+          <option value="newest">Newest First</option>
+          <option value="oldest">Oldest First</option>
+          <option value="title">Title (A – Z)</option>
+          <option value="author">Primary Author (A – Z)</option>
+        </select>
       </div>
-      <div class="stat-card">
-        <div class="stat-icon"><i class="fa-solid fa-file-arrow-down"></i></div>
-        <div>
-          <div class="stat-val" id="stat-pdf">38</div>
-          <div class="stat-lbl">Direct PDFs Available</div>
-        </div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-icon"><i class="fa-solid fa-calendar-days"></i></div>
-        <div>
-          <div class="stat-val">1950 – 2024</div>
-          <div class="stat-lbl">Publication Timeline</div>
-        </div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-icon"><i class="fa-solid fa-layer-group"></i></div>
-        <div>
-          <div class="stat-val" id="stat-categories">13</div>
-          <div class="stat-lbl">Research Categories</div>
-        </div>
-      </div>
-    </div>
 
-    <!-- Interactive Control Bar -->
-    <div class="controls-bar">
-      <div class="search-box">
-        <i class="fa-solid fa-magnifying-glass search-icon"></i>
-        <input type="text" id="search-input" class="search-input" placeholder="Search by paper title, author, venue, or key concept..." aria-label="Search references">
+      <!-- Filter Group: Research Area -->
+      <div class="filter-group">
+        <div class="filter-label">
+          <i class="fa-solid fa-layer-group"></i> Research Area
+        </div>
+        <div class="pills-container" id="categories-container">
+          <!-- Injected via JavaScript -->
+        </div>
       </div>
-      <select id="sort-select" class="sort-select" aria-label="Sort references">
-        <option value="newest">Newest First</option>
-        <option value="oldest">Oldest First</option>
-        <option value="title">Title (A – Z)</option>
-        <option value="author">Primary Author (A – Z)</option>
-      </select>
-    </div>
 
-    <!-- Category Filter Pills -->
-    <div class="categories-wrapper">
-      <div class="categories-pills" id="categories-container">
-        <!-- Injected via JavaScript -->
+      <!-- Filter Group: Publication Year / Era -->
+      <div class="filter-group">
+        <div class="filter-label">
+          <i class="fa-solid fa-calendar-days"></i> Publication Year / Era
+        </div>
+        <div class="pills-container" id="years-container">
+          <!-- Injected via JavaScript -->
+        </div>
       </div>
-    </div>
+
+      <!-- Results & Filter Summary Bar -->
+      <div class="results-bar" id="results-bar">
+        <div class="results-count" id="results-count">Showing <strong>56</strong> references</div>
+        <button id="reset-filters-btn" class="btn-reset" style="display: none;">
+          <i class="fa-solid fa-rotate-left"></i> Reset All Filters
+        </button>
+      </div>
+    </section>
 
     <!-- Reference Cards Grid -->
     <main class="references-grid" id="references-grid">

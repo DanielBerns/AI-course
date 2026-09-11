@@ -2,69 +2,34 @@
  * AI Foundations Reference Library — Client Application Logic
  */
 
-document.addEventListener('DOMContentLoaded', () => {
-  // State
-  let references = window.AI_REFERENCES || [];
+(function () {
+  // Global State
   let currentCategory = 'All';
+  let currentYear = 'All';
   let currentSearch = '';
   let currentSort = 'newest';
   let activeModalRef = null;
 
-  // DOM Elements
-  const gridContainer = document.getElementById('references-grid');
-  const categoriesContainer = document.getElementById('categories-container');
-  const searchInput = document.getElementById('search-input');
-  const sortSelect = document.getElementById('sort-select');
-  const themeToggleBtn = document.getElementById('theme-toggle');
-  
-  const modalOverlay = document.getElementById('modal-overlay');
-  const modalPaperTitle = document.getElementById('modal-paper-title');
-  const modalDetails = document.getElementById('modal-details');
-  const modalBibtex = document.getElementById('modal-bibtex');
-  const modalCloseBtn = document.getElementById('modal-close');
-  const modalCopyBtn = document.getElementById('modal-copy-btn');
-  const toast = document.getElementById('toast');
-
-  const statTotal = document.getElementById('stat-total');
-  const statPdf = document.getElementById('stat-pdf');
-  const statCategories = document.getElementById('stat-categories');
-
-  // Fallback fetch if window.AI_REFERENCES not loaded
-  if (!references || references.length === 0) {
-    fetch('data/references.json')
-      .then(res => res.json())
-      .then(data => {
-        references = data;
-        initApp();
-      })
-      .catch(err => console.error('Failed to load references:', err));
-  } else {
-    initApp();
+  function getReferences() {
+    return window.AI_REFERENCES || [];
   }
 
   function initApp() {
     setupTheme();
-    updateStats();
     buildCategoryPills();
+    buildYearPills();
     renderGrid();
     setupEventListeners();
   }
 
-  // Update counter stats
-  function updateStats() {
-    if (statTotal) statTotal.textContent = references.length;
-    
-    const pdfCount = references.filter(r => r.pdf && r.pdf.trim() !== '').length;
-    if (statPdf) statPdf.textContent = pdfCount;
-
-    const categories = new Set(references.map(r => r.category).filter(Boolean));
-    if (statCategories) statCategories.textContent = categories.size;
-  }
-
-  // Build category filter pills
+  // Build Research Area (Category) filter pills
   function buildCategoryPills() {
+    const categoriesContainer = document.getElementById('categories-container');
+    if (!categoriesContainer) return;
+
+    const refs = getReferences();
     const categoryCounts = {};
-    references.forEach(r => {
+    refs.forEach(r => {
       const cat = r.category || 'General';
       categoryCounts[cat] = (categoryCounts[cat] || 0) + 1;
     });
@@ -74,13 +39,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     categories.forEach(cat => {
       const pill = document.createElement('button');
+      pill.type = 'button';
       pill.className = `category-pill ${cat === currentCategory ? 'active' : ''}`;
-      const count = cat === 'All' ? references.length : categoryCounts[cat];
-      pill.innerHTML = `${cat} <span style="opacity:0.75; font-size:0.8em; margin-left:4px;">(${count})</span>`;
+      const count = cat === 'All' ? refs.length : categoryCounts[cat];
+      const label = cat === 'All' ? 'All Areas' : cat;
+      pill.innerHTML = `${label} <span class="pill-badge">(${count})</span>`;
       
       pill.addEventListener('click', () => {
         currentCategory = cat;
-        document.querySelectorAll('.category-pill').forEach(p => p.classList.remove('active'));
+        categoriesContainer.querySelectorAll('.category-pill').forEach(p => p.classList.remove('active'));
         pill.classList.add('active');
         renderGrid();
       });
@@ -89,10 +56,78 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Sort and filter logic
+  // Define Year Filter Options
+  const YEAR_OPTIONS = [
+    { key: 'All', label: 'All Years' },
+    { key: '2024', label: '2024' },
+    { key: '2023', label: '2023' },
+    { key: '2022', label: '2022' },
+    { key: '2021', label: '2021' },
+    { key: '2020', label: '2020' },
+    { key: '2019', label: '2019' },
+    { key: '2018', label: '2018' },
+    { key: '2017', label: '2017' },
+    { key: '2016', label: '2016' },
+    { key: '2015', label: '2015' },
+    { key: '2010–2014', label: '2010–2014' },
+    { key: '2000s', label: '2000–2009' },
+    { key: '1980–1990s', label: '1980–1999' },
+    { key: 'Pre-1980', label: 'Pre-1980' }
+  ];
+
+  // Helper: Test if paper year matches filter key
+  function matchesYear(yearStr, filterKey) {
+    if (filterKey === 'All') return true;
+    if (!yearStr) return false;
+    const y = parseInt(yearStr, 10);
+    if (!y || isNaN(y)) return false;
+
+    if (filterKey === '2010–2014' || filterKey === '2010-2014') return y >= 2010 && y <= 2014;
+    if (filterKey === '2000s' || filterKey === '2000-2009') return y >= 2000 && y <= 2009;
+    if (filterKey === '1980–1990s' || filterKey === '1980-1999') return y >= 1980 && y <= 1999;
+    if (filterKey === 'Pre-1980') return y < 1980;
+
+    return y.toString() === filterKey;
+  }
+
+  // Build Year / Era filter pills
+  function buildYearPills() {
+    const yearsContainer = document.getElementById('years-container');
+    if (!yearsContainer) return;
+
+    const refs = getReferences();
+    yearsContainer.innerHTML = '';
+
+    YEAR_OPTIONS.forEach(opt => {
+      const count = opt.key === 'All' 
+        ? refs.length 
+        : refs.filter(r => matchesYear(r.year, opt.key)).length;
+
+      // Only render pills that have matching papers or are 'All'
+      if (count === 0 && opt.key !== 'All') return;
+
+      const pill = document.createElement('button');
+      pill.type = 'button';
+      pill.className = `category-pill year-pill ${opt.key === currentYear ? 'active' : ''}`;
+      pill.innerHTML = `${opt.label} <span class="pill-badge">(${count})</span>`;
+
+      pill.addEventListener('click', () => {
+        currentYear = opt.key;
+        yearsContainer.querySelectorAll('.year-pill').forEach(p => p.classList.remove('active'));
+        pill.classList.add('active');
+        renderGrid();
+      });
+
+      yearsContainer.appendChild(pill);
+    });
+  }
+
+  // Filter and sort logic
   function getFilteredReferences() {
-    return references.filter(ref => {
+    const refs = getReferences();
+    return refs.filter(ref => {
       const matchesCat = currentCategory === 'All' || ref.category === currentCategory;
+      const matchesYr = matchesYear(ref.year, currentYear);
       
       const q = currentSearch.toLowerCase();
       const matchesSearch = !q || (
@@ -103,27 +138,50 @@ document.addEventListener('DOMContentLoaded', () => {
         (ref.year && ref.year.toString().includes(q))
       );
 
-      return matchesCat && matchesSearch;
+      return matchesCat && matchesYr && matchesSearch;
     }).sort((a, b) => {
-      if (currentSort === 'newest') return (b.year || 0) - (a.year || 0);
-      if (currentSort === 'oldest') return (a.year || 0) - (b.year || 0);
+      if (currentSort === 'newest') return (parseInt(b.year) || 0) - (parseInt(a.year) || 0);
+      if (currentSort === 'oldest') return (parseInt(a.year) || 0) - (parseInt(a.year) || 0);
       if (currentSort === 'title') return (a.title || '').localeCompare(b.title || '');
       if (currentSort === 'author') return (a.author || '').localeCompare(b.author || '');
       return 0;
     });
   }
 
-  // Render Grid Cards
+  // Render Grid Cards and Update Status Summary
   function renderGrid() {
+    const gridContainer = document.getElementById('references-grid');
+    const resultsCount = document.getElementById('results-count');
+    const resetFiltersBtn = document.getElementById('reset-filters-btn');
+    if (!gridContainer) return;
+
+    const refs = getReferences();
     const items = getFilteredReferences();
     gridContainer.innerHTML = '';
+
+    // Update Results Bar
+    const hasActiveFilters = currentCategory !== 'All' || currentYear !== 'All' || currentSearch.trim() !== '';
+    if (resetFiltersBtn) {
+      resetFiltersBtn.style.display = hasActiveFilters ? 'inline-flex' : 'none';
+    }
+
+    if (resultsCount) {
+      let text = `Showing <strong>${items.length}</strong> of ${refs.length} papers`;
+      if (currentCategory !== 'All') text += ` • Area: <em>${escapeHtml(currentCategory)}</em>`;
+      if (currentYear !== 'All') text += ` • Year: <em>${escapeHtml(currentYear)}</em>`;
+      if (currentSearch.trim()) text += ` • Search: "<em>${escapeHtml(currentSearch)}</em>"`;
+      resultsCount.innerHTML = text;
+    }
 
     if (items.length === 0) {
       gridContainer.innerHTML = `
         <div class="empty-state">
           <div class="empty-icon"><i class="fa-solid fa-folder-open"></i></div>
-          <h3>No references found</h3>
-          <p style="color: var(--text-secondary); margin-top: 6px;">Try adjusting your search query or filter category.</p>
+          <h3>No matching papers found</h3>
+          <p style="color: var(--text-secondary); margin-top: 6px;">Try clearing filters or adjusting your search term.</p>
+          <button type="button" class="btn-primary" style="margin-top: 16px;" onclick="window.resetFiltersTrigger()">
+            <i class="fa-solid fa-rotate-left"></i> Reset All Filters
+          </button>
         </div>
       `;
       return;
@@ -155,7 +213,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <i class="fa-solid fa-arrow-up-right-from-square"></i> Open Link
           </a>
           ${pdfBtn}
-          <button class="btn-action btn-bib modal-trigger" title="View BibTeX Citation">
+          <button type="button" class="btn-action btn-bib modal-trigger" title="View BibTeX Citation">
             <i class="fa-solid fa-quote-right"></i> BibTeX
           </button>
         </div>
@@ -163,37 +221,66 @@ document.addEventListener('DOMContentLoaded', () => {
 
       // Modal trigger button click listener
       const bibBtn = card.querySelector('.modal-trigger');
-      bibBtn.addEventListener('click', () => openModal(ref));
+      if (bibBtn) {
+        bibBtn.addEventListener('click', () => openModal(ref));
+      }
 
       gridContainer.appendChild(card);
     });
   }
 
+  // Reset all active filters
+  function resetAllFilters() {
+    currentCategory = 'All';
+    currentYear = 'All';
+    currentSearch = '';
+    const searchInput = document.getElementById('search-input');
+    if (searchInput) searchInput.value = '';
+
+    buildCategoryPills();
+    buildYearPills();
+    renderGrid();
+  }
+  window.resetFiltersTrigger = resetAllFilters;
+
   // Open Citation Modal
   function openModal(ref) {
-    activeModalRef = ref;
-    modalPaperTitle.textContent = ref.title || 'Citation Details';
-    
-    modalDetails.innerHTML = `
-      <div style="font-size: 0.95rem; margin-bottom: 8px;"><strong>Authors:</strong> ${escapeHtml(ref.author)}</div>
-      <div style="font-size: 0.95rem; margin-bottom: 8px;"><strong>Venue / Publisher:</strong> ${escapeHtml(ref.venue)} (${ref.year})</div>
-      <div style="font-size: 0.95rem; margin-bottom: 8px;"><strong>Category:</strong> <span class="ref-category-tag">${ref.category}</span></div>
-      ${ref.url ? `<div style="font-size: 0.9rem; margin-bottom: 8px; word-break: break-all;"><strong>URL:</strong> <a href="${ref.url}" target="_blank" style="color: var(--accent-cyan);">${ref.url}</a></div>` : ''}
-      ${ref.description ? `<p style="font-size: 0.9rem; color: var(--text-secondary); margin-top: 12px; font-style: italic;">"${escapeHtml(ref.description)}"</p>` : ''}
-    `;
+    const modalOverlay = document.getElementById('modal-overlay');
+    const modalPaperTitle = document.getElementById('modal-paper-title');
+    const modalDetails = document.getElementById('modal-details');
+    const modalBibtex = document.getElementById('modal-bibtex');
+    if (!modalOverlay) return;
 
-    modalBibtex.textContent = ref.raw_bib || `@article{${ref.id},\n  author = {${ref.author}},\n  title = {${ref.title}},\n  year = {${ref.year}}\n}`;
+    activeModalRef = ref;
+    if (modalPaperTitle) modalPaperTitle.textContent = ref.title || 'Citation Details';
+    
+    if (modalDetails) {
+      modalDetails.innerHTML = `
+        <div style="font-size: 0.95rem; margin-bottom: 8px;"><strong>Authors:</strong> ${escapeHtml(ref.author)}</div>
+        <div style="font-size: 0.95rem; margin-bottom: 8px;"><strong>Venue / Publisher:</strong> ${escapeHtml(ref.venue)} (${ref.year})</div>
+        <div style="font-size: 0.95rem; margin-bottom: 8px;"><strong>Category:</strong> <span class="ref-category-tag">${ref.category}</span></div>
+        ${ref.url ? `<div style="font-size: 0.9rem; margin-bottom: 8px; word-break: break-all;"><strong>URL:</strong> <a href="${ref.url}" target="_blank" style="color: var(--accent-cyan);">${ref.url}</a></div>` : ''}
+        ${ref.description ? `<p style="font-size: 0.9rem; color: var(--text-secondary); margin-top: 12px; font-style: italic;">"${escapeHtml(ref.description)}"</p>` : ''}
+      `;
+    }
+
+    if (modalBibtex) {
+      modalBibtex.textContent = ref.raw_bib || `@article{${ref.id},\n  author = {${ref.author}},\n  title = {${ref.title}},\n  year = {${ref.year}}\n}`;
+    }
     
     modalOverlay.classList.add('active');
   }
 
   function closeModal() {
-    modalOverlay.classList.remove('active');
+    const modalOverlay = document.getElementById('modal-overlay');
+    if (modalOverlay) modalOverlay.classList.remove('active');
   }
 
   // Copy BibTeX to clipboard
   function copyBibtex() {
     if (!activeModalRef) return;
+    const modalBibtex = document.getElementById('modal-bibtex');
+    if (!modalBibtex) return;
     const textToCopy = modalBibtex.textContent;
     navigator.clipboard.writeText(textToCopy).then(() => {
       showToast('BibTeX copied to clipboard!');
@@ -203,6 +290,8 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function showToast(msg) {
+    const toast = document.getElementById('toast');
+    if (!toast) return;
     toast.textContent = msg;
     toast.classList.add('show');
     setTimeout(() => {
@@ -212,27 +301,44 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Event Listeners
   function setupEventListeners() {
-    searchInput.addEventListener('input', (e) => {
-      currentSearch = e.target.value;
-      renderGrid();
-    });
+    const searchInput = document.getElementById('search-input');
+    const sortSelect = document.getElementById('sort-select');
+    const resetFiltersBtn = document.getElementById('reset-filters-btn');
+    const modalCloseBtn = document.getElementById('modal-close');
+    const modalOverlay = document.getElementById('modal-overlay');
+    const modalCopyBtn = document.getElementById('modal-copy-btn');
+    const themeToggleBtn = document.getElementById('theme-toggle');
 
-    sortSelect.addEventListener('change', (e) => {
-      currentSort = e.target.value;
-      renderGrid();
-    });
+    if (searchInput) {
+      searchInput.addEventListener('input', (e) => {
+        currentSearch = e.target.value;
+        renderGrid();
+      });
+    }
 
-    modalCloseBtn.addEventListener('click', closeModal);
-    modalOverlay.addEventListener('click', (e) => {
-      if (e.target === modalOverlay) closeModal();
-    });
+    if (sortSelect) {
+      sortSelect.addEventListener('change', (e) => {
+        currentSort = e.target.value;
+        renderGrid();
+      });
+    }
 
-    modalCopyBtn.addEventListener('click', copyBibtex);
+    if (resetFiltersBtn) {
+      resetFiltersBtn.addEventListener('click', resetAllFilters);
+    }
 
-    themeToggleBtn.addEventListener('click', toggleTheme);
+    if (modalCloseBtn) modalCloseBtn.addEventListener('click', closeModal);
+    if (modalOverlay) {
+      modalOverlay.addEventListener('click', (e) => {
+        if (e.target === modalOverlay) closeModal();
+      });
+    }
+
+    if (modalCopyBtn) modalCopyBtn.addEventListener('click', copyBibtex);
+    if (themeToggleBtn) themeToggleBtn.addEventListener('click', toggleTheme);
 
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && modalOverlay.classList.contains('active')) {
+      if (e.key === 'Escape' && modalOverlay && modalOverlay.classList.contains('active')) {
         closeModal();
       }
     });
@@ -240,9 +346,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Theme Management
   function setupTheme() {
+    const themeToggleBtn = document.getElementById('theme-toggle');
     const savedTheme = localStorage.getItem('ai_sources_theme') || 'dark';
     document.documentElement.setAttribute('data-theme', savedTheme);
-    updateThemeIcon(savedTheme);
+    if (themeToggleBtn) updateThemeIcon(savedTheme);
   }
 
   function toggleTheme() {
@@ -254,7 +361,10 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function updateThemeIcon(theme) {
+    const themeToggleBtn = document.getElementById('theme-toggle');
+    if (!themeToggleBtn) return;
     const icon = themeToggleBtn.querySelector('i');
+    if (!icon) return;
     if (theme === 'dark') {
       icon.className = 'fa-solid fa-sun';
       themeToggleBtn.title = 'Switch to Light Theme';
@@ -268,4 +378,11 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!str) return '';
     return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
   }
-});
+
+  // Execute initialization cleanly across all loading states
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initApp);
+  } else {
+    initApp();
+  }
+})();

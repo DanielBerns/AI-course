@@ -1,0 +1,44 @@
+# Modern AlexNet Configuration File
+# Copy this file into your instance directory as "config.yaml".
+# The paths section is managed automatically by the runtime based on --instance_path.
+
+dataset:
+  source: "cifar10"           # Options: "cifar10", "cifar100", "local", "url"
+  url: ""                      # URL to download zip dataset if source is "url"
+  local_path: ""               # Path to local image dataset folder if source is "local"
+  image_size: 224              # Target resize resolution (e.g. 224, 128, 64)
+  batch_size: 64
+  num_workers: 2
+  val_split: 0.2               # Validation set split ratio
+  num_classes: 10              # Number of dataset target classes
+  max_samples_per_class: null  # Optional max sample cap per class (integer or null)
+
+model:
+  use_batch_norm: true
+  dropout: 0.5
+  in_channels: 3
+
+training:
+  epochs: 20
+  seed: 42
+  device: "auto"               # "auto", "cuda", "cpu"
+  save_every: 5                # Save checkpoint every N epochs
+
+optimizer:
+  name: "adamw"                # "adam", "adamw", "sgd"
+  lr: 0.001
+  weight_decay: 0.0001
+  momentum: 0.9                # Applicable for SGD
+
+scheduler:
+  type: "onecycle"             # Options: "cyclic", "onecycle", "cosine", "step", "plateau", "none"
+  base_lr: 0.0001
+  max_lr: 0.005
+  step_size_up: 2000
+  step_size: 5
+  gamma: 0.5
+  patience: 3
+
+diagnostics:
+  overfitting_threshold: 0.20        # Loss difference (val_loss - train_loss) to trigger warning
+  underfitting_loss_threshold: 1.5   # Expected max train loss after initial epochs

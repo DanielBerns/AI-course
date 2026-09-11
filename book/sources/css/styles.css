@@ -282,55 +282,37 @@ body {
   font-weight: 400;
 }
 
-/* Stat Counter Grid */
-.stats-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 16px;
-  margin-bottom: 40px;
-}
-
-.stat-card {
+/* Filter & Control Panel */
+.filter-panel {
   background: var(--bg-card);
   border: 1px solid var(--border-color);
-  border-radius: var(--radius-md);
-  padding: 20px;
-  text-align: left;
-  backdrop-filter: blur(10px);
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  transition: transform var(--transition-fast), border-color var(--transition-fast);
+  border-radius: var(--radius-lg);
+  padding: 28px;
+  margin-bottom: 40px;
+  backdrop-filter: blur(16px);
+  box-shadow: var(--shadow-md);
 }
 
-.stat-card:hover {
-  transform: translateY(-3px);
-  border-color: var(--accent-blue);
+.filter-group {
+  margin-top: 20px;
 }
 
-.stat-icon {
-  width: 48px;
-  height: 48px;
-  border-radius: var(--radius-md);
-  background: rgba(99, 102, 241, 0.15);
+.filter-label {
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
   color: var(--accent-cyan);
+  margin-bottom: 10px;
   display: flex;
   align-items: center;
-  justify-content: center;
-  font-size: 1.4rem;
+  gap: 8px;
 }
 
-.stat-val {
-  font-size: 1.75rem;
-  font-weight: 800;
-  line-height: 1.1;
-  color: var(--text-primary);
-}
-
-.stat-lbl {
-  font-size: 0.85rem;
-  color: var(--text-secondary);
-  font-weight: 500;
+.pill-badge {
+  opacity: 0.8;
+  font-size: 0.8em;
+  margin-left: 4px;
 }
 
 /* Control Bar: Search & Sort */
@@ -340,7 +322,7 @@ body {
   gap: 16px;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 24px;
+  margin-bottom: 4px;
 }
 
 .search-box {
@@ -352,7 +334,7 @@ body {
 .search-input {
   width: 100%;
   padding: 14px 20px 14px 48px;
-  background: var(--bg-card);
+  background: var(--bg-tertiary);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-full);
   color: var(--text-primary);
@@ -379,7 +361,7 @@ body {
 
 .sort-select {
   padding: 14px 20px;
-  background: var(--bg-card);
+  background: var(--bg-tertiary);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-full);
   color: var(--text-primary);
@@ -395,36 +377,22 @@ body {
   border-color: var(--accent-blue);
 }
 
-/* Category Filter Pills */
-.categories-wrapper {
-  margin-bottom: 32px;
-  overflow-x: auto;
-  padding-bottom: 8px;
-  scrollbar-width: thin;
-  scrollbar-color: var(--border-color) transparent;
-}
-
-.categories-wrapper::-webkit-scrollbar {
-  height: 4px;
-}
-.categories-wrapper::-webkit-scrollbar-thumb {
-  background: var(--border-color);
-  border-radius: 4px;
-}
-
-.categories-pills {
+/* Category & Year Filter Pills - Responsive Multi-row Wrapping (No Scrollbar!) */
+.pills-container {
   display: flex;
-  gap: 10px;
-  min-width: max-content;
+  flex-wrap: wrap;
+  gap: 8px;
+  width: 100%;
+  margin-top: 4px;
 }
 
 .category-pill {
-  padding: 8px 18px;
+  padding: 8px 14px;
   border-radius: var(--radius-full);
-  background: var(--bg-card);
+  background: var(--bg-tertiary);
   border: 1px solid var(--border-color);
   color: var(--text-secondary);
-  font-size: 0.85rem;
+  font-size: 0.84rem;
   font-weight: 600;
   cursor: pointer;
   transition: all var(--transition-fast);
@@ -434,6 +402,7 @@ body {
 .category-pill:hover {
   border-color: var(--accent-blue);
   color: var(--text-primary);
+  transform: translateY(-1px);
 }
 
 .category-pill.active {
@@ -441,6 +410,65 @@ body {
   color: white;
   border-color: transparent;
   box-shadow: var(--shadow-glow);
+}
+
+/* Publication Year Buttons - Distinctive Emerald Styling */
+.category-pill.year-pill {
+  background: rgba(16, 185, 129, 0.08);
+  border-color: rgba(16, 185, 129, 0.25);
+  color: var(--accent-emerald);
+}
+
+.category-pill.year-pill:hover {
+  border-color: var(--accent-emerald);
+  color: white;
+  background: rgba(16, 185, 129, 0.18);
+  transform: translateY(-1px);
+}
+
+.category-pill.year-pill.active {
+  background: linear-gradient(135deg, #10b981 0%, #38bdf8 100%);
+  color: white;
+  border-color: transparent;
+  box-shadow: 0 0 18px rgba(16, 185, 129, 0.35);
+}
+
+/* Results Summary & Reset Bar */
+.results-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border-color);
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.results-count em {
+  color: var(--accent-cyan);
+  font-style: normal;
+  font-weight: 600;
+}
+
+.btn-reset {
+  background: rgba(244, 63, 94, 0.12);
+  border: 1px solid rgba(244, 63, 94, 0.3);
+  color: var(--accent-rose);
+  padding: 6px 16px;
+  border-radius: var(--radius-full);
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all var(--transition-fast);
+}
+
+.btn-reset:hover {
+  background: rgba(244, 63, 94, 0.25);
+  transform: translateY(-1px);
 }
 
 /* References Grid */

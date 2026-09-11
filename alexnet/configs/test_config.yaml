@@ -1,0 +1,38 @@
+paths:
+  data_dir: "./data"
+  weights_dir: "./weights"
+  log_dir: "./logs"
+  plots_dir: "./plots"
+
+dataset:
+  source: "local"
+  local_path: "./data/test_curated"
+  image_size: 128
+  batch_size: 4
+  num_workers: 0
+  val_split: 0.2
+  num_classes: 2
+
+model:
+  use_batch_norm: true
+  dropout: 0.5
+  in_channels: 3
+
+training:
+  epochs: 2
+  seed: 42
+  device: "cpu"
+  save_every: 1
+  resume_checkpoint: null
+
+optimizer:
+  name: "adamw"
+  lr: 0.001
+
+scheduler:
+  type: "onecycle"
+  max_lr: 0.005
+
+diagnostics:
+  overfitting_threshold: 0.20
+  underfitting_loss_threshold: 1.5
