@@ -75,12 +75,15 @@ class Trainer:
         # Optimizer
         self.optimizer = self._build_optimizer()
 
+        # Epoch & Run configuration
+        self.epochs_per_run = config.get("training", {}).get("epochs", 20)
+        self.start_epoch = 1
+        self.total_epochs = self.epochs_per_run
+
         # Scheduler
-        self.total_epochs = config.get("training", {}).get("epochs", 20)
         self.scheduler = self._build_scheduler()
 
         # State trackers
-        self.start_epoch = 1
         self.best_val_acc = 0.0
         self.history = {
             "train_loss": [],
@@ -122,10 +125,10 @@ class Trainer:
             return CyclicLR(self.optimizer, base_lr=base_lr, max_lr=max_lr, step_size_up=step_size_up, cycle_momentum=False)
         elif sched_type == "onecycle":
             max_lr = float(sched_cfg.get("max_lr", 0.005))
-            total_steps = self.total_epochs * len(self.train_loader)
+            total_steps = self.epochs_per_run * len(self.train_loader)
             return OneCycleLR(self.optimizer, max_lr=max_lr, total_steps=total_steps)
         elif sched_type == "cosine":
-            return CosineAnnealingLR(self.optimizer, T_max=self.total_epochs)
+            return CosineAnnealingLR(self.optimizer, T_max=self.epochs_per_run)
         elif sched_type == "step":
             step_size = int(sched_cfg.get("step_size", 5))
             gamma = float(sched_cfg.get("gamma", 0.5))
@@ -226,13 +229,24 @@ class Trainer:
 
         self.model.load_state_dict(checkpoint["model_state_dict"])
         self.optimizer.load_state_dict(checkpoint["optimizer_state_dict"])
-        if self.scheduler and checkpoint.get("scheduler_state_dict"):
-            self.scheduler.load_state_dict(checkpoint["scheduler_state_dict"])
 
         self.start_epoch = checkpoint.get("epoch", 0) + 1
+        self.total_epochs = self.start_epoch + self.epochs_per_run - 1
         self.best_val_acc = checkpoint.get("best_val_acc", 0.0)
         self.history = checkpoint.get("history", self.history)
-        self.logger.info(f"[+] Successfully loaded checkpoint. Resuming from epoch {self.start_epoch}")
+
+        sched_type = self.config.get("scheduler", {}).get("type", "").lower()
+        if sched_type in ("onecycle", "cosine"):
+            self.scheduler = self._build_scheduler()
+            self.logger.info(f"[*] Re-initialized '{sched_type}' scheduler for {self.epochs_per_run} epochs in this run.")
+        elif self.scheduler and checkpoint.get("scheduler_state_dict"):
+            try:
+                self.scheduler.load_state_dict(checkpoint["scheduler_state_dict"])
+            except Exception as e:
+                self.logger.warning(f"[!] Could not restore scheduler state dict ({e}). Re-building scheduler.")
+                self.scheduler = self._build_scheduler()
+
+        self.logger.info(f"[+] Successfully loaded checkpoint. Resuming from epoch {self.start_epoch} up to epoch {self.total_epochs}")
 
     def train(self):
         self.logger.info(f"[*] Starting AlexNet training pipeline on device: {self.device}")
