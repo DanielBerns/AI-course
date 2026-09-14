@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Neural Boid Ecosystem Simulation (1000 Neurons AI)</title>
+  <meta name="description" content="Interactive evolutionary simulation of neural network boids with food foraging, mating reproduction, shelter mechanics, and predator avoidance.">
+  <link rel="stylesheet" href="/src/style.css">
+</head>
+<body>
+  <!-- Header Bar -->
+  <header>
+    <div class="logo-group">
+      <h1>NEURAL BOID LAB</h1>
+      <span class="badge-tag">1000 NEURONS BRAIN</span>
+    </div>
+
+    <div class="header-stats">
+      <div class="stat-box">
+        <span class="label">Boids</span>
+        <span class="value" id="stat-boids">0</span>
+      </div>
+      <div class="stat-box predator">
+        <span class="label">Predators</span>
+        <span class="value" id="stat-predators">0</span>
+      </div>
+      <div class="stat-box food">
+        <span class="label">Food</span>
+        <span class="value" id="stat-food">0</span>
+      </div>
+      <div class="stat-box">
+        <span class="label">Avg Gen</span>
+        <span class="value" id="stat-avg-gen">1.0</span>
+      </div>
+      <div class="stat-box fitness">
+        <span class="label">Avg Fitness</span>
+        <span class="value" id="stat-avg-fitness">0</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Viewport & Sidebar -->
+  <div class="app-container">
+    <!-- Simulation Canvas -->
+    <div class="canvas-wrapper">
+      <!-- HUD Control Bar -->
+      <div class="hud-bar">
+        <button id="btn-play-pause" class="btn">⏸ Pause</button>
+
+        <div class="btn-group">
+          <button class="btn btn-speed active" data-speed="1">1x</button>
+          <button class="btn btn-speed" data-speed="2">2x</button>
+          <button class="btn btn-speed" data-speed="5">5x</button>
+          <button class="btn btn-speed" data-speed="10">10x</button>
+        </div>
+
+        <button id="btn-reset" class="btn">🔄 Reset</button>
+        <button id="btn-brain-config" class="btn">🧠 Brain Topology</button>
+      </div>
+
+      <!-- God Mode Interaction Tools -->
+      <div class="god-mode-bar">
+        <span class="god-title">GOD TOOL:</span>
+        <button class="btn btn-god-tool active" data-tool="select">🔍 Select Boid</button>
+        <button class="btn btn-god-tool" data-tool="food">🍃 Spawn Food</button>
+        <button class="btn btn-god-tool" data-tool="boid">🧬 Spawn Boid</button>
+        <button class="btn btn-god-tool" data-tool="predator">🩸 Spawn Predator</button>
+        <button class="btn btn-god-tool" data-tool="shelter">🛡 Place Shelter</button>
+      </div>
+
+      <canvas id="sim-canvas"></canvas>
+    </div>
+
+    <!-- Right Sidebar Inspector & Controls -->
+    <aside class="sidebar">
+      <!-- Live Brain Inspector Panel -->
+      <div class="panel">
+        <div class="panel-header">
+          <h2 class="panel-title">🧠 Brain Inspector</h2>
+        </div>
+        <div class="brain-canvas-container">
+          <canvas id="brain-canvas"></canvas>
+        </div>
+        <div class="telemetry-grid" id="selected-boid-telemetry">
+          <p class="placeholder-text">Click any Boid to inspect live brain firing & telemetry</p>
+        </div>
+      </div>
+
+      <!-- Telemetry Chart Panel -->
+      <div class="panel">
+        <div class="panel-header">
+          <h2 class="panel-title">📈 Ecosystem Trends</h2>
+        </div>
+        <div class="chart-container">
+          <canvas id="chart-canvas"></canvas>
+        </div>
+      </div>
+
+      <!-- Simulation Parameters Panel -->
+      <div class="panel">
+        <div class="panel-header">
+          <h2 class="panel-title">⚙️ Evolution Controls</h2>
+        </div>
+
+        <div class="control-group">
+          <div class="control-label">
+            <span>Mutation Rate</span>
+            <span id="lbl-mutation-rate">5%</span>
+          </div>
+          <input type="range" id="input-mutation-rate" min="0.01" max="0.30" step="0.01" value="0.05">
+        </div>
+
+        <div class="control-group">
+          <div class="control-label">
+            <span>Target Boids</span>
+            <span id="lbl-target-boids">45</span>
+          </div>
+          <input type="range" id="input-target-boids" min="10" max="120" step="5" value="45">
+        </div>
+
+        <div class="control-group">
+          <div class="control-label">
+            <span>Target Predators</span>
+            <span id="lbl-target-predators">3</span>
+          </div>
+          <input type="range" id="input-target-predators" min="0" max="10" step="1" value="3">
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <!-- Brain Architecture Configurator Modal -->
+  <div id="modal-brain-config" class="modal hidden">
+    <div class="modal-content">
+      <h3>🧠 Custom Neural Architecture</h3>
+      <p>Configure the neural network topology. The input layer must be 32 (sensory engine) and the output layer must be 8 (motor outputs). Up to 1,000 total neurons supported across layers.</p>
+
+      <div class="control-group">
+        <label style="font-size: 0.8rem; color: var(--text-muted);">Layer Sizes (Comma-separated):</label>
+        <input type="text" id="input-layer-config" class="input-text" value="32, 64, 32, 8">
+      </div>
+
+      <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+        <button class="btn" onclick="document.getElementById('input-layer-config').value='32, 64, 32, 8'">Default (136 Neurons)</button>
+        <button class="btn" onclick="document.getElementById('input-layer-config').value='32, 128, 64, 8'">Deep (232 Neurons)</button>
+        <button class="btn" onclick="document.getElementById('input-layer-config').value='32, 256, 128, 64, 8'">Ultra (488 Neurons)</button>
+        <button class="btn" onclick="document.getElementById('input-layer-config').value='32, 512, 400, 16'">Max (960 Neurons)</button>
+      </div>
+
+      <div class="modal-actions">
+        <button id="btn-close-brain-config" class="btn">Cancel</button>
+        <button id="btn-save-brain-config" class="btn active">Save & Restart World</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>

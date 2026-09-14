@@ -7,6 +7,7 @@ from src.utils.config import load_config, resolve_instance_paths, find_latest_ch
 from src.dataset.downloader import prepare_dataset
 from src.training.trainer import Trainer
 
+import pdb
 
 def parse_args():
     parser = argparse.ArgumentParser(description="Modern AlexNet End-to-End Training Pipeline")
@@ -36,6 +37,7 @@ def main():
         print(f"[!] Error: 'config.yaml' not found in instance directory: {instance_path}")
         sys.exit(1)
 
+    pdb.set_trace()
     try:
         print(f"[*] Instance path   : {instance_path}")
         print(f"[*] Loading config  : {config_file}")

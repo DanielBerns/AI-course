@@ -360,7 +360,7 @@
 		author  = {He, Kaiming and Zhang, Xiangyu and Ren, Shaoqing and Sun, Jian},
 		title   = {Delving Deep into Rectifiers: Surpassing Human-Level Performance on {ImageNet} Classification},
 		booktitle = {Proceedings of the IEEE International Conference on Computer Vision (ICCV)},
-		pages   = {1026--1034}, year = {1915}}
+		pages   = {1026--1034}, year = {2015}}
 	@inproceedings{loshchilov2019,
 		author  = {Loshchilov, Ilya and Hutter, Frank},
 		title   = {Decoupled Weight Decay Regularization},
@@ -663,38 +663,40 @@ pdfkeywords={AI, machine learning, deep learning, transformers, LLM}]{hyperref}
 	\addcontentsline{toc}{section}{About this course}
 	% =====================================================================
 	
-	This document develops a four-module accelerated overview of modern artificial
+	This document develops a five-module accelerated overview of modern artificial
 	intelligence for technically capable students. It assumes basic background
 	summarised in the prerequisite matrix on the next page: comfortable
 	\textbf{Python}, basic \textbf{NumPy \& Pandas}, and \textbf{elementary
-		calculus and linear algebra}. Everything else --- from eigenvectors to attention --- is built
+		calculus and linear algebra}. Everything else --- from eigenvectors to multi-head attention --- is built
 	from scratch, in context, with citations to the primary literature and
 	standard textbooks.
 	
-	The four modules are deliberately sequential, as the roadmap below shows:
+	The five modules are deliberately sequential, as the roadmap below shows:
 	the landscape and its ethics (\emph{Module~1}), the mathematical
 	foundations (\emph{Module~2}), the classical machine-learning engine that
-	remains highly competitive for tabular workloads (\emph{Module~3}), and the deep
-	learning and generative-AI frontier (\emph{Module~4}). All code snippets
+	remains highly competitive for tabular workloads (\emph{Module~3}), neural networks and representation learning (\emph{Module~4}), and the foundation model and generative-AI frontier (\emph{Module~5}). All code snippets
 	assume Python 3.9+ with \texttt{numpy}, \texttt{pandas},
-	\texttt{scikit-learn}, and (for Module~4) \texttt{transformers} installed.
+	\texttt{scikit-learn}, and (for Modules~4 and~5) \texttt{transformers} installed.
 	
 	\begin{figure}[ht]
 		\centering
 		\begin{tikzpicture}[
-			stage/.style={rounded corners=2mm, align=center, font=\sffamily\small,
-				minimum height=1.05cm, inner sep=3pt, text width=3.05cm},
+			stage/.style={rounded corners=2mm, align=center, font=\sffamily\scriptsize,
+				minimum height=1.05cm, inner sep=2pt, text width=2.5cm},
 			>=Stealth]
-			\node[stage, draw=primary,   fill=primary!8]   (m1) {\textbf{Module 1}\\[2pt] The AI landscape\\ \scriptsize context \& ethics};
-			\node[stage, draw=secondary, fill=secondary!8, right=0.45cm of m1] (m2)
-			{\textbf{Module 2}\\[2pt] Math \& data\\ \scriptsize the language of ML};
-			\node[stage, draw=accent,    fill=accent!8,    right=0.45cm of m2] (m3)
-			{\textbf{Module 3}\\[2pt] Classical ML\\ \scriptsize the core engine};
-			\node[stage, draw=dpurple,   fill=dpurple!8,   right=0.45cm of m3] (m4)
-			{\textbf{Module 4}\\[2pt] Deep learning\\ \scriptsize \& generative AI};
+			\node[stage, draw=primary,   fill=primary!8]   (m1) {\textbf{Module 1}\\[2pt] The AI landscape\\ context \& ethics};
+			\node[stage, draw=secondary, fill=secondary!8, right=0.22cm of m1] (m2)
+			{\textbf{Module 2}\\[2pt] Math \& data\\ language of ML};
+			\node[stage, draw=accent,    fill=accent!8,    right=0.22cm of m2] (m3)
+			{\textbf{Module 3}\\[2pt] Classical ML\\ the core engine};
+			\node[stage, draw=dpurple,   fill=dpurple!8,   right=0.22cm of m3] (m4)
+			{\textbf{Module 4}\\[2pt] Neural Networks\\ \& representation};
+			\node[stage, draw=primary!80!black, fill=primary!15, right=0.22cm of m4] (m5)
+			{\textbf{Module 5}\\[2pt] Foundation Models\\ \& generative AI};
 			\draw[->, thick, primary!70]   (m1) -- (m2);
 			\draw[->, thick, secondary!80] (m2) -- (m3);
 			\draw[->, thick, accent!90]    (m3) -- (m4);
+			\draw[->, thick, dpurple!90]   (m4) -- (m5);
 		\end{tikzpicture}
 		\caption{The learning path: each module builds directly on the one before it.}
 		\label{fig:roadmap}
@@ -892,7 +894,7 @@ pdfkeywords={AI, machine learning, deep learning, transformers, LLM}]{hyperref}
 	from physicians and impressed clinicians in blind evaluations --- yet
 	only inside their narrow domain. Rules are brittle, and extracting them
 	from experts (the \emph{knowledge-acquisition bottleneck}) is slow and
-	expensive.
+	expensive. Deep Blue's 1997 victory over Garry Kasparov represented the high-water mark of this symbolic, search-based paradigm --- demonstrating immense raw evaluation power, yet remaining strictly bound by human-engineered evaluation heuristics.
 	
 	Machine learning inverts the pipeline: instead of programming rules, we
 	collect examples of the desired behaviour and let an algorithm discover
@@ -967,14 +969,22 @@ pdfkeywords={AI, machine learning, deep learning, transformers, LLM}]{hyperref}
 	\begin{practicebox}
 \begin{lstlisting}
 import pandas as pd
+import numpy as np
 
-df = pd.read_csv("orders.csv", parse_dates=["created"])
+# Ingest / synthetic creation for standalone demo
+rng = np.random.default_rng(42)
+df = pd.DataFrame({
+    "created": pd.date_range("2026-01-01", periods=100, freq="h"),
+    "amount": rng.uniform(10, 200, 100),
+    "quantity": rng.integers(1, 5, 100),
+    "region": rng.choice(["North", "South", "East", "West"], 100)
+})
 df = df.dropna(subset=["amount"])           # basic cleaning
 df["revenue"] = df["amount"] * df["quantity"]
 summary = df.groupby("region")["revenue"].agg(["count", "mean", "sum"])
 print(summary)
 \end{lstlisting}
-		Five lines of Pandas cover the ingest, clean, transform, aggregate loop
+		Pandas covers the ingest, clean, transform, aggregate loop
 		that occupies most of a data scientist's day.
 	\end{practicebox}
 	
@@ -1271,7 +1281,7 @@ def adam_step(theta, grad, m, v, t, lr=0.01,
 w, lr = 5.0, 0.15
 for step in range(8):
     grad = 2 * w            # derivative of f(w) = w**2
-    w = w - lr * grad       # the update rule, eq. (8)
+    w = w - lr * grad       # the update rule, eq. (11)
     print(f"step {step}:  w = {w:.4f}")
     # w -> 0.2882: convergence toward the minimum
 \end{lstlisting}
@@ -1656,7 +1666,7 @@ print(f"RBF Support Vectors:    {len(svm_rbf.support_vectors_)} / 240 samples")
 	
 	Unsupervised learning discovers underlying structure without target labels.
 	
-	\textbf{K-Means \& Silhouette Score.} The canonical partitioning algorithm \textbf{K-Means} \parencite{macqueen1967} minimizes within-cluster inertia $J = \sum_{k=1}^K \sum_{\mathbf{x}_i \in C_k} \|\mathbf{x}_i - \boldsymbol{\mu}_k\|_2^2$ via Expectation-Maximization step updates. Cluster separation quality is quantified by the \textbf{Silhouette Score} $s(i) = \frac{b(i)-a(i)}{\max(a(i), b(i))}$.
+	\textbf{K-Means \& Silhouette Score.} The canonical partitioning algorithm \textbf{K-Means} \parencite{macqueen1967} minimizes within-cluster inertia $J = \sum_{k=1}^K \sum_{\mathbf{x}_i \in C_k} \|\mathbf{x}_i - \boldsymbol{\mu}_k\|_2^2$ via Lloyd's algorithm (hard-assignment EM updates).\footnote{K-Means uses hard assignment (each point belongs to exactly one cluster), whereas Gaussian Mixture Models (GMMs) employ soft responsibilities via the full Expectation-Maximization algorithm as detailed below.} Cluster separation quality is quantified by the \textbf{Silhouette Score} $s(i) = \frac{b(i)-a(i)}{\max(a(i), b(i))}$ \parencite{rousseeuw1987}.
 	
 	\textbf{Density-based \& Mixture Models: DBSCAN \& GMMs.} K-Means assumes spherical, equal-sized clusters. To identify arbitrary non-convex clusters, \textbf{DBSCAN} \parencite{ester1996} groups points based on density ($\epsilon$-neighborhoods and minimum core samples), naturally isolating noise outliers. For probabilistic soft-clustering, \textbf{Gaussian Mixture Models (GMMs)} represent data distributions as a linear combination of $K$ Gaussians $\sum \pi_k \mathcal{N}(\mathbf{x} \mid \boldsymbol{\mu}_k, \Sigma_k)$, fitted via the Expectation-Maximization (EM) algorithm \parencite{bishop2006}.
 	
@@ -1672,7 +1682,11 @@ print(f"RBF Support Vectors:    {len(svm_rbf.support_vectors_)} / 240 samples")
 \begin{lstlisting}
 from sklearn.cluster import KMeans, DBSCAN
 from sklearn.metrics import silhouette_score
+from sklearn.datasets import make_blobs
 import numpy as np
+
+# Synthetic data generation for standalone execution
+X_tr, _ = make_blobs(n_samples=150, centers=3, cluster_std=0.6, random_state=42)
 
 # Fit K-Means and DBSCAN on synthetic data
 kmeans = KMeans(n_clusters=3, n_init=10, random_state=42).fit(X_tr)
@@ -1761,15 +1775,14 @@ print(f"DBSCAN Clusters Found:   {len(set(dbscan.labels_)) - (1 if -1 in dbscan.
 	\section{Transition to Deep Learning and Modern AI}
 	% =====================================================================
 	
-	\begin{modulecard}{\faBrain\ Module 4 --- at a glance \hfill \small\normalfont (Estimated Study: 14 hours \textbullet{} Level: Advanced)}{dpurple}
-		\textbf{Focus.} The leap from engineered features to learned
-		representations and self-supervised pretraining: neural networks, autoencoders, contrastive learning, transformer architectures, and the mechanics of generative foundation models.
+	\begin{modulecard}{\faBrain\ Module 4 --- at a glance \hfill \small\normalfont (Estimated Study: 8 hours \textbullet{} Level: Intermediate--Advanced)}{dpurple}
+		\textbf{Focus.} The leap from engineered features to learned representation hierarchies: perceptrons, activation functions, backpropagation, regularization \& normalization, autoencoders, latent spaces, CNNs, RNNs/LSTMs, and self-attention in Transformers.
 		
 		\medskip
-		\textbf{Key concepts.} Perceptrons, backpropagation; representation learning, manifold hypothesis, autoencoders, latent spaces, Word2Vec; self-supervised learning, InfoNCE loss, pretext tasks; CNNs, RNNs, transformers; scaling laws, LoRA, and LLM inference.
+		\textbf{Key concepts.} Perceptrons, backpropagation, activation functions, vanishing gradients, Dropout, Batch/Layer Normalization, autoencoders, latent spaces, Word2Vec, CNNs, translation equivariance, RNNs, LSTMs, Scaled Dot-Product Attention, and Multi-Head Attention.
 		
 		\medskip
-		\textbf{After this module you will be able to} explain how neural networks discover continuous latent representations, derive self-supervised pretext tasks and contrastive losses, explain why transformers and SSL together unlocked large language models, and trace LLM generation step-by-step.
+		\textbf{After this module you will be able to} explain how neural networks learn continuous latent representations, derive backpropagation matrix calculus, contrast normalization techniques, and build Multi-Head Attention mechanisms from scratch.
 	\end{modulecard}
 	
 	The jump from classical ML to deep learning is a jump in \emph{who
@@ -1884,6 +1897,28 @@ print(f"DBSCAN Clusters Found:   {len(set(dbscan.labels_)) - (1 if -1 in dbscan.
 		\boldsymbol{\delta}^{(1)} = \left( \prod_{\ell=2}^{L} W^{(\ell)\top} \mathrm{diag}\!\left(\phi'\!\left(\mathbf{z}^{(\ell)}\right)\right) \right) \boldsymbol{\delta}^{(L)}.
 	\end{equation}
 	Backpropagated signals scale with matrix singular values and activation derivatives $\phi'$. In naive unregularized deep stacks, if effective singular values or activation slopes remain consistently below 1, gradients decay exponentially to zero ($\boldsymbol{\delta}^{(1)} \to \mathbf{0}$, \emph{vanishing gradients}), leaving early layers untrained. Conversely, if effective products exceed 1, gradients explode exponentially ($\boldsymbol{\delta}^{(1)} \to \infty$, \emph{exploding gradients}). In modern deep networks, gradient dynamics depend strongly on architecture, initialization, normalization, and activation distributions. Deep networks employ explicit safeguards --- residual skip connections \parencite{he2016}, gradient clipping, Layer Normalization, Xavier/He weight initialization \parencite{glorot2010, he2015}, and non-saturating activations (ReLU) \parencite{nair2010} --- to maintain stable gradient norm propagation.
+
+	\textbf{Regularization and normalization in deep networks.} Beyond basic weight decay, deep network training relies on specialized techniques to prevent overfitting and stabilize activation distributions across layers:
+	
+	\begin{table}[ht]
+		\centering
+		\small\sffamily
+		\renewcommand{\arraystretch}{1.3}
+		\rowcolors{2}{white}{primary!7}
+		\begin{tabular}{@{}L{3.2cm} L{4.5cm} L{6.8cm}@{}}
+			\toprule
+			\rowcolor{primary}
+			\textcolor{white}{\textbf{Technique}} & \textcolor{white}{\textbf{Mechanism \& Scope}} & \textcolor{white}{\textbf{Primary Benefit \& Use Case}} \\
+			\midrule
+			\textbf{Dropout} & Randomly zeroes activations with probability $p$ during training & Prevents co-adaptation; acts as an ensemble over sub-networks \\
+			\textbf{Batch Norm} & Normalizes activations across the mini-batch dimension & Reduces internal covariate shift in CNNs; sensitive to batch size \\
+			\textbf{Layer Norm} & Normalizes activations across feature channels per sample & Essential for Transformers and RNNs; independent of batch size \\
+			\textbf{Weight Decay vs $\ell_2$} & Decouples coefficient penalty from adaptive moments (AdamW) & Prevents gradient scaling from eroding regularisation in LLMs \\
+			\bottomrule
+		\end{tabular}
+		\caption{Comparison of regularization and normalization mechanisms in modern deep architectures.}
+		\label{tab:reg_norm}
+	\end{table}
 
 	\begin{practicebox}[Two-Layer MLP with Manual Backpropagation on Non-Linear Data]
 \begin{lstlisting}
@@ -2055,6 +2090,46 @@ print("Causal Attention Weights Matrix:\n", np.round(attn, 3))
 \end{lstlisting}
 	\end{practicebox}
 
+	\textbf{Multi-Head Attention (MHA).} Single-head attention averages relationships across the full representation space. To allow the network to jointly attend to information from different representation subspaces at different positions, \textbf{Multi-Head Attention} \parencite{vaswani2017} projects queries, keys, and values $h$ times with distinct learnable linear projections:
+	\begin{equation}
+		\mathrm{MultiHead}(Q, K, V) = \mathrm{Concat}(\mathrm{head}_1, \dots, \mathrm{head}_h) W^O,
+	\end{equation}
+	\begin{equation}
+		\text{where}\quad \mathrm{head}_i = \mathrm{Attention}\bigl(Q W_i^Q,\; K W_i^K,\; V W_i^V\bigr),
+	\end{equation}
+	with projection parameter matrices $W_i^Q \in \mathbb{R}^{d_{\text{model}} \times d_k}$, $W_i^K \in \mathbb{R}^{d_{\text{model}} \times d_k}$, $W_i^V \in \mathbb{R}^{d_{\text{model}} \times d_v}$, and output projection $W^O \in \mathbb{R}^{h d_v \times d_{\text{model}}}$. In practice, $d_k = d_v = d_{\text{model}} / h$, keeping total computational cost comparable to single-head attention with full dimensionality.
+
+	\begin{practicebox}[Multi-Head Attention from Scratch in NumPy]
+\begin{lstlisting}
+import numpy as np
+
+def multi_head_attention(X, num_heads=4, d_model=64):
+    B, N, _ = X.shape
+    d_k = d_model // num_heads
+    rng = np.random.default_rng(42)
+    W_Q, W_K, W_V = [rng.normal(0, 0.1, size=(d_model, d_model)) for _ in range(3)]
+    W_O = rng.normal(0, 0.1, size=(d_model, d_model))
+    
+    # Linear projection & reshape into (B, num_heads, N, d_k)
+    Q = (X @ W_Q).reshape(B, N, num_heads, d_k).transpose(0, 2, 1, 3)
+    K = (X @ W_K).reshape(B, N, num_heads, d_k).transpose(0, 2, 1, 3)
+    V = (X @ W_V).reshape(B, N, num_heads, d_k).transpose(0, 2, 1, 3)
+    
+    # Parallel dot-product attention per head
+    scores = (Q @ K.transpose(0, 1, 3, 2)) / np.sqrt(d_k)
+    weights = np.exp(scores - np.max(scores, axis=-1, keepdims=True))
+    weights /= weights.sum(axis=-1, keepdims=True)
+    
+    # Concatenate heads & final linear projection -> (B, N, d_model)
+    heads_out = (weights @ V).transpose(0, 2, 1, 3).reshape(B, N, d_model)
+    return heads_out @ W_O
+
+X_in = np.random.default_rng(42).normal(size=(2, 8, 64))  # Batch 2, Seq 8, Dim 64
+mha_out = multi_head_attention(X_in, num_heads=4, d_model=64)
+print("Multi-Head Attention Output Shape:", mha_out.shape)  # (2, 8, 64)
+\end{lstlisting}
+	\end{practicebox}
+
 	\textbf{Positional encodings.} Plain self-attention is permutation-invariant. To inject sequence order, \textbf{positional encodings} are added to input embeddings. The original Transformer used sinusoidal frequencies \parencite{vaswani2017}. Modern LLMs (e.g., Llama 3) predominantly use \textbf{Rotary Position Embeddings (RoPE)} \parencite{su2024}, rotating query and key vectors in complex 2D planes to encode relative distance directly into $Q K^\top$.
 
 	\textbf{Residual connections, normalization, and optimization.} Deep Transformer stacks survive vanishing gradients by wrapping every sub-layer with a \textbf{residual (skip) connection} \parencite{he2016} and \textbf{Layer Normalization}. While original Transformers used \textbf{Post-Layer Normalization} ($\mathbf{y} = \mathrm{LayerNorm}(\mathbf{x} + \mathcal{F}(\mathbf{x}))$), modern foundation models standardly use \textbf{Pre-Layer Normalization} (Pre-LN):
@@ -2063,10 +2138,86 @@ print("Causal Attention Weights Matrix:\n", np.round(attn, 3))
 	\end{equation}
 	Pre-LN preserves an unattenuated identity gradient highway ($\mathbf{x}$ passed directly to addition), enabling stable training across hundreds of layers without delicate warm-up schedules. Model optimization relies on \textbf{AdamW} \parencite{loshchilov2019} with learning rate warmup and cosine decay schedules.
 
-	\subsection{Self-supervised learning: unifying supervised and unsupervised paradigms}
+	\begin{checkpoint}
+		\begin{enumerate}
+			\item Remove the nonlinearity from an MLP: what functions can the resulting network represent, and why?
+			\item In an undercomplete Autoencoder with linear layers and MSE loss, what classical linear algebra technique does the bottleneck space replicate?
+			\item Explain how Skip-Gram Negative Sampling (SGNS) overcomes the computational bottleneck of full-vocabulary softmax in Word2Vec.
+			\item Why is Multi-Head Attention (MHA) preferred over single-head attention in modern Transformers?
+		\end{enumerate}
+	\end{checkpoint}
+
+	\begin{sourcesbox}
+		\small
+		\begin{itemize}[nosep]
+			\item \fullcite{rosenblatt1958}
+			\item \fullcite{rumelhart1986}
+			\item \fullcite{hornik1989}
+			\item \fullcite{nair2010}
+			\item \fullcite{bengio2013}
+			\item \fullcite{vincent2008}
+			\item \fullcite{lecun1998}
+			\item \fullcite{hochreiter1997}
+			\item \fullcite{he2016}
+			\item \fullcite{vaswani2017}
+			\item \fullcite{glorot2010}
+			\item \fullcite{he2015}
+		\end{itemize}
+	\end{sourcesbox}
+
+	% =====================================================================
+	\clearpage
+	\section{Foundation Models and Generative AI}
+	% =====================================================================
+	
+	\begin{modulecard}{\faRobot\ Module 5 --- at a glance \hfill \small\normalfont (Estimated Study: 8 hours \textbullet{} Level: Advanced)}{primary!80!black}
+		\textbf{Focus.} The self-supervised foundation model paradigm: subword tokenization, SSL pretext objectives, scaling laws, generative models (diffusion, LLMs), fine-tuning alignment (LoRA, RLHF, DPO), high-performance inference (KV-caching, RAG), and responsible AI revisited.
+		
+		\medskip
+		\textbf{Key concepts.} Tokenization (BPE), self-supervised learning, InfoNCE loss, Causal LM, Masked LM, scaling laws, diffusion models, SFT, LoRA/QLoRA, RLHF, DPO, KV-caching, RAG, and alignment failures.
+		
+		\medskip
+		\textbf{After this module you will be able to} explain how raw text is converted into tokens, derive contrastive InfoNCE and DPO loss formulations, explain compute-optimal scaling laws, implement parameter-efficient fine-tuning via LoRA, trace LLM next-token generation step-by-step, and audit foundation models against ethical safety dimensions.
+	\end{modulecard}
+	
+	\subsection{Self-supervised learning and subword tokenization}
 	
 	The transition from classical machine learning to modern foundation models rests fundamentally on \textbf{Self-Supervised Learning (SSL)}. Classical supervised learning achieves high accuracy but is strictly bottlenecked by expensive, non-scalable human annotations $(\mathbf{x}_i, y_i)$. Traditional unsupervised learning (K-Means, PCA) scales to unlabelled data but struggles to discover task-relevant high-level semantics without targets. Self-supervised learning bridges this divide by turning unlabelled raw data into its own supervisor: the model automatically constructs artificial target signals (\emph{pretext tasks}) directly from intrinsic structural patterns within raw inputs $\mathbf{x}$.
-	
+
+	\textbf{Tokenization: Bridging Raw Text and Model Inputs.} Foundation models do not process raw string characters or whole dictionary words directly. Whole-word vocabularies suffer from out-of-vocabulary (OOV) failures and massive matrix dimensions, while character-level models yield long sequence lengths. Modern LLMs use \textbf{Subword Tokenization} --- primarily \textbf{Byte-Pair Encoding (BPE)} --- which iteratively merges the most frequent adjacent character or byte pairs into subwords.
+
+	\begin{practicebox}[Byte-Pair Encoding (BPE) Tokenization Step from Scratch]
+\begin{lstlisting}
+from collections import defaultdict
+
+def get_stats(vocab):
+    pairs = defaultdict(int)
+    for word, freq in vocab.items():
+        symbols = word.split()
+        for i in range(len(symbols) - 1):
+            pairs[symbols[i], symbols[i+1]] += freq
+    return pairs
+
+def merge_vocab(pair, v_in):
+    v_out = {}
+    bigram = ' '.join(pair)
+    replacement = ''.join(pair)
+    for word in v_in:
+        w_out = word.replace(bigram, replacement)
+        v_out[w_out] = v_in[word]
+    return v_out
+
+# Synthetic toy vocabulary with word frequencies
+vocab = {'l o w </w>': 5, 'l o w e r </w>': 2, 'n e w e s t </w>': 6, 'w i d e s t </w>': 3}
+print("Initial Subword Vocab:", vocab)
+for step in range(3):
+    pairs = get_stats(vocab)
+    best_pair = max(pairs, key=pairs.get)
+    vocab = merge_vocab(best_pair, vocab)
+    print(f"Step {step+1} Best Pair {best_pair} -> Merged Vocab: {vocab}")
+\end{lstlisting}
+	\end{practicebox}
+
 	\begin{keyconcept}[Self-Supervised Learning: The Foundation Model Engine]
 		Self-Supervised Learning converts unlabelled raw data (text, images, audio) into supervised learning targets by hiding, masking, or augmenting parts of the input and training a network to predict the missing signal. SSL provides an unlimited training signal, turning web-scale raw datasets into universal pre-trained representations.
 	\end{keyconcept}
@@ -2160,15 +2311,8 @@ print(f"InfoNCE Loss (Random Unaligned Pairs):   {loss_unaligned:.4f}")
 \end{lstlisting}
 	\end{practicebox}
 	
-	\subsection{Generative AI \& Foundation Models: Adaptation and Inference}
-	
-	\textbf{The Foundation Model Paradigm Shift.} Building upon self-supervised pretraining, foundation models map raw data into dense representations that adapt across diverse downstream tasks:
-	\begin{equation}
-		\text{Supervised ML} \longrightarrow \text{Self-Supervised Pretraining} \longrightarrow \text{Supervised Fine-Tuning (SFT)} \longrightarrow \text{Preference Optimization (RLHF/DPO)}.
-	\end{equation}
-	
-	\textbf{Embeddings \& Contextual Semantics.} Static word embeddings (word2vec \parencite{mikolov2013}) showed linear vector arithmetic ($w_{\text{king}} - w_{\text{man}} + w_{\text{woman}} \approx w_{\text{queen}}$). Modern contextual embeddings in Transformers dynamically compute representations dependent on surrounding sequence context.
-	
+	\subsection{Scaling laws and generative architectures}
+
 	\textbf{Latent Space \& Diffusion Models.} Generative models compress data into lower-dimensional latent representations. Variational Autoencoders \parencite{kingma2014} and GANs \parencite{goodfellow2014} pioneered latent generation. \textbf{Diffusion Models} \parencite{ho2020} dominate image/audio synthesis by training U-Nets or Vision Transformers to reverse a forward Gaussian noise process $q(\mathbf{x}_t \mid \mathbf{x}_{t-1})$.
 	
 	\textbf{Large Language Models \& Causal Masking.} Autoregressive LLMs predict the next token via cross-entropy loss over vocabulary $V$:
@@ -2177,19 +2321,25 @@ print(f"InfoNCE Loss (Random Unaligned Pairs):   {loss_unaligned:.4f}")
 	\end{equation}
 	Causal attention masking ($M_{ij} = -\infty$ for $j > i$) prevents tokens from viewing future positions.
 	
-	\textbf{Pretraining, Scaling, and Fine-Tuning Taxonomy.} Pretraining consumes trillions of tokens. Compute-optimal \textbf{Chinchilla scaling analysis} \parencite{hoffmann2022} demonstrated that model capacity and training token count should scale in roughly equal $1:1$ proportion under compute-optimal budgets. Following pretraining, alignment transforms raw base models into helpful assistants:
+	\textbf{Compute-Optimal Scaling Laws.} Pretraining consumes trillions of tokens. Empirical \textbf{scaling laws} \parencite{kaplan2020} showed power-law scaling of performance with compute, parameters, and tokens. Compute-optimal \textbf{Chinchilla scaling analysis} \parencite{hoffmann2022} demonstrated that model capacity and training token count should scale in roughly equal $1:1$ proportion under compute-optimal budgets.
+
+	\subsection{Fine-tuning, parameter efficiency, and preference alignment}
+
+	Following pretraining, alignment transforms raw base models into helpful assistants:
 	\begin{enumerate}[nosep]
 		\item \textbf{Supervised Fine-Tuning (SFT):} Fine-tuning on curated demonstration pairs.
 		\item \textbf{Preference Optimization (RLHF \& DPO):} Reinforcement Learning from Human Feedback \parencite{christiano2017, ouyang2022} or Direct Preference Optimization (DPO) \parencite{rafailov2023} optimizes policy preference loss directly without fitting an explicit reward model.
 		\item \textbf{Parameter-Efficient Fine-Tuning (PEFT / LoRA):} \textbf{LoRA} \parencite{hu2021} freezes pretrained weight matrices $W_0 \in \mathbb{R}^{d \times k}$ and injects trainable low-rank decomposition matrices $\Delta W = B A$ ($B \in \mathbb{R}^{d \times r}, A \in \mathbb{R}^{r \times k}, r \ll \min(d,k)$), reducing trainable parameters by $>99\%$. \textbf{QLoRA} \parencite{dettmers2024} quantizes base model weights to 4-bit NormalFloat while preserving full-precision low-rank adapters.
 	\end{enumerate}
 
-	\textbf{Modern LLM Inference \& Generation Control.} At inference, token sampling controls decoding:
+	\subsection{Foundation model inference, KV-caching, and RAG}
+
+	At inference, token sampling controls decoding:
 	\begin{itemize}[nosep]
 		\item \textbf{Temperature Scaling \& Greedy Decoding:} Softmax $\mathrm{softmax}(\mathbf{z}/T)$ controls distribution entropy. As $T \to 0^+$, the distribution converges to a one-hot vector at $\arg\max \mathbf{z}$, which code libraries alias as \texttt{temperature=0} (greedy decoding).
 		\item \textbf{Sampling Strategies:} Top-$k$ truncates sampling to the $k$ most probable tokens; Top-$p$ (nucleus) samples from the smallest candidate set comprising cumulative probability $p$.
-		\item \textbf{Inference Acceleration:} High-throughput inference relies on \textbf{KV Caching}\footnote{KV Caching stores past $K$ and $V$ tensors in memory, making incremental attention computation per generated token linear in context length $O(N)$ instead of $O(N^2)$.}, continuous batching, quantization (INT8/INT4), and speculative decoding (using a small draft model to generate candidate tokens verified in parallel by a larger target model).
-		\item \textbf{Retrieval-Augmented Generation (RAG):} RAG \parencite{lewis2020} grounds generation by retrieving relevant document snippets from vector databases into prompt context. However, RAG reduces but does not eliminate hallucinations: retrieval can fail, retrieved documents can contain errors, or the generator can misinterpret context.
+		\item \textbf{Inference Acceleration:} High-throughput inference relies on \textbf{KV Caching}\footnote{KV Caching stores past $K$ and $V$ tensors in memory, making incremental attention computation per generated token linear in context length $O(N)$ instead of $O(N^2)$.}, continuous batching, quantization (INT8/INT4), and speculative decoding.
+		\item \textbf{Retrieval-Augmented Generation (RAG):} RAG \parencite{lewis2020} grounds generation by retrieving relevant document snippets from vector databases into prompt context.
 	\end{itemize}
 
 	\begin{keyconcept}[How an LLM writes one token]
@@ -2203,33 +2353,32 @@ print(f"InfoNCE Loss (Random Unaligned Pairs):   {loss_unaligned:.4f}")
 		\end{enumerate}
 	\end{keyconcept}
 
-	\begin{ethicsbox}[Big models, big responsibilities: Hallucinations \& Contamination]
-		Language models can generate fluent but factually false claims (\textbf{hallucinations}). Distinguish factuality errors, faithfulness errors, and retrieval failures. Audit evaluation datasets for benchmark contamination.
+	\subsection{Ethics, alignment, and safety revisited: the generative AI frontier}
+
+	Module~1 introduced six baseline dimensions of AI ethics: algorithmic bias, privacy, alignment, copyright/provenance, environmental footprint, and automation bias. Generative AI and foundation models exacerbate these challenges while introducing distinct novel failure modes:
+
+	\begin{ethicsbox}[Ethics \& Safety Spotlight: Foundation Model Risk Checklist]
+		\begin{itemize}[nosep]
+			\item \textbf{Hallucinations \& Grounding Failure:} Fluent syntax masks ungrounded factual inaccuracies. RLHF can exacerbate "sycophancy" where models echo user biases rather than truth.
+			\item \textbf{Data Provenance \& Copyright:} Web-scale pretraining relies on copyrighted literary and visual art without attribution or compensation, driving legal and policy battles.
+			\item \textbf{Watermarking \& Synthetic Content Identification:} As AI-generated text, image, and deepfake video proliferate, cryptographic provenance and statistical watermarking become vital for info-ecosystem integrity.
+			\item \textbf{Environmental \& Compute Externalities:} Training modern foundation models consumes gigawatt-hours of electricity and significant cooling water \parencite{strubell2019, patterson2021}, highlighting the need for efficient architectures and compute-optimal training.
+		\end{itemize}
 	\end{ethicsbox}
 
 	\begin{checkpoint}
 		\begin{enumerate}
-			\item Remove the nonlinearity from an MLP: what functions can the resulting network represent, and why?
-			\item In an undercomplete Autoencoder with linear layers and MSE loss, what classical linear algebra technique does the bottleneck space replicate?
-			\item Explain how Skip-Gram Negative Sampling (SGNS) overcomes the computational bottleneck of full-vocabulary softmax in Word2Vec.
-			\item Give two concrete reasons transformers train faster than RNNs on parallel hardware.
-			\item Mathematically, what role does temperature $\tau$ play in the InfoNCE loss for contrastive learning?
 			\item Why does Self-Supervised Learning (SSL) depend so critically on the parallel self-attention mechanism of Transformers compared to sequential RNNs?
+			\item Mathematically, what role does temperature $\tau$ play in the InfoNCE loss for contrastive learning?
+			\item What key trade-off does subword tokenization (e.g. Byte-Pair Encoding) balance compared to whole-word or character-level tokenization?
+			\item According to Chinchilla scaling laws, what is the compute-optimal ratio between scaling model parameters vs.\ scaling training tokens?
+			\item Explain how LoRA achieves $>99\%$ parameter reduction during fine-tuning via low-rank matrix decomposition.
 		\end{enumerate}
 	\end{checkpoint}
 
 	\begin{sourcesbox}
 		\small
 		\begin{itemize}[nosep]
-			\item \fullcite{rosenblatt1958}
-			\item \fullcite{rumelhart1986}
-			\item \fullcite{hornik1989}
-			\item \fullcite{nair2010}
-			\item \fullcite{bengio2013}
-			\item \fullcite{vincent2008}
-			\item \fullcite{lecun1998}
-			\item \fullcite{hochreiter1997}
-			\item \fullcite{he2016}
 			\item \fullcite{vaswani2017}
 			\item \fullcite{oord2018}
 			\item \fullcite{chen2020}
@@ -2249,8 +2398,9 @@ print(f"InfoNCE Loss (Random Unaligned Pairs):   {loss_unaligned:.4f}")
 			\item \fullcite{hu2021}
 			\item \fullcite{dettmers2024}
 			\item \fullcite{lewis2020}
-			\item \fullcite{glorot2010}
-			\item \fullcite{loshchilov2019}
+			\item \fullcite{strubell2019}
+			\item \fullcite{patterson2021}
+			\item \fullcite{bender2021}
 		\end{itemize}
 	\end{sourcesbox}
 
@@ -2279,7 +2429,7 @@ print(f"InfoNCE Loss (Random Unaligned Pairs):   {loss_unaligned:.4f}")
 	\addcontentsline{toc}{section}{Practical Coding Projects Series}
 	% =====================================================================
 	
-	To accompany the theoretical foundation developed across the four modules, a complete series of six substantial hands-on coding projects is provided in the repository's \texttt{projects/} directory (\url{https://github.com/DanielBerns/AI-course}). Each project bridges theoretical concepts to runnable Python implementation using industry-standard frameworks (\texttt{NumPy}, \texttt{Pandas}, \texttt{Scikit-Learn}, \texttt{XGBoost}, \texttt{PyTorch}, and \texttt{Transformers}), with explicit emphasis on data cleaning, exploratory visualization, model diagnostics, resumable training, and inference pipelines.
+	To accompany the theoretical foundation developed across the five modules, a complete series of six substantial hands-on coding projects is provided in the repository's \texttt{projects/} directory (\url{https://github.com/DanielBerns/AI-course}). Each project bridges theoretical concepts to runnable Python implementation using industry-standard frameworks (\texttt{NumPy}, \texttt{Pandas}, \texttt{Scikit-Learn}, \texttt{XGBoost}, \texttt{PyTorch}, and \texttt{Transformers}), with explicit emphasis on data cleaning, exploratory visualization, model diagnostics, resumable training, and inference pipelines.
 
 	% ---------------------------------------------------------------------
 	\subsection*{Project 1: Data Pipeline, Exploratory Analysis \& Algorithmic Bias Audit}
@@ -2306,12 +2456,12 @@ print(f"InfoNCE Loss (Random Unaligned Pairs):   {loss_unaligned:.4f}")
 	% ---------------------------------------------------------------------
 	\subsection*{Project 5: Computer Vision \& Sequential Architectures (CNNs \& LSTMs)}
 	% ---------------------------------------------------------------------
-	\textbf{Curriculum Mapping:} Module 4 (CNNs and RNNs/LSTMs). PyTorch 2D CNN with Pre-LN Residual Skip Connections ($\mathbf{y} = \mathbf{x} + \mathcal{F}(\text{LayerNorm}(\mathbf{x}))$) and PyTorch LSTM.
+	\textbf{Curriculum Mapping:} Module 4 (CNNs, RNNs/LSTMs, Multi-Head Attention). PyTorch 2D CNN with Pre-LN Residual Skip Connections and PyTorch LSTM.
 
 	% ---------------------------------------------------------------------
 	\subsection*{Project 6: Transformer Architectures \& LLM Fine-Tuning Pipeline}
 	% ---------------------------------------------------------------------
-	\textbf{Curriculum Mapping:} Module 4 (Transformers, Generative AI \& LLMs). Causal self-attention from scratch, RoPE, Hugging Face fine-tuning (SFT/LoRA), next-token sampling engine.
+	\textbf{Curriculum Mapping:} Module 5 (Foundation Models, Generative AI \& LLMs). Causal self-attention from scratch, RoPE, Hugging Face fine-tuning (SFT/LoRA), next-token sampling engine.
 
 	% =====================================================================
 	\clearpage
@@ -2321,7 +2471,7 @@ print(f"InfoNCE Loss (Random Unaligned Pairs):   {loss_unaligned:.4f}")
 	\addcontentsline{toc}{section}{Appendix: Answer Key for Check Your Understanding}
 	% =====================================================================
 
-	This appendix provides concise model answers for all self-check exercises across the four modules.
+	This appendix provides concise model answers for all self-check exercises across the five modules.
 
 	\subsection*{Module 1: Introduction and the AI Landscape}
 	\begin{enumerate}
@@ -2345,14 +2495,21 @@ print(f"InfoNCE Loss (Random Unaligned Pairs):   {loss_unaligned:.4f}")
 		\item \textbf{Cross-Validation Score Variance (0.62 to 0.91):} Indicates model instability or fold sample imbalance; use stratified $k$-fold, stronger regularization, or more data.
 	\end{enumerate}
 
-	\subsection*{Module 4: Transition to Deep Learning and Modern AI}
+	\subsection*{Module 4: Neural Networks and Representation Learning}
 	\begin{enumerate}
 		\item \textbf{MLP without Nonlinearity:} Collapses mathematically into a single linear map $\mathbf{a}^{(L)} = W_{\text{effective}}\mathbf{x}$, restricted to linear hyperplanes.
 		\item \textbf{Linear Undercomplete Autoencoder Subspace:} Under MSE loss, a linear undercomplete autoencoder bottleneck learns the exact principal subspace as Principal Component Analysis (PCA).
 		\item \textbf{Skip-Gram Negative Sampling (SGNS):} Converts expensive full-vocabulary softmax over $|V|$ into $K+1$ binary logistic regressions per step, replacing $O(|V|)$ denominator summations with $O(K)$ binary updates.
-		\item \textbf{Transformers vs RNNs Training Speed:} (1) Full sequence parallelization via matrix multiplication ($Q K^\top$); (2) $O(1)$ direct attention paths between arbitrary positions.
-		\item \textbf{InfoNCE Temperature $\tau$:} Scales cosine similarities before log-softmax, controlling the relative gradient penalty weight assigned to hard negative samples vs. easy negatives.
+		\item \textbf{Multi-Head Attention Advantage:} Projects inputs into $h$ distinct subspace heads in parallel, enabling the model to simultaneously attend to different aspects (e.g. syntactic agreement vs semantic reference) at different positions.
+	\end{enumerate}
+
+	\subsection*{Module 5: Foundation Models and Generative AI}
+	\begin{enumerate}
 		\item \textbf{SSL \& Transformer Synergy:} SSL relies on pseudo-tasks (CLM/MLM) over unlabelled web-scale corpora containing trillions of tokens. Sequential RNNs process inputs sequentially ($O(N)$ steps) with memory bottlenecks in BPTT, making web-scale training computationally intractable. Transformers compute all pairwise token interactions in parallel ($O(1)$ sequential operations) and lack rigid local/temporal inductive biases, enabling parameter capacity to absorb massive scale without early performance saturation.
+		\item \textbf{InfoNCE Temperature $\tau$:} Scales cosine similarities before log-softmax, controlling the relative gradient penalty weight assigned to hard negative samples vs.\ easy negatives.
+		\item \textbf{Subword Tokenization Trade-off:} Balances vocabulary size and sequence length by keeping frequent words intact while breaking rare words into subword pieces, avoiding out-of-vocabulary (OOV) tokens.
+		\item \textbf{Chinchilla Scaling Ratio:} Specifies that for optimal compute allocation, parameter count and training token count should scale at an equal $1:1$ ratio.
+		\item \textbf{LoRA Parameter Reduction:} Replaces full weight matrix update $\Delta W \in \mathbb{R}^{d \times k}$ with low-rank decomposition $B A$ ($B \in \mathbb{R}^{d \times r}, A \in \mathbb{R}^{r \times k}$ with $r \ll \min(d, k)$), drastically reducing trainable parameters from $d \cdot k$ to $r(d + k)$.
 	\end{enumerate}
 
 	% =====================================================================
@@ -2382,8 +2539,16 @@ print(f"InfoNCE Loss (Random Unaligned Pairs):   {loss_unaligned:.4f}")
 			Loss function & Scalar score of single-example error; cost function averages loss over data. \\
 			Gradient & Vector of partial derivatives indicating the direction of steepest ascent. \\
 			Backpropagation & Efficient chain-rule algorithm computing loss gradients for all weights layer by layer. \\
+			Epoch & One complete pass over the entire training dataset during model optimization. \\
+			Hyperparameter & Configuration variable set before training rather than learned from data. \\
+			Regularization & Techniques ($\ell_1/\ell_2$, dropout, weight decay) constraining model complexity to prevent overfitting. \\
+			Vanishing gradient & Exponential decay of backpropagated error gradients toward zero in deep networks. \\
+			Attention & Mechanism dynamically weighting sequence representations based on query relevance. \\
+			Multi-Head Attention & Parallel attention mechanisms operating over distinct linear projection subspaces. \\
+			Inductive bias & Set of assumptions an algorithm uses to predict outputs for unseen inputs. \\
 			Overfitting & Memorising training data; high training performance, poor generalization. \\
 			Embedding & Dense vector representation encoding semantic relationships in continuous space. \\
+			Tokenization & Segmenting raw text into discrete integer vocabulary tokens (e.g. via BPE). \\
 			Token & Sub-word unit that language models process and generate. \\
 			Parameter & Learnable weight/bias inside a model; LLMs contain billions of parameters. \\
 			Fine-tuning & Adapting a pretrained model to a specific task via SFT, LoRA, or DPO. \\
