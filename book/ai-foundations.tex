@@ -8,6 +8,8 @@
 %      3) pdflatex ai-foundations.tex
 %      4) pdflatex ai-foundations.tex
 %
+%  Bibliography is managed in ai-foundations.bib (BibLaTeX / Biber).
+%
 %  Requirements: TeX Live 2019+ (or MiKTeX) with the packages
 %  tcolorbox, fontawesome5, pgfplots, FiraSans, FiraMono, biblatex
 %  (biber), listings, titlesec, booktabs, enumitem, fancyhdr, csquotes.
@@ -15,422 +17,30 @@
 %  If the Fira fonts are unavailable, replace the two font packages
 %  below with \usepackage{lmodern}.
 % ======================================================================
-\begin{filecontents*}[overwrite]{ai-foundations.bib}
-	@article{turing1950,
-		author  = {Turing, Alan M.},
-		title   = {Computing Machinery and Intelligence},
-		journal = {Mind},
-		volume  = {59}, number = {236}, pages = {433--460}, year = {1950}}
-	@article{searle1980,
-		author  = {Searle, John R.},
-		title   = {Minds, Brains, and Programs},
-		journal = {Behavioral and Brain Sciences},
-		volume  = {3}, number = {3}, pages = {417--424}, year = {1980}}
-	@book{russell2021,
-		author  = {Russell, Stuart J. and Norvig, Peter},
-		title   = {Artificial Intelligence: A Modern Approach},
-		edition = {4}, publisher = {Pearson}, address = {Hoboken, NJ}, year = {2021}}
-	@book{mitchell1997,
-		author  = {Mitchell, Tom M.},
-		title   = {Machine Learning},
-		publisher = {McGraw-Hill}, address = {New York}, year = {1997}}
-	@book{goodfellow2016,
-		author  = {Goodfellow, Ian and Bengio, Yoshua and Courville, Aaron},
-		title   = {Deep Learning},
-		publisher = {MIT Press}, address = {Cambridge, MA}, year = {2016}}
-	@book{bishop2006,
-		author  = {Bishop, Christopher M.},
-		title   = {Pattern Recognition and Machine Learning},
-		publisher = {Springer}, address = {New York}, year = {2006}}
-	@book{bishop2024,
-		author  = {Bishop, Christopher M. and Bishop, Hugh},
-		title   = {Deep Learning: Foundations and Concepts},
-		publisher = {Springer}, address = {Cham}, year = {2024}}
-	@book{hastie2009,
-		author  = {Hastie, Trevor and Tibshirani, Robert and Friedman, Jerome},
-		title   = {The Elements of Statistical Learning: Data Mining, Inference, and Prediction},
-		edition = {2}, publisher = {Springer}, address = {New York}, year = {2009}}
-	@book{strang2019,
-		author  = {Strang, Gilbert},
-		title   = {Linear Algebra and Learning from Data},
-		publisher = {Wellesley--Cambridge Press}, address = {Wellesley, MA}, year = {2019}}
-	@book{wasserman2004,
-		author  = {Wasserman, Larry},
-		title   = {All of Statistics: A Concise Course in Statistical Inference},
-		publisher = {Springer}, address = {New York}, year = {2004}}
-	@book{boyd2004,
-		author  = {Boyd, Stephen and Vandenberghe, Lieven},
-		title   = {Convex Optimization},
-		publisher = {Cambridge University Press}, address = {Cambridge}, year = {2004}}
-	@book{christian2020,
-		author  = {Christian, Brian},
-		title   = {The Alignment Problem: Machine Learning and Human Values},
-		publisher = {W.\,W.\,Norton \& Company}, address = {New York}, year = {2020}}
-	@book{vanderplas2016,
-		author  = {VanderPlas, Jake},
-		title   = {Python Data Science Handbook: Essential Tools for Working with Data},
-		publisher = {O'Reilly Media}, address = {Sebastopol, CA}, year = {2016}}
-	@article{lecun2015,
-		author  = {LeCun, Yann and Bengio, Yoshua and Hinton, Geoffrey},
-		title   = {Deep Learning},
-		journal = {Nature},
-		volume  = {521}, number = {7553}, pages = {436--444}, year = {2015}}
-	@inproceedings{krizhevsky2012,
-		author  = {Krizhevsky, Alex and Sutskever, Ilya and Hinton, Geoffrey E.},
-		title   = {ImageNet Classification with Deep Convolutional Neural Networks},
-		booktitle = {Advances in Neural Information Processing Systems 25},
-		pages   = {1097--1105}, year = {2012}}
-	@article{silver2016,
-		author  = {Silver, David and Huang, Aja and Maddison, Chris J. and others},
-		title   = {Mastering the Game of {Go} with Deep Neural Networks and Tree Search},
-		journal = {Nature},
-		volume  = {529}, number = {7587}, pages = {484--489}, year = {2016}}
-	@inproceedings{jouppi2017,
-		author  = {Jouppi, Norman P. and Young, Cliff and Patil, Nishant and others},
-		title   = {In-Datacenter Performance Analysis of a Tensor Processing Unit},
-		booktitle = {Proceedings of the 44th Annual International Symposium on Computer Architecture (ISCA)},
-		pages   = {1--12}, year = {2017}}
-	@article{harris2020,
-		author  = {Harris, Charles R. and Millman, K. Jarrod and van der Walt, St{\'e}fan J. and others},
-		title   = {Array Programming with {NumPy}},
-		journal = {Nature},
-		volume  = {585}, pages = {357--362}, year = {2020}}
-	@inproceedings{mckinney2010,
-		author  = {McKinney, Wes},
-		title   = {Data Structures for Statistical Computing in {Python}},
-		booktitle = {Proceedings of the 9th Python in Science Conference (SciPy)},
-		pages   = {56--61}, year = {2010}}
-	@article{pedregosa2011,
-		author  = {Pedregosa, Fabian and Varoquaux, Ga{\"e}l and Gramfort, Alexandre and others},
-		title   = {Scikit-learn: Machine Learning in {Python}},
-		journal = {Journal of Machine Learning Research},
-		volume  = {12}, pages = {2825--2830}, year = {2011}}
-	@article{rosenblatt1958,
-		author  = {Rosenblatt, Frank},
-		title   = {The Perceptron: A Probabilistic Model for Information Storage and Organization in the Brain},
-		journal = {Psychological Review},
-		volume  = {65}, number = {6}, pages = {386--408}, year = {1958}}
-	@book{minsky1969,
-		author  = {Minsky, Marvin and Papert, Seymour},
-		title   = {Perceptrons: An Introduction to Computational Geometry},
-		publisher = {MIT Press}, address = {Cambridge, MA}, year = {1969}}
-	@article{rumelhart1986,
-		author  = {Rumelhart, David E. and Hinton, Geoffrey E. and Williams, Ronald J.},
-		title   = {Learning Representations by Back-Propagating Errors},
-		journal = {Nature},
-		volume  = {323}, number = {6088}, pages = {533--536}, year = {1986}}
-	@article{hornik1989,
-		author  = {Hornik, Kurt and Stinchcombe, Maxwell and White, Halbert},
-		title   = {Multilayer Feedforward Networks Are Universal Approximators},
-		journal = {Neural Networks},
-		volume  = {2}, number = {5}, pages = {359--366}, year = {1989}}
-	@inproceedings{nair2010,
-		author  = {Nair, Vinod and Hinton, Geoffrey E.},
-		title   = {Rectified Linear Units Improve Restricted {Boltzmann} Machines},
-		booktitle = {Proceedings of the 27th International Conference on Machine Learning (ICML)},
-		pages   = {807--814}, year = {2010}}
-	@article{lecun1998,
-		author  = {LeCun, Yann and Bottou, L{\'e}on and Bengio, Yoshua and Haffner, Patrick},
-		title   = {Gradient-Based Learning Applied to Document Recognition},
-		journal = {Proceedings of the IEEE},
-		volume  = {86}, number = {11}, pages = {2278--2324}, year = {1998}}
-	@article{hochreiter1997,
-		author  = {Hochreiter, Sepp and Schmidhuber, J{\"u}rgen},
-		title   = {Long Short-Term Memory},
-		journal = {Neural Computation},
-		volume  = {9}, number = {8}, pages = {1735--1780}, year = {1997}}
-	@inproceedings{vaswani2017,
-		author  = {Vaswani, Ashish and Shazeer, Noam and Parmar, Niki and Uszkoreit, Jakob
-			and Jones, Llion and Gomez, Aidan N. and Kaiser, {\L}ukasz and Polosukhin, Illia},
-		title   = {Attention Is All You Need},
-		booktitle = {Advances in Neural Information Processing Systems 30},
-		pages   = {5998--6008}, year = {2017}}
-	@inproceedings{mikolov2013,
-		author  = {Mikolov, Tom{\'a}{\v{s}} and Sutskever, Ilya and Chen, Kai
-			and Corrado, Greg S. and Dean, Jeffrey},
-		title   = {Distributed Representations of Words and Phrases and Their Compositionality},
-		booktitle = {Advances in Neural Information Processing Systems 26},
-		pages   = {3111--3119}, year = {2013}}
-	@inproceedings{kingma2014,
-		author  = {Kingma, Diederik P. and Welling, Max},
-		title   = {Auto-Encoding Variational {Bayes}},
-		booktitle = {International Conference on Learning Representations (ICLR)},
-		pages   = {1--9}, year = {2014}}
-	@inproceedings{goodfellow2014,
-		author  = {Goodfellow, Ian and Pouget-Abadie, Jean and Mirza, Mehdi and Xu, Bing
-			and Warde-Farley, David and Ozair, Sherjil and Courville, Aaron and Bengio, Yoshua},
-		title   = {Generative Adversarial Nets},
-		booktitle = {Advances in Neural Information Processing Systems 27},
-		pages   = {2672--2680}, year = {2014}}
-	@inproceedings{brown2020,
-		author  = {Brown, Tom B. and Mann, Benjamin and Ryder, Nick and others},
-		title   = {Language Models Are Few-Shot Learners},
-		booktitle = {Advances in Neural Information Processing Systems 33},
-		pages   = {1877--1901}, year = {2020}}
-	@article{kaplan2020,
-		author  = {Kaplan, Jared and McCandlish, Sam and Henighan, Tom and others},
-		title   = {Scaling Laws for Neural Language Models},
-		journal = {arXiv preprint arXiv:2001.08361},
-		year = {2020}}
-	@inproceedings{ouyang2022,
-		author  = {Ouyang, Long and Wu, Jeffrey and Jiang, Xu and others},
-		title   = {Training Language Models to Follow Instructions with Human Feedback},
-		booktitle = {Advances in Neural Information Processing Systems 35},
-		pages   = {27730--27744}, year = {2022}}
-	@inproceedings{christiano2017,
-		author  = {Christiano, Paul F. and Leike, Jan and Brown, Tom B.
-			and Martic, Miljan and Legg, Shane and Amodei, Dario},
-		title   = {Deep Reinforcement Learning from Human Preferences},
-		booktitle = {Advances in Neural Information Processing Systems 30},
-		pages   = {4299--4307}, year = {2017}}
-	@inproceedings{bender2021,
-		author  = {Bender, Emily M. and Gebru, Timnit and McMillan-Major, Angelina
-			and Shmitchell, Shmargaret},
-		title   = {On the Dangers of Stochastic Parrots: Can Language Models Be Too Big?},
-		booktitle = {Proceedings of the 2021 ACM Conference on Fairness, Accountability, and Transparency (FAccT)},
-		pages   = {610--623}, year = {2021}}
-	@inproceedings{buolamwini2018,
-		author  = {Buolamwini, Joy and Gebru, Timnit},
-		title   = {Gender Shades: Intersectional Accuracy Disparities in Commercial Gender Classification},
-		booktitle = {Proceedings of the 1st Conference on Fairness, Accountability and Transparency},
-		pages   = {77--91}, year = {2018}}
-	@article{amodei2016,
-		author  = {Amodei, Dario and Olah, Chris and Steinhardt, Jacob and others},
-		title   = {Concrete Problems in {AI} Safety},
-		journal = {arXiv preprint arXiv:1606.06565},
-		year = {2016}}
-	@inproceedings{strubell2019,
-		author  = {Strubell, Emma and Ganesh, Ananya and McCallum, Andrew},
-		title   = {Energy and Policy Considerations for Deep Learning in {NLP}},
-		booktitle = {Proceedings of the 57th Annual Meeting of the Association for Computational Linguistics (ACL)},
-		pages   = {3645--3650}, year = {2019}}
-	@inproceedings{patterson2021,
-		author  = {Patterson, David and Gonzalez, Joseph and Le, Quoc and others},
-		title   = {Carbon Emissions and Large Neural Network Training},
-		booktitle = {Advances in Neural Information Processing Systems 34},
-		pages   = {13470--13481}, year = {2021}}
-	@article{cortes1995,
-		author  = {Cortes, Corinna and Vapnik, Vladimir},
-		title   = {Support-Vector Networks},
-		journal = {Machine Learning},
-		volume  = {20}, number = {3}, pages = {273--297}, year = {1995}}
-	@article{breiman2001,
-		author  = {Breiman, Leo},
-		title   = {Random Forests},
-		journal = {Machine Learning},
-		volume  = {45}, number = {1}, pages = {5--32}, year = {2001}}
-	@inproceedings{chen2016,
-		author  = {Chen, Tianqi and Guestrin, Carlos},
-		title   = {{XGBoost}: A Scalable Tree Boosting System},
-		booktitle = {Proceedings of the 22nd ACM SIGKDD International Conference on Knowledge Discovery and Data Mining},
-		pages   = {785--794}, year = {2016}}
-	@inproceedings{macqueen1967,
-		author  = {MacQueen, James},
-		title   = {Some Methods for Classification and Analysis of Multivariate Observations},
-		booktitle = {Proceedings of the Fifth Berkeley Symposium on Mathematical Statistics and Probability},
-		volume  = {1}, pages = {281--297}, year = {1967}}
-	@inproceedings{liu2008,
-		author  = {Liu, Fei Tony and Ting, Kai Ming and Zhou, Zhi-Hua},
-		title   = {Isolation Forest},
-		booktitle = {Proceedings of the 8th IEEE International Conference on Data Mining (ICDM)},
-		pages   = {413--422}, year = {2008}}
-	@article{fawcett2006,
-		author  = {Fawcett, Tom},
-		title   = {An Introduction to {ROC} Analysis},
-		journal = {Pattern Recognition Letters},
-		volume  = {27}, number = {8}, pages = {861--874}, year = {2006}}
-	@book{zhang2023,
-		author  = {Zhang, Aston and Lipton, Zachary C. and Li, Mu and Smola, Alexander J.},
-		title   = {Dive into Deep Learning},
-		publisher = {Cambridge University Press}, address = {Cambridge}, year = {2023}}
-	@online{fastai,
-		author  = {Howard, Jeremy and others},
-		title   = {Practical Deep Learning for Coders},
-		organization = {fast.ai},
-		url = {https://course.fast.ai},
-		urldate = {2024-12-01}}
-	@online{huggingface,
-		author  = {{Hugging Face}},
-		title   = {Transformers Documentation},
-		url = {https://huggingface.co/docs/transformers},
-		urldate = {2024-12-01}}
-	@inproceedings{kingma2015,
-		author  = {Kingma, Diederik P. and Ba, Jimmy},
-		title   = {Adam: A Method for Stochastic Optimization},
-		booktitle = {International Conference on Learning Representations (ICLR)},
-		pages   = {1--15}, year = {2015}}
-	@inproceedings{he2016,
-		author  = {He, Kaiming and Zhang, Xiangyu and Ren, Shaoqing and Sun, Jian},
-		title   = {Deep Residual Learning for Image Recognition},
-		booktitle = {Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition (CVPR)},
-		pages   = {770--778}, year = {2016}}
-	@article{su2024,
-		author  = {Su, Jianlin and Ahmed, Murtadha and Lu, Yu and Pan, Shengfeng and Bo, Wen and Liu, Yunfeng},
-		title   = {RoFormer: Enhanced Transformer with Rotary Position Embedding},
-		journal = {Neurocomputing},
-		volume  = {568}, pages = {127063}, year = {2024}}
-	@article{rousseeuw1987,
-		author  = {Rousseeuw, Peter J.},
-		title   = {Silhouettes: A Graphical Aid to the Interpretation and Validation of Cluster Analysis},
-		journal = {Journal of Computational and Applied Mathematics},
-		volume  = {20}, pages = {53--65}, year = {1987}}
-	@inproceedings{wolf2020,
-		author  = {Wolf, Thomas and Debut, Lysandre and Sanh, Victor and Chaumond, Julien and Delangue, Clement and Moi, Anthony and Cistac, Pierric and Rault, Timoth{\'e}e and Louf, R{\'e}mi and Funtowicz, Morgan and Davison, Joe and Shleifer, Sam and von Platen, Patrick and Ma, Clara and Jernite, Yacine and Plu, Julien and Xu, Canwen and Le Scao, Teven and Gugger, Sylvain and Drame, Mariama and Lhoest, Quentin and Rush, Alexander M.},
-		title   = {Transformers: State-of-the-Art Natural Language Processing},
-		booktitle = {Proceedings of the 2020 Conference on Empirical Methods in Natural Language Processing: System Demonstrations},
-		pages   = {38--45}, year = {2020}}
-	@article{hoffmann2022,
-		author  = {Hoffmann, Jordan and Borgeaud, Sebastian and Mensch, Arthur and Buchatskaya, Elena and Cai, Trevor and Rutherford, Eliza and de Las Casas, Diego and Hendricks, Lisa Anne and Welbl, Johannes and Clark, Aidan and Hennigan, Tom and Noland, Eric and Millican, Katie and Driessche, George van den and Damoc, Bogdan and Guy, Aurelia and Osindero, Simon and Simonyan, Karen and Elsen, Erich and Rae, Jack W. and Vinyals, Oriol and Sifre, Laurent},
-		title   = {Training Compute-Optimal Large Language Models},
-		journal = {arXiv preprint arXiv:2203.15556},
-		year    = {2022}}
-	@inproceedings{ho2020,
-		author  = {Ho, Jonathan and Jain, Ajay and Abbeel, Pieter},
-		title   = {Denoising Diffusion Probabilistic Models},
-		booktitle = {Advances in Neural Information Processing Systems 33},
-		pages   = {6840--6851}, year = {2020}}
-	@book{sutton2018,
-		author    = {Sutton, Richard S. and Barto, Andrew G.},
-		title     = {Reinforcement Learning: An Introduction},
-		edition   = {2},
-		publisher = {MIT Press},
-		address   = {Cambridge, MA},
-		year      = {2018}}
-	@article{watkins1992,
-		author  = {Watkins, Christopher J. C. H. and Dayan, Peter},
-		title   = {Q-Learning},
-		journal = {Machine Learning},
-		volume  = {8}, number = {3-4}, pages = {279--292}, year = {1992}}
-	@article{mnih2015,
-		author  = {Mnih, Volodymyr and Kavukcuoglu, Koray and Silver, David and others},
-		title   = {Human-level Control Through Deep Reinforcement Learning},
-		journal = {Nature},
-		volume  = {518}, number = {7540}, pages = {529--533}, year = {2015}}
-	@inproceedings{schulman2017,
-		author  = {Schulman, John and Wolski, Filip and Dhariwal, Prafulla and Radford, Alec and Klimov, Oleg},
-		title   = {Proximal Policy Optimization Algorithms},
-		journal = {arXiv preprint arXiv:1707.06347},
-		year    = {2017}}
-	@inproceedings{rafailov2023,
-		author  = {Rafailov, Rafael and Sharma, Archit and Mitchell, Eric and Ermon, Stefano and Manning, Christopher D. and Finn, Chelsea},
-		title   = {Direct Preference Optimization: Your Language Model is Secretly a Reward Model},
-		booktitle = {Advances in Neural Information Processing Systems 36},
-		year    = {2023}}
-	@inproceedings{hu2021,
-		author  = {Hu, Edward J. and Shen, Yelong and Wallis, Phillip and Allen-Zhu, Zeyuan and Li, Yuanzhi and Wang, Shean and Wang, Lu and Chen, Weizhu},
-		title   = {{LoRA}: Low-Rank Adaptation of Large Language Models},
-		booktitle = {International Conference on Learning Representations (ICLR)},
-		year    = {2022}}
-	@inproceedings{dettmers2024,
-		author  = {Dettmers, Tim and Pagnoni, Artidoro and Holtzman, Ari and Zettlemoyer, Luke},
-		title   = {{QLoRA}: Efficient Finetuning of Quantized {LLMs}},
-		booktitle = {Advances in Neural Information Processing Systems 36},
-		year    = {2024}}
-	@article{dubey2024,
-		author  = {Dubey, Abhimanyu and Jauhri, Abhinav and Pandey, Abhinav and others},
-		title   = {The {Llama} 3 Herd of Models},
-		journal = {arXiv preprint arXiv:2407.21783},
-		year    = {2024}}
-	@inproceedings{lewis2020,
-		author  = {Lewis, Patrick and Perez, Ethan and Piktus, Aleksandra and Petroni, Fabio and Karpukhin, Vladimir and Goyal, Naman and Kuttler, Heinrich and Lewis, Mike and Yih, Wen-tau and Rockt{\"a}schel, Tim and Riedel, Sebastian and Kiela, Douwe},
-		title   = {Retrieval-Augmented Generation for Knowledge-Intensive {NLP} Tasks},
-		booktitle = {Advances in Neural Information Processing Systems 33},
-		pages   = {9459--9474}, year = {2020}}
-	@inproceedings{ester1996,
-		author  = {Ester, Martin and Kriegel, Hans-Peter and Sander, J{\"o}rg and Xu, Xiaowei},
-		title   = {A Density-Based Algorithm for Discovering Clusters in Large Spatial Databases with Noise},
-		booktitle = {Proceedings of the 2nd International Conference on Knowledge Discovery and Data Mining (KDD)},
-		pages   = {226--231}, year = {1996}}
-	@article{vanDerMaaten2008,
-		author  = {van der Maaten, Laurens and Hinton, Geoffrey},
-		title   = {Visualizing Data using {t-SNE}},
-		journal = {Journal of Machine Learning Research},
-		volume  = {9}, pages = {2579--2605}, year = {2008}}
-	@article{mcinnes2018,
-		author  = {McInnes, Leland and Healy, John and Melville, James},
-		title   = {{UMAP}: Uniform Manifold Approximation and Projection for Dimension Reduction},
-		journal = {arXiv preprint arXiv:1802.03426},
-		year    = {2018}}
-	@inproceedings{glorot2010,
-		author  = {Glorot, Xavier and Bengio, Yoshua},
-		title   = {Understanding the Difficulty of Training Deep Feedforward Neural Networks},
-		booktitle = {Proceedings of the 13th International Conference on Artificial Intelligence and Statistics (AISTATS)},
-		pages   = {249--256}, year = {2010}}
-	@inproceedings{he2015,
-		author  = {He, Kaiming and Zhang, Xiangyu and Ren, Shaoqing and Sun, Jian},
-		title   = {Delving Deep into Rectifiers: Surpassing Human-Level Performance on {ImageNet} Classification},
-		booktitle = {Proceedings of the IEEE International Conference on Computer Vision (ICCV)},
-		pages   = {1026--1034}, year = {2015}}
-	@inproceedings{loshchilov2019,
-		author  = {Loshchilov, Ilya and Hutter, Frank},
-		title   = {Decoupled Weight Decay Regularization},
-		booktitle = {International Conference on Learning Representations (ICLR)},
-		year    = {2019}}
-	@article{bengio2013,
-		author  = {Bengio, Yoshua and Courville, Aaron and Vincent, Pascal},
-		title   = {Representation Learning: A Review and New Perspectives},
-		journal = {IEEE Transactions on Pattern Analysis and Machine Intelligence},
-		volume  = {35}, number = {8}, pages = {1798--1828}, year = {2013}}
-	@inproceedings{vincent2008,
-		author  = {Vincent, Pascal and Larochelle, Hugo and Bengio, Yoshua and Manzagol, Pierre-Antoine},
-		title   = {Extracting and Composing Robust Features with Denoising Autoencoders},
-		booktitle = {Proceedings of the 25th International Conference on Machine Learning (ICML)},
-		pages   = {1096--1103}, year = {2008}}
-	@article{oord2018,
-		author  = {van den Oord, Aaron and Li, Yazhe and Vinyals, Oriol},
-		title   = {Representation Learning with Contrastive Predictive Coding},
-		journal = {arXiv preprint arXiv:1807.03748},
-		year    = {2018}}
-	@inproceedings{chen2020,
-		author  = {Chen, Ting and Kornblith, Simon and Norouzi, Mohammad and Hinton, Geoffrey},
-		title   = {A Simple Framework for Contrastive Learning of Visual Representations},
-		booktitle = {Proceedings of the 37th International Conference on Machine Learning (ICML)},
-		pages   = {1597--1607}, year = {2020}}
-	@inproceedings{devlin2019,
-		author  = {Devlin, Jacob and Chang, Ming-Wei and Lee, Kenton and Toutanova, Kristina},
-		title   = {{BERT}: Pre-training of Deep Bidirectional Transformers for Language Understanding},
-		booktitle = {Proceedings of the 2019 Conference of the North American Chapter of the Association for Computational Linguistics (NAACL)},
-		pages   = {4171--4186}, year = {2019}}
-	@article{radford2018,
-		author  = {Radford, Alec and Narasimhan, Karthik and Salimans, Tim and Sutskever, Ilya},
-		title   = {Improving Language Understanding by Generative Pre-Training},
-		journal = {OpenAI Blog},
-		year    = {2018}}
-	@inproceedings{he2022,
-		author  = {He, Kaiming and Chen, Xinlei and Xie, Saining and Li, Yanghao and Doll{\'a}r, Piotr and Girshick, Ross},
-		title   = {Masked Autoencoders Are Scalable Vision Learners},
-		booktitle = {Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},
-		pages   = {16000--16009}, year = {2022}}
-	@inproceedings{dosovitskiy2021,
-		author  = {Dosovitskiy, Alexey and Beyer, Lucas and Kolesnikov, Alexander and Weissenborn, Dirk and Zhai, Xiaohua and Unterthiner, Thomas and Dehghani, Mostafa and Minderer, Matthias and Heigold, Georg and Gelly, Sylvain and Uszkoreit, Jakob and Houlsby, Neil},
-		title   = {An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale},
-		booktitle = {International Conference on Learning Representations (ICLR)},
-		year    = {2021}}
-\end{filecontents*}
 
 \documentclass[11pt,a4paper]{article}
 
-% ---------------------------------------------------------------------
+% 
 % Fonts & typography
-% ---------------------------------------------------------------------
+% 
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage[sfdefault]{FiraSans}   % fallback: \usepackage{lmodern}
 \usepackage[scaled=0.86]{FiraMono} % fallback: remove this line
 \usepackage{microtype}
 
-% ---------------------------------------------------------------------
+% 
 % Layout
-% ---------------------------------------------------------------------
+% 
 \usepackage[a4paper,margin=2.35cm,headheight=15pt]{geometry}
 \setlength{\parindent}{0pt}
 \setlength{\parskip}{4.5pt plus 1pt}
 \raggedbottom
 \emergencystretch=1.5em
 
-% ---------------------------------------------------------------------
+% 
 % Colour palette & tables
-% ---------------------------------------------------------------------
+% 
 \usepackage[table]{xcolor}
 \definecolor{primary}{RGB}{38,60,114}   % deep indigo
 \definecolor{secondary}{RGB}{0,150,136} % teal
@@ -446,9 +56,9 @@
 \setlist[enumerate]{topsep=2.5pt,itemsep=2.5pt,parsep=0pt,leftmargin=1.7em}
 \setlist[description]{topsep=2.5pt,itemsep=3pt,parsep=0pt}
 
-% ---------------------------------------------------------------------
+% 
 % Math, graphics, diagrams
-% ---------------------------------------------------------------------
+% 
 \usepackage{amsmath,amssymb,mathtools}
 \DeclareMathOperator{\softmax}{softmax}
 \usepackage{graphicx}
@@ -464,9 +74,9 @@
 	{\textbf{#2}\\#3};
 }
 
-% ---------------------------------------------------------------------
+% 
 % Modern callout boxes
-% ---------------------------------------------------------------------
+% 
 \usepackage[most]{tcolorbox}
 \usepackage{fontawesome5}
 
@@ -530,9 +140,9 @@
 	title={\faBookOpen\ #1},
 	before skip=10pt, after skip=14pt}
 
-% ---------------------------------------------------------------------
+% 
 % Code listings
-% ---------------------------------------------------------------------
+% 
 \usepackage{listings}
 \lstset{
 	language=Python,
@@ -553,9 +163,9 @@
 	xleftmargin=0.5em,
 	aboveskip=0.7em, belowskip=0.7em}
 
-% ---------------------------------------------------------------------
+% 
 % Headings, headers, captions
-% ---------------------------------------------------------------------
+% 
 \usepackage{titlesec}
 \titleformat{\section}
 {\Large\bfseries\sffamily\color{primary}}{\thesection}{0.7em}{}
@@ -581,9 +191,9 @@
 \captionsetup{font=small, labelfont={bf,color=primary}, labelsep=period}
 \captionsetup[table]{skip=5pt}
 
-% ---------------------------------------------------------------------
+% 
 % Bibliography (biblatex + biber)
-% ---------------------------------------------------------------------
+% 
 \usepackage{csquotes}
 \usepackage[backend=biber, style=authoryear, giveninits=true,
 maxcitenames=2, maxbibnames=6, uniquename=false,
@@ -592,9 +202,9 @@ uniquelist=false, dashed=false]{biblatex}
 \renewcommand{\bibfont}{\small}
 \setlength{\bibitemsep}{4pt}
 
-% ---------------------------------------------------------------------
+% 
 % Hyperlinks (load last)
-% ---------------------------------------------------------------------
+% 
 \usepackage[colorlinks=true, linkcolor=primary, citecolor=secondary,
 urlcolor=secondary, bookmarksnumbered=true,
 pdftitle={Modern AI Foundations: A Complete Overview},
@@ -607,9 +217,9 @@ pdfkeywords={AI, machine learning, deep learning, transformers, LLM}]{hyperref}
 \begin{document}
 	% =====================================================================
 	
-	% ---------------------------------------------------------------------
+	% 
 	% Title page
-	% ---------------------------------------------------------------------
+	% 
 	\hypersetup{pageanchor=false}
 	\begin{titlepage}
 		\centering
@@ -622,7 +232,7 @@ pdfkeywords={AI, machine learning, deep learning, transformers, LLM}]{hyperref}
 			at ([yshift=-2.1cm]current page.north) {Modern AI Foundations};
 			\node[align=center, text=white!85!primary, font=\sffamily\Large, text width=14.5cm]
 			at ([yshift=-3.7cm]current page.north)
-			{An Accelerated Introduction to AI: From Classical Machine Learning\\to Large Language Models};
+			{A Comprehensive Introduction to Modern AI Foundations:\\From Classical Machine Learning to Large Language Models};
 		\end{tikzpicture}
 		\vspace*{5.4cm}
 		
@@ -632,10 +242,10 @@ pdfkeywords={AI, machine learning, deep learning, transformers, LLM}]{hyperref}
 		
 		\begin{minipage}{0.86\textwidth}
 			\centering\small\itshape
-			An accelerated, code-first guide to the ideas behind modern artificial
-			intelligence: the mathematics that powers it, the classical
-			machine-learning engine at its heart, and the deep-learning revolution
-			that brought us transformers and large language models --- with curated
+			An code-first guide to the ideas behind modern artificial intelligence: 
+			the mathematics that powers it, 
+			the classical machine-learning engine at its heart, and the deep-learning revolution
+			that brought us transformers and large language models , with curated
 			sources for every step of the journey.
 		\end{minipage}\\[2.4em]
 		
@@ -645,13 +255,13 @@ pdfkeywords={AI, machine learning, deep learning, transformers, LLM}]{hyperref}
 		
 		\vfill
 		{\sffamily\color{textgray}\large Course Design Team}\\[0.3em]
-		{\sffamily\color{textgray}\small Version 1.1 \textbullet{} September 2025 \textbullet{} License: CC BY 4.0}\\[0.3em]
+		{\sffamily\color{textgray}\small Version 1.1 \textbullet{} September 2025 \textbullet{} License: Text under CC BY 4.0 \textbullet{} Code under MIT}\\[0.3em]
 		{\sffamily\color{secondary}\small Repository: \url{https://github.com/DanielBerns/AI-course}}
 		\vspace*{2.2cm}
 	\end{titlepage}
 	\hypersetup{pageanchor=true}
 	
-	% ---------------------------------------------------------------------
+	% 
 	\clearpage
 	\tableofcontents
 	\clearpage
@@ -663,42 +273,54 @@ pdfkeywords={AI, machine learning, deep learning, transformers, LLM}]{hyperref}
 	\addcontentsline{toc}{section}{About this course}
 	% =====================================================================
 	
-	This document develops a five-module accelerated overview of modern artificial
+	This document develops an eleven-module comprehensive introduction to modern artificial
 	intelligence for technically capable students. It assumes basic background
 	summarised in the prerequisite matrix on the next page: comfortable
 	\textbf{Python}, basic \textbf{NumPy \& Pandas}, and \textbf{elementary
-		calculus and linear algebra}. Everything else --- from eigenvectors to multi-head attention --- is built
-	from scratch, in context, with citations to the primary literature and
+		calculus and linear algebra}. Everything else, from eigenvectors to multi-head attention, model quantization, and distributed training, is built
+	from scratch in context with citations to the primary literature and
 	standard textbooks.
 	
-	The five modules are deliberately sequential, as the roadmap below shows:
-	the landscape and its ethics (\emph{Module~1}), the mathematical
-	foundations (\emph{Module~2}), the classical machine-learning engine that
-	remains highly competitive for tabular workloads (\emph{Module~3}), neural networks and representation learning (\emph{Module~4}), and the foundation model and generative-AI frontier (\emph{Module~5}). All code snippets
+	The eleven modules span core foundations to advanced LLM systems engineering, as the roadmap below shows:
+	the AI landscape and ethics (\emph{Module~1}), mathematical
+	foundations (\emph{Module~2}), classical machine learning (\emph{Module~3}), neural networks and representation learning (\emph{Module~4}), foundation models and generative AI (\emph{Module~5}), modern LLM architectures (\emph{Module~6}), efficient attention mechanisms (\emph{Module~7}), model quantization (\emph{Module~8}), distributed training (\emph{Module~9}), LLM evaluation (\emph{Module~10}), and deployment and serving (\emph{Module~11}). All code snippets
 	assume Python 3.9+ with \texttt{numpy}, \texttt{pandas},
-	\texttt{scikit-learn}, and (for Modules~4 and~5) \texttt{transformers} installed.
+	\texttt{scikit-learn}, and (for Modules~4--11) \texttt{torch}, \texttt{transformers}, and \texttt{vLLM} installed.
 	
 	\begin{figure}[ht]
 		\centering
 		\begin{tikzpicture}[
-			stage/.style={rounded corners=2mm, align=center, font=\sffamily\scriptsize,
-				minimum height=1.05cm, inner sep=2pt, text width=2.5cm},
+			stage/.style={rounded corners=2mm, align=center, font=\sffamily\tiny,
+				minimum height=0.95cm, inner sep=2pt, text width=2.6cm},
 			>=Stealth]
-			\node[stage, draw=primary,   fill=primary!8]   (m1) {\textbf{Module 1}\\[2pt] The AI landscape\\ context \& ethics};
-			\node[stage, draw=secondary, fill=secondary!8, right=0.22cm of m1] (m2)
-			{\textbf{Module 2}\\[2pt] Math \& data\\ language of ML};
-			\node[stage, draw=accent,    fill=accent!8,    right=0.22cm of m2] (m3)
-			{\textbf{Module 3}\\[2pt] Classical ML\\ the core engine};
-			\node[stage, draw=dpurple,   fill=dpurple!8,   right=0.22cm of m3] (m4)
-			{\textbf{Module 4}\\[2pt] Neural Networks\\ \& representation};
-			\node[stage, draw=primary!80!black, fill=primary!15, right=0.22cm of m4] (m5)
-			{\textbf{Module 5}\\[2pt] Foundation Models\\ \& generative AI};
+			% Tier 1: Foundations & Core Learning
+			\node[stage, draw=primary,   fill=primary!8]   (m1) {\textbf{Module 1}\\[1pt] AI landscape \& ethics};
+			\node[stage, draw=secondary, fill=secondary!8, right=0.15cm of m1] (m2) {\textbf{Module 2}\\[1pt] Math \& data foundations};
+			\node[stage, draw=accent,    fill=accent!8,    right=0.15cm of m2] (m3) {\textbf{Module 3}\\[1pt] Classical ML engine};
+			\node[stage, draw=dpurple,   fill=dpurple!8,   right=0.15cm of m3] (m4) {\textbf{Module 4}\\[1pt] Neural networks \& reps};
+			\node[stage, draw=primary!80!black, fill=primary!15, right=0.15cm of m4] (m5) {\textbf{Module 5}\\[1pt] Foundation models \& GenAI};
+			
+			% Tier 2: Advanced LLM Systems & Scale
+			\node[stage, draw=primary,   fill=primary!8,   below=0.45cm of m1] (m6) {\textbf{Module 6}\\[1pt] Modern LLM architectures};
+			\node[stage, draw=secondary, fill=secondary!8, right=0.15cm of m6] (m7) {\textbf{Module 7}\\[1pt] Efficient attention (Flash)};
+			\node[stage, draw=accent,    fill=accent!8,    right=0.15cm of m7] (m8) {\textbf{Module 8}\\[1pt] Quantization (GPTQ/AWQ)};
+			\node[stage, draw=dpurple,   fill=dpurple!8,   right=0.15cm of m8] (m9) {\textbf{Module 9}\\[1pt] Distributed training (ZeRO)};
+			\node[stage, draw=primary!80!black, fill=primary!15, right=0.15cm of m9] (m10) {\textbf{Module 10}\\[1pt] Evaluation \& benchmarks};
+			\node[stage, draw=primary!90!black, fill=primary!22, right=0.15cm of m10] (m11) {\textbf{Module 11}\\[1pt] LLM serving (vLLM)};
+			
+			% Connections
 			\draw[->, thick, primary!70]   (m1) -- (m2);
 			\draw[->, thick, secondary!80] (m2) -- (m3);
 			\draw[->, thick, accent!90]    (m3) -- (m4);
 			\draw[->, thick, dpurple!90]   (m4) -- (m5);
+			\draw[->, thick, primary!90]   (m5.south) -- ++(0,-0.18) -| (m6.north);
+			\draw[->, thick, primary!70]   (m6) -- (m7);
+			\draw[->, thick, secondary!80] (m7) -- (m8);
+			\draw[->, thick, accent!90]    (m8) -- (m9);
+			\draw[->, thick, dpurple!90]   (m9) -- (m10);
+			\draw[->, thick, primary!90]   (m10) -- (m11);
 		\end{tikzpicture}
-		\caption{The learning path: each module builds directly on the one before it.}
+		\caption{The learning path: spanning core mathematical/algorithmic foundations (Tier 1) and modern large-scale LLM engineering (Tier 2).}
 		\label{fig:roadmap}
 	\end{figure}
 	
@@ -713,7 +335,7 @@ pdfkeywords={AI, machine learning, deep learning, transformers, LLM}]{hyperref}
 			\rowcolor{primary}
 			\textcolor{white}{\textbf{Box}} & \textcolor{white}{\textbf{What it gives you}} \\
 			\midrule
-			\textcolor{primary}{\faInfoCircle}\ Module --- at a glance & Focus, key concepts, and learning goals for each module. \\
+			\textcolor{primary}{\faInfoCircle}\ Module \verb*|#| at a glance & Focus, key concepts, and learning goals for each module. \\
 			\textcolor{primary}{\faLightbulb}\ Key concept & Definitions and intuitions worth memorising. \\
 			\textcolor{secondary}{\faPython}\ Hands-on with Python & Short, runnable code tied to the prerequisite skills. \\
 			\textcolor{accent}{\faBalanceScale}\ Ethics \& safety spotlight & Responsible-AI notes and open questions. \\
@@ -791,20 +413,20 @@ pdfkeywords={AI, machine learning, deep learning, transformers, LLM}]{hyperref}
 	this level and no more.
 	
 	\textbf{Calculus (basic).} You need the derivative as a slope, the power
-	rule, and the chain rule. That is genuinely all --- gradients, the engine
+	rule, and the chain rule. That is genuinely all : gradients, the engine
 	of all learning in this course, are just derivatives collected into a
 	vector.
 	
 	\begin{keyconcept}[The two calculus ideas you actually need]
 		\begin{itemize}
 			\item \textbf{A derivative is a local slope:}
-			$\;f'(x) \approx \dfrac{f(x+h)-f(x)}{h}$ --- it tells you which
+			$\;f'(x) \approx \dfrac{f(x+h)-f(x)}{h}$ it tells you which
 			direction is \emph{downhill} and how steeply.
 			\item \textbf{The chain rule composes slopes:}
 			$\;\dfrac{d}{dx}\,f(g(x)) = f'(g(x))\,g'(x)$.
 		\end{itemize}
-		Backpropagation (Module~4) --- the efficient gradient-computation algorithm used to train modern
-		neural networks --- is nothing more than this second rule applied
+		Backpropagation (Module 4), which serves as the core gradient-computation algorithm for training modern
+		neural networks, is nothing more than this second rule applied
 		systematically, layer by layer.
 	\end{keyconcept}
 	
@@ -818,7 +440,7 @@ pdfkeywords={AI, machine learning, deep learning, transformers, LLM}]{hyperref}
 		geometrically?
 	\end{itemize}
 	If any answer is ``not yet'', spend a week with \textcite{vanderplas2016}
-	and any standard calculus refresher; then return --- everything else is
+	and a standard calculus refresher before returning, as everything else is
 	built for you from here.
 	
 	% =====================================================================
@@ -826,7 +448,7 @@ pdfkeywords={AI, machine learning, deep learning, transformers, LLM}]{hyperref}
 	\section{Introduction and the AI Landscape}
 	% =====================================================================
 	
-	\begin{modulecard}{\faGlobe\ Module 1 --- at a glance \hfill \small\normalfont (Estimated Study: 4 hours \textbullet{} Level: Beginner)}{primary}
+	\begin{modulecard}{\faGlobe\ Module 1, at a glance \hfill \small\normalfont (Estimated Study: 4 hours \textbullet{} Level: Beginner)}{primary}
 		\textbf{Focus.} What artificial intelligence is (and is not), how the
 		field evolved from hand-written rules to learning from data, and the
 		infrastructure and ethical questions that shape modern practice.
@@ -845,17 +467,7 @@ pdfkeywords={AI, machine learning, deep learning, transformers, LLM}]{hyperref}
 	
 	\subsection{Defining intelligence: weak vs.\ strong AI}
 	
-	Before we can build artificial intelligence we have to say what we mean
-	by \emph{intelligence}. \textcite{russell2021} organise the many
-	definitions along two axes: are we concerned with \emph{thought
-		processes} or with \emph{behaviour}, and should the benchmark be
-	\emph{human-like} performance or \emph{rationality} --- acting so as to
-	achieve the best expected outcome? Alan Turing sidestepped the
-	philosophy in 1950 with an operational test: if a machine's written
-	answers are indistinguishable from a human's, is it not, for practical
-	purposes, intelligent? \parencite{turing1950}. Modern AI research
-	mostly aims at rational behaviour on well-defined tasks --- exactly what
-	the learning algorithms of Modules~2--4 deliver.
+	Before we can build artificial intelligence we have to say what we mean by \emph{intelligence}. \textcite{russell2021} organise the many definitions along two axes: are we concerned with \emph{thought	processes} or with \emph{behaviour}, and should the benchmark be \emph{human-like} performance or \emph{rationality}, acting so as to achieve the best expected outcome? Alan Turing sidestepped the 	philosophy in 1950 with an operational test: if a machine's written answers are indistinguishable from a human's, is it not, for practical purposes, intelligent? \parencite{turing1950}. Modern AI research 	mostly aims at rational behaviour on well-defined tasks,  exactly what 	the learning algorithms of Modules 2 to 5 deliver.
 	
 	\begin{keyconcept}[Weak (narrow) AI vs.\ strong AI]
 		\begin{center}
@@ -883,18 +495,17 @@ pdfkeywords={AI, machine learning, deep learning, transformers, LLM}]{hyperref}
 	not understanding: a person following rules could answer questions in
 	Chinese without knowing any Chinese \parencite{searle1980}. The argument
 	has returned with force in the era of large language models, because
-	fluent output is cheap while grounded understanding is hard to verify
-	--- a theme we revisit in the ethics spotlight below.
+	fluent output is cheap while grounded understanding is hard to verify, a theme we revisit in the ethics spotlight below.
 	
 	\subsection{From expert systems to data-driven AI}
 	
 	The term \emph{artificial intelligence} was coined by John McCarthy in the 1955 proposal for the 1956 Dartmouth workshop. For roughly the next three decades the dominant paradigm was
 	\emph{symbolic}: human knowledge was hand-encoded as if--then rules.
 	Expert systems such as MYCIN encoded several hundred rules elicited
-	from physicians and impressed clinicians in blind evaluations --- yet
+	from physicians and impressed clinicians in blind evaluations, yet
 	only inside their narrow domain. Rules are brittle, and extracting them
 	from experts (the \emph{knowledge-acquisition bottleneck}) is slow and
-	expensive. Deep Blue's 1997 victory over Garry Kasparov represented the high-water mark of this symbolic, search-based paradigm --- demonstrating immense raw evaluation power, yet remaining strictly bound by human-engineered evaluation heuristics.
+	expensive. Deep Blue's 1997 victory over Garry Kasparov represented the high-water mark of this symbolic, search-based paradigm, demonstrating immense raw evaluation power, yet remaining strictly bound by human-engineered evaluation heuristics.
 	
 	Machine learning inverts the pipeline: instead of programming rules, we
 	collect examples of the desired behaviour and let an algorithm discover
@@ -916,8 +527,8 @@ pdfkeywords={AI, machine learning, deep learning, transformers, LLM}]{hyperref}
 		
 		\smallskip
 		Instead of hand-crafting the logic, we specify an objective and let an
-		algorithm search for parameters that meet it --- which is precisely why
-		the mathematics of Modules~2 and~3 matters so much.
+		algorithm search for parameters that meet it, which is precisely why
+		the mathematics of Modules 2 and 3 matters so much.
 	\end{keyconcept}
 	
 	\begin{figure}[ht]
@@ -946,7 +557,7 @@ pdfkeywords={AI, machine learning, deep learning, transformers, LLM}]{hyperref}
 	packs thousands of simpler cores that perform these products in
 	parallel. That is why \textcite{krizhevsky2012} could train a vision
 	network that CPU-era attempts could not, and why hardware co-design now
-	shapes chip roadmaps --- Google's Tensor Processing Units, for instance,
+	shapes chip roadmaps. Google's Tensor Processing Units, for instance,
 	execute the tensor algebra of neural networks directly
 	\parencite{jouppi2017}. Memory bandwidth is the other half of the story:
 	modern accelerators are as much about feeding data as about computing
@@ -955,35 +566,19 @@ pdfkeywords={AI, machine learning, deep learning, transformers, LLM}]{hyperref}
 	\textbf{Cloud ecosystems.} The same hardware is available to anyone,
 	rented by the hour: a laptop, a browser, and a credit card are enough
 	to requisition a cluster of GPUs with a reproducible software image.
-	This democratised experimentation --- and concentrated an enormous
+	This democratised experimentation, and concentrated an enormous
 	amount of AI capability in a handful of providers.
 	
 	\textbf{Data engineering, dataset construction, and contamination.} Models live inside a loop, not a vacuum
 	(Figure~\ref{fig:pipeline}). Practitioners spend most project time collecting, cleaning, deduplicating, and validating data \parencite{mckinney2010}. Modern AI development requires rigorous data hygiene:
 	\begin{itemize}[nosep]
 		\item \textbf{Dataset Construction \& Labeling Noise:} Human annotation introduces errors, ambiguities, and labeler bias. Clean labels are often more valuable than model architecture tweaks.
-		\item \textbf{Train/Test Leakage \& Contamination:} Pretraining datasets scraped at web scale frequently suffer from \emph{benchmark contamination} --- test set questions leaking into training corpora, inflating evaluation scores artificially. Temporal leakage (using future data to predict past events) and group leakage (splitting samples from the same patient/user across train and test sets) yield invalid accuracy claims.
+		\item \textbf{Train/Test Leakage \& Contamination:} Pretraining datasets scraped at web scale frequently suffer from \emph{benchmark contamination}: test set questions leaking into training corpora, inflating evaluation scores artificially. Temporal leakage (using future data to predict past events) and group leakage (splitting samples from the same patient/user across train and test sets) yield invalid accuracy claims.
 		\item \textbf{Data Augmentation \& Synthetic Data:} Generating synthetic training examples or expanding datasets via domain-specific transforms mitigates data scarcity but risks amplifying generator biases.
 	\end{itemize}
 	
 	\begin{practicebox}
-\begin{lstlisting}
-import pandas as pd
-import numpy as np
-
-# Ingest / synthetic creation for standalone demo
-rng = np.random.default_rng(42)
-df = pd.DataFrame({
-    "created": pd.date_range("2026-01-01", periods=100, freq="h"),
-    "amount": rng.uniform(10, 200, 100),
-    "quantity": rng.integers(1, 5, 100),
-    "region": rng.choice(["North", "South", "East", "West"], 100)
-})
-df = df.dropna(subset=["amount"])           # basic cleaning
-df["revenue"] = df["amount"] * df["quantity"]
-summary = df.groupby("region")["revenue"].agg(["count", "mean", "sum"])
-print(summary)
-\end{lstlisting}
+\lstinputlisting[language=Python]{code/data_hygiene.py}
 		Pandas covers the ingest, clean, transform, aggregate loop
 		that occupies most of a data scientist's day.
 	\end{practicebox}
@@ -1073,7 +668,7 @@ print(summary)
 	\section{Mathematics and Data Foundations}
 	% =====================================================================
 	
-	\begin{modulecard}{\faRulerCombined\ Module 2 --- at a glance \hfill \small\normalfont (Estimated Study: 8 hours \textbullet{} Level: Intermediate)}{secondary}
+	\begin{modulecard}{\faRulerCombined\ Module 2, at a glance \hfill \small\normalfont (Estimated Study: 8 hours \textbullet{} Level: Intermediate)}{secondary}
 		\textbf{Focus.} The small mathematical toolkit that quietly powers
 		everything else in the course: linear algebra to \emph{represent} data,
 		probability to \emph{quantify} uncertainty, and optimisation to
@@ -1087,7 +682,7 @@ print(summary)
 		\medskip
 		\textbf{After this module you will be able to} describe any dataset as
 		linear-algebra objects, reason correctly about conditional
-		probabilities, and explain --- and implement --- gradient descent from
+		probabilities, explain and implement gradient descent from
 		scratch.
 	\end{modulecard}
 	
@@ -1096,48 +691,195 @@ print(summary)
 	code that uses it.
 	
 	\subsection{Linear algebra: the language of data}
-	
-	Machine-learning data lives in vectors, matrices, and tensors. A house
+
+	Machine-learning data lives in vectors, matrices, and tensors \parencite{strang2012linear}. A house
 	becomes a vector of measurements
-	$\mathbf{x} = [\text{area}, \text{rooms}, \text{age}]$; a dataset of $m$ houses a matrix $X \in \mathbb{R}^{m \times n}$; a colour image a
-	$H \times W \times 3$ tensor. The dot product measures alignment
-	between vectors (its normalised version, cosine similarity, is the workhorse
-	of recommendation systems and semantic search), and a matrix--vector
+	$\mathbf{x} = [\text{area}, \text{rooms}, \text{age}]^\top$; a dataset of $m$
+	houses becomes a matrix $X \in \mathbb{R}^{m \times n}$; a colour image a
+	$H \times W \times 3$ tensor. The dot product $\mathbf{u}^\top\mathbf{v}$
+	measures alignment between vectors (its normalised form, cosine similarity,
+	powers recommendation systems and semantic search), and a matrix--vector
 	product $W\mathbf{x}$ is a \emph{change of representation}: it rotates,
-	stretches, and mixes coordinates. In Module~4 this becomes literal ---
+	stretches, and mixes coordinates \parencite{strang2012linear}. In Module~4 this becomes literal:
 	every neural-network layer \emph{is} one such matrix.
-	
-	\textbf{Eigenvalues and dimensionality reduction.} Eigenvectors are non-zero directions along which a linear transformation $A$ acts purely by scaling without changing direction:
+
+	% ---- Matrix fundamentals -----------------------------------------------
+	\textbf{Matrix fundamentals.}
+	A matrix $A \in \mathbb{R}^{m \times n}$ is a rectangular array of scalars.
+	Five properties are used repeatedly throughout this course:
+
+	\begin{itemize}[nosep]
+		\item \textbf{Transpose} $A^{\!\top} \in \mathbb{R}^{n \times m}$:
+		      rows become columns. $(AB)^{\!\top} = B^{\!\top}A^{\!\top}$.
+		\item \textbf{Rank} $r = \mathrm{rank}(A) \le \min(m,n)$: the dimension of
+		      the column space (or equivalently, the row space) \parencite{strang2012linear}. A square matrix is
+		      \emph{invertible} if and only if $r = n$.
+		\item \textbf{Determinant} $\det(A)$ (square matrices only): scales the
+		      volume of the unit cube; $\det(A) = 0$ iff $A$ is singular (not
+		      invertible). For a $2\times2$ matrix,
+		      $\det\begin{pmatrix}a&b\\c&d\end{pmatrix} = ad - bc$.
+		\item \textbf{Trace} $\mathrm{tr}(A) = \sum_{i} a_{ii}$: sum of diagonal
+		      entries; equals the sum of all eigenvalues.
+		\item \textbf{Symmetry}: $A = A^{\!\top}$ holds for covariance matrices and
+		      Gram matrices ($X^{\!\top}X$). Symmetric matrices always have real
+		      eigenvalues and mutually orthogonal eigenvectors (Spectral Theorem
+		      \parencite[Chapter~6]{strang2019}, \parencite{strang2012linear}).
+	\end{itemize}
+
+	\begin{keyconcept}[Special matrix types encountered in ML]
+		\begin{center}
+			\small\sffamily
+			\renewcommand{\arraystretch}{1.25}
+			\begin{tabular}{@{}L{3.6cm} L{10.7cm}@{}}
+				\toprule
+				\rowcolor{primary}
+				\textcolor{white}{\textbf{Type}} &
+				\textcolor{white}{\textbf{Definition and role}} \\
+				\midrule
+				Identity $I$             & $I_{ij}=\delta_{ij}$; $AI=IA=A$; basis of no-op transformations. \\
+				Diagonal $D$             & $D_{ij}=0$ for $i\neq j$; scales each axis independently. \\
+				Orthogonal $Q$           & $Q^{\!\top}Q = I$; preserves lengths and angles; rotations and reflections. \\
+				Symmetric PSD $\Sigma$   & $\Sigma = \Sigma^{\!\top}$, $\mathbf{v}^{\!\top}\Sigma\mathbf{v} \ge 0$; covariance matrices are always PSD. \\
+				Low-rank $UV^{\!\top}$   & $U \in \mathbb{R}^{m\times r}$, $V \in \mathbb{R}^{n\times r}$, $r \ll \min(m,n)$; used in LoRA and SVD compression. \\
+				\bottomrule
+			\end{tabular}
+		\end{center}
+	\end{keyconcept}
+
+	\textbf{Singular Value Decomposition (SVD).}
+	Every matrix $A \in \mathbb{R}^{m \times n}$ admits the factorisation
+	\begin{equation}
+		A = U \Sigma_{\!s} V^{\!\top},
+		\label{eq:svd}
+	\end{equation}
+	where $U \in \mathbb{R}^{m \times m}$ and $V \in \mathbb{R}^{n \times n}$
+	are orthogonal, and $\Sigma_{\!s}$ is diagonal with non-negative entries
+	$\sigma_1 \ge \sigma_2 \ge \dots \ge \sigma_r > 0$ (the \textbf{singular values})
+	\parencite{trefethen1997}. The \textbf{best rank-$k$ approximation} is:
+	\begin{equation}
+		A_k = \sum_{i=1}^{k} \sigma_i \,\mathbf{u}_i \mathbf{v}_i^{\!\top}, \qquad
+		\|A - A_k\|_F = \sqrt{\sum_{i=k+1}^{r}\sigma_i^2}.
+	\end{equation}
+	This Eckart--Young theorem underpins image compression, recommendation
+	systems, and numerical stability of OLS \parencite{golub2013, strang2012linear}.
+
+	\begin{practicebox}[Matrix operations: rank, determinant, inverse, SVD]
+\lstinputlisting[language=Python]{code/matrix_operations.py}
+	\end{practicebox}
+
+	% ---- Eigenvalues and eigenvectors ---------------------------------------
+	\textbf{Eigenvalues and eigenvectors.}
+	For a square matrix $A \in \mathbb{R}^{n \times n}$, a non-zero vector
+	$\mathbf{v}$ is an \emph{eigenvector} with eigenvalue $\lambda$ if
 	\begin{equation}
 		A\mathbf{v} = \lambda \mathbf{v}.
+		\label{eq:eigen}
 	\end{equation}
-	The covariance matrix $\Sigma$ of a dataset is symmetric, so its
-	eigenvectors are mutually orthogonal, and the eigenvector with the
-	largest eigenvalue points along the direction of greatest variance.
-	Projecting the data onto the top eigenvectors is \emph{principal
-		component analysis} (PCA):
-	\begin{equation}
-		\mathbf{v}_1 = \arg\max_{\|\mathbf{v}\| = 1}\ \mathbf{v}^{\!\top}\Sigma\,\mathbf{v},
-	\end{equation}
-	i.e.\ the first principal component is the top eigenvector of $\Sigma$.
-	Dropping low-variance directions keeps most of the signal in far fewer
-	coordinates --- compression, de-noising, and two-dimensional plots of
-	hundred-dimensional data \parencite[Chapters 5--6]{strang2019}. NumPy makes all of it
-	concrete, and its compiled vector operations are orders of magnitude
-	faster than Python loops \parencite{harris2020}.
-	
-	\begin{practicebox}
-\begin{lstlisting}
-import numpy as np
+	Geometrically, $A$ acts on $\mathbf{v}$ purely by scaling: the direction
+	is preserved while the magnitude is multiplied by $\lambda$ \parencite{strang2012linear}.
+	When $|\lambda| > 1$ the transformation stretches; when $|\lambda| < 1$
+	it compresses; when $\lambda < 0$ it reverses orientation.
+	Eigenvalues are roots of $\det(A - \lambda I) = 0$, but in practice
+	iterative algorithms (QR iteration, Lanczos) solve large-scale problems
+	\parencite{trefethen1997}.
 
-X = np.random.default_rng(0).normal(size=(500, 20))
-Xc = X - X.mean(axis=0)             # centre the columns
-C  = (Xc.T @ Xc) / (X.shape[0]-1)   # covariance matrix
-evals, evecs = np.linalg.eigh(C)    # symmetric solver
-pcs = evecs[:, ::-1][:, :2]         # top-2 principal components
-X2  = Xc @ pcs                      # 20-D data projected to 2-D
-print(X2.shape, evals[::-1][:2])    # (500, 2) and top variances
-\end{lstlisting}
+	\begin{keyconcept}[Spectral theorem for symmetric matrices]
+		If $A = A^{\!\top}$ then: (i) all eigenvalues $\lambda_i \in \mathbb{R}$;
+		(ii) eigenvectors for distinct eigenvalues are orthogonal;
+		(iii) there exist $n$ orthonormal eigenvectors forming the decomposition
+		\begin{equation}
+			A = V \Lambda V^{\!\top}, \qquad
+			V = [\mathbf{v}_1 \mid \cdots \mid \mathbf{v}_n],\quad
+			\Lambda = \mathrm{diag}(\lambda_1, \ldots, \lambda_n).
+			\label{eq:spectral}
+		\end{equation}
+		The columns of $V$ are an orthonormal basis of $\mathbb{R}^n$; the
+		eigenvalues measure variance along each basis direction.
+	\end{keyconcept}
+
+	\textbf{Rayleigh quotient.}
+	For a symmetric positive semi-definite matrix $A$ and a unit vector, the
+	\textbf{Rayleigh quotient} $R(\mathbf{v}) = \mathbf{v}^{\!\top}A\mathbf{v}$
+	is maximised by the leading eigenvector:
+	\begin{equation}
+		\max_{\|\mathbf{v}\|=1}\; \mathbf{v}^{\!\top}A\mathbf{v}
+		= \lambda_{\max}(A),\quad \text{achieved at } \mathbf{v} = \mathbf{v}_1.
+		\label{eq:rayleigh}
+	\end{equation}
+	This variational characterisation is the direct mathematical foundation of
+	PCA \parencite{bishop2006, strang2012linear}.
+
+	\begin{practicebox}[Eigendecomposition: verifying $A\mathbf{v}=\lambda\mathbf{v}$ and the Rayleigh quotient]
+\lstinputlisting[language=Python]{code/eigendecomposition.py}
+	\end{practicebox}
+
+	% ---- PCA ----------------------------------------------------------------
+	\textbf{Principal component analysis (PCA).}
+	PCA, introduced by \textcite{pearson1901}, finds a sequence of orthogonal
+	directions that capture maximum variance. Given centred data
+	$X_c \in \mathbb{R}^{m \times d}$ with sample covariance
+	$\hat\Sigma = \frac{1}{m-1}X_c^{\!\top}X_c$, the first principal component is
+	\begin{equation}
+		\mathbf{v}_1 = \arg\max_{\|\mathbf{v}\|=1}\;
+		\mathbf{v}^{\!\top}\hat\Sigma\,\mathbf{v}.
+		\label{eq:pc1}
+	\end{equation}
+	By equation~\eqref{eq:rayleigh} the solution is the eigenvector of
+	$\hat\Sigma$ for $\lambda_{\max}$ \parencite{strang2012linear}. The full algorithm has five steps:
+
+	\begin{enumerate}[nosep]
+		\item \textbf{Centre.} $X_c = X - \mathbf{1}\bar{\mathbf{x}}^{\!\top}$.
+		\item \textbf{Covariance.} $\hat\Sigma = \frac{1}{m-1}X_c^{\!\top}X_c \in \mathbb{R}^{d\times d}$.
+		\item \textbf{Eigen-decompose.} $\hat\Sigma = V\Lambda V^{\!\top}$; sort by $\lambda_i$ descending.
+		\item \textbf{Project.} $Z = X_c W_k$, \; $W_k = [\mathbf{v}_1, \ldots, \mathbf{v}_k] \in \mathbb{R}^{d\times k}$.
+		\item \textbf{Reconstruct (optional).} $\hat X_c = Z W_k^{\!\top}$;
+		      reconstruction MSE $= \sum_{i>k}\lambda_i$ (discarded eigenvalues).
+	\end{enumerate}
+
+	\textbf{Worked example.}
+	Consider $m=200$ observations with $d=2$ correlated features drawn from
+	$\mathcal{N}(\boldsymbol{\mu},\Sigma_0)$, where
+	$\boldsymbol{\mu}=[2,3]^{\!\top}$ and
+	$\Sigma_0 = \bigl(\begin{smallmatrix}4&3.2\\3.2&4\end{smallmatrix}\bigr)$
+	(Pearson correlation $\rho=0.8$).
+	Centring and eigen-decomposing the sample covariance gives, approximately:
+	\begin{equation}
+		\lambda_1 \approx 7.2, \quad
+		\lambda_2 \approx 0.8, \quad
+		\mathbf{v}_1 \approx \tfrac{1}{\sqrt{2}}\begin{pmatrix}1\\1\end{pmatrix},\quad
+		\mathbf{v}_2 \approx \tfrac{1}{\sqrt{2}}\begin{pmatrix}-1\\1\end{pmatrix}.
+	\end{equation}
+	The first PC captures $\lambda_1/(\lambda_1+\lambda_2)\approx 90\%$ of
+	variance---the ``sum'' direction dominates, as expected from positive
+	correlation. Projecting onto $k=1$ halves storage while retaining 90\%
+	of signal; the mean squared reconstruction error equals $\lambda_2 \approx 0.8$.
+
+	\textbf{Scree plot and choosing $k$.}
+	The \textbf{explained variance ratio} $\lambda_i/\sum_j\lambda_j$ plotted
+	against $i$ is called a \emph{scree plot}. Practitioners look for an
+	elbow after which components contribute negligible variance; retaining
+	90--95\% is a common heuristic \parencite[Chapter~14]{hastie2009}.
+
+	\textbf{PCA via SVD.}
+	An equivalent, numerically more stable route applies SVD directly to $X_c$:
+	\begin{equation}
+		X_c = U\Sigma_{\!s} V^{\!\top}
+		\;\Longrightarrow\;
+		\hat\Sigma = \tfrac{1}{m-1}V \Sigma_{\!s}^2 V^{\!\top},
+		\quad \sigma_i^2 = (m-1)\,\lambda_i.
+		\label{eq:pca_svd}
+	\end{equation}
+	The principal directions $W_k$ are right singular vectors $V_k$.
+	For $d \gg m$ (more features than samples), SVD on $X_c$ avoids forming
+	the large $d \times d$ covariance matrix \parencite{trefethen1997, strang2012linear}.
+
+	\textbf{Limitations.} PCA finds the best \emph{linear} projection.
+	Non-linear manifolds require t-SNE \parencite{vanDerMaaten2008} or UMAP
+	\parencite{mcinnes2018} (revisited in Module~3). Features should be
+	$z$-score standardised before PCA on heterogeneous datasets.
+
+	\begin{practicebox}[PCA from scratch: centring, covariance, eigen-decomposition, scree table]
+\lstinputlisting[language=Python]{code/pca_from_scratch.py}
 	\end{practicebox}
 	
 	\subsection{Probability and statistics: the language of uncertainty}
@@ -1196,14 +938,7 @@ print(X2.shape, evals[::-1][:2])    # (500, 2) and top variances
 	\end{itemize}
 	
 	\begin{practicebox}
-\begin{lstlisting}
-import numpy as np
-
-rng = np.random.default_rng(42)
-# 10,000 experiments: average of 40 Exponential(1) draws each
-means = rng.exponential(scale=1.0, size=(10_000, 40)).mean(axis=1)
-print(f"Sample Mean: {means.mean():.3f} | SE: {means.std():.3f}") # ~1.0 & 1/sqrt(40)
-\end{lstlisting}
+\lstinputlisting[language=Python]{code/clt_bootstrap.py}
 		The standard deviation of sample means matches standard error $\sigma/\sqrt{n}$, illustrating CLT convergence.
 	\end{practicebox}
 	
@@ -1236,18 +971,7 @@ print(f"Sample Mean: {means.mean():.3f} | SE: {means.std():.3f}") # ~1.0 & 1/sqr
 	In modern deep learning and Transformer training, \textbf{AdamW} \parencite{loshchilov2019} is strongly preferred over standard Adam because it decouples $\ell_2$ weight decay regularization from adaptive gradient moment updates, preventing gradient scaling from inadvertently suppressing weight decay penalty terms.
 
 	\begin{practicebox}[Adam optimiser step from scratch]
-\begin{lstlisting}
-import numpy as np
-
-def adam_step(theta, grad, m, v, t, lr=0.01,
-              beta1=0.9, beta2=0.999, eps=1e-8):
-    m = beta1 * m + (1 - beta1) * grad
-    v = beta2 * v + (1 - beta2) * (grad ** 2)
-    m_hat = m / (1 - beta1 ** t)
-    v_hat = v / (1 - beta2 ** t)
-    theta_next = theta - (lr * m_hat) / (np.sqrt(v_hat) + eps)
-    return theta_next, m, v
-\end{lstlisting}
+\lstinputlisting[language=Python]{code/adam_optimizer.py}
 		Adam updates each parameter using bias-corrected first and second moment estimates.
 	\end{practicebox}
 	
@@ -1277,14 +1001,7 @@ def adam_step(theta, grad, m, v, t, lr=0.01,
 	\end{figure}
 	
 	\begin{practicebox}
-\begin{lstlisting}
-w, lr = 5.0, 0.15
-for step in range(8):
-    grad = 2 * w            # derivative of f(w) = w**2
-    w = w - lr * grad       # the update rule, eq. (11)
-    print(f"step {step}:  w = {w:.4f}")
-    # w -> 0.2882: convergence toward the minimum
-\end{lstlisting}
+\lstinputlisting[language=Python]{code/gradient_descent.py}
 	\end{practicebox}
 	
 	\begin{checkpoint}
@@ -1302,6 +1019,10 @@ for step in range(8):
 		\small
 		\begin{itemize}[nosep]
 			\item \fullcite{strang2019}
+			\item \fullcite{strang2012linear}
+			\item \fullcite{golub2013}
+			\item \fullcite{trefethen1997}
+			\item \fullcite{pearson1901}
 			\item \fullcite{wasserman2004}
 			\item \fullcite{boyd2004}
 			\item \fullcite{goodfellow2016}
@@ -1317,26 +1038,26 @@ for step in range(8):
 	\section{Classical Machine Learning: The Core Engine}
 	% =====================================================================
 	
-	\begin{modulecard}{\faRobot\ Module 3 --- at a glance \hfill \small\normalfont (Estimated Study: 10 hours \textbullet{} Level: Intermediate)}{accent}
+	\begin{modulecard}{\faRobot\ Module 3, at a glance \hfill \small\normalfont (Estimated Study: 10 hours \textbullet{} Level: Intermediate)}{accent}
 		\textbf{Focus.} The algorithms that still run the majority of
-		real-world, structured-data workloads --- and the evaluation discipline
+		real-world, structured-data workloads, and the evaluation discipline
 		that separates real learning from memorisation.
 		
 		\medskip
 		\textbf{Key concepts.} Supervised learning: regression, decision trees,
 		SVMs, ensembles. Unsupervised learning: K-Means clustering and anomaly
-		detection. Reinforcement learning: MDPs, multi-armed bandits, exploration vs. exploitation. Evaluation: accuracy, precision, recall, F1, ROC-AUC.
+		detection. Self-supervised learning: data self-annotation and pretext tasks. Reinforcement learning: MDPs, multi-armed bandits, exploration vs. exploitation. Evaluation: accuracy, precision, recall, F1, ROC-AUC.
 		
 		\medskip
 		\textbf{After this module you will be able to} choose an appropriate
-		classical algorithm for a task, cluster unlabelled data, solve multi-armed bandit problems, and --- most
-		importantly --- evaluate any model honestly.
+		classical algorithm for a task, cluster unlabelled data, construct self-annotation pretext tasks, solve multi-armed bandit problems, and (most
+		importantly) evaluate any model honestly.
 	\end{modulecard}
 	
 	On the tabular, structured data of business (customers, transactions,
 	sensors), classical machine learning frequently still beats glamorous
-	deep models. It is also the best place to internalise the habits ---
-	splits, metrics, baselines --- that govern everything later
+	deep models. It is also the best place to internalise the habits 
+	(splits, metrics, baselines)  that govern everything later
 	\parencite{hastie2009, pedregosa2011}.
 	
 	\subsection{Supervised learning}
@@ -1364,32 +1085,12 @@ for step in range(8):
 	\begin{equation}
 		\hat{\boldsymbol{\beta}}_{\text{OLS}} = (X^{\!\top}X)^{-1}X^{\!\top}\mathbf{y},
 	\end{equation}
-	computed via QR factorisation or SVD for numerical stability \parencite{strang2019}.
+	computed via QR factorisation or SVD for numerical stability \parencite{strang2012linear, strang2019}.
 	
 	\textbf{Feature maps and basis expansion.} The matrix $X$ is not restricted to raw measurements. By applying a non-linear feature mapping $\boldsymbol{\phi}(\mathbf{x}) = [\phi_1(\mathbf{x}), \dots, \phi_d(\mathbf{x})]^{\!\top}$, linear models can capture complex non-linear curves. For example, a 1D input $x$ expanded into a degree-$d$ polynomial basis yields row vectors $\tilde{\mathbf{x}}_i^{\!\top} = [1, x_i, x_i^2, \dots, x_i^d]$, transforming non-linear fitting into a linear problem in feature space $\mathbb{R}^{d+1}$.
 	
 	\begin{practicebox}[Building Design Matrix $X$ \& Basis Expansion]
-\begin{lstlisting}
-import numpy as np
-
-x_raw = np.array([1.5, 2.0, 3.5, 4.0, 5.5])
-y = np.array([2.1, 2.9, 6.1, 8.2, 14.5])
-
-# 1. Prepend bias column of 1s -> X in R^(m x 2)
-X_linear = np.column_stack([np.ones(len(x_raw)), x_raw])
-
-# 2. Basis expansion: Polynomial features [1, x, x^2, x^3]
-X_poly = np.column_stack([x_raw**p for p in range(4)])
-
-# Closed-form OLS via QR decomposition (R beta = Q^T y) & SVD (avoiding inv(X^T X)):
-Q, R = np.linalg.qr(X_poly)
-beta_poly_qr = np.linalg.solve(R, Q.T @ y)
-beta_poly_svd = np.linalg.lstsq(X_poly, y, rcond=None)[0]
-
-print(f"Linear X shape:   {X_linear.shape} | beta: {np.linalg.lstsq(X_linear, y, rcond=None)[0].round(2)}")
-print(f"Poly X (QR):      {X_poly.shape} | beta: {beta_poly_qr.round(2)}")
-print(f"Poly X (SVD):     {X_poly.shape} | beta: {beta_poly_svd.round(2)}")
-\end{lstlisting}
+\lstinputlisting[language=Python]{code/polynomial_basis_expansion.py}
 	\end{practicebox}
 
 	\textbf{Regularisation: Ridge ($\ell_2$) and Lasso ($\ell_1$).} When features are highly correlated or $n > m$, OLS exhibits high variance. Regularisation fights overfitting by penalising model complexity. Ridge regression adds an $\ell_2$ penalty:
@@ -1408,43 +1109,7 @@ print(f"Poly X (SVD):     {X_poly.shape} | beta: {beta_poly_svd.round(2)}")
 	which clamps small feature correlations below $\gamma = \alpha$ to exactly zero, performing automated feature selection.
 	
 	\begin{practicebox}[Lasso ($\ell_1$) Regularisation \& Numerical Solvers]
-\begin{lstlisting}
-import numpy as np
-
-# Synthetic dataset with collinearity & sparse ground truth
-rng = np.random.default_rng(42)
-m, n = 100, 5
-X = rng.normal(size=(m, n))
-X[:, 4] = X[:, 0] + X[:, 1] + 1e-4 * rng.normal(size=m) # collinear feature
-true_w = np.array([3.0, -2.5, 1.5, 0.0, 0.0])
-y = X @ true_w + 0.2 * rng.normal(size=m)
-
-# 1. Numerically stable OLS Normal Equations via QR & SVD
-Q, R = np.linalg.qr(X)
-beta_qr = np.linalg.solve(R, Q.T @ y)             # QR decomposition solver
-beta_svd = np.linalg.lstsq(X, y, rcond=None)[0]   # SVD solver
-
-# 2. Lasso via Coordinate Descent with Soft-Thresholding
-def soft_threshold(z, gamma):
-    return np.sign(z) * np.maximum(0, np.abs(z) - gamma)
-
-def lasso_cd(X, y, alpha, max_iter=500):
-    m, n = X.shape
-    w = np.zeros(n)
-    norm_x2 = np.sum(X**2, axis=0)
-    for _ in range(max_iter):
-        for j in range(n):
-            r_j = y - (X @ w - X[:, j] * w[j])     # partial residual
-            rho_j = X[:, j] @ r_j
-            w[j] = soft_threshold(rho_j, m * alpha) / norm_x2[j]
-    return w
-
-w_lasso_np = lasso_cd(X, y, alpha=0.1)
-
-print("True weights: ", true_w)
-print("OLS QR:       ", beta_qr.round(2))          # unstable on collinear feature
-print("NumPy Lasso:  ", w_lasso_np.round(2))       # zeroes noise & collinear weights
-\end{lstlisting}
+\lstinputlisting[language=Python]{code/lasso_coordinate_descent.py}
 	\end{practicebox}
 
 	\textbf{Classification: Sigmoid, Logistic Regression, and Softmax.} When target labels $y$ are categorical, linear output scores $z = \boldsymbol{\beta}^{\!\top}\mathbf{x} + \beta_0$ are unbounded and unsuitable for probabilities.
@@ -1475,31 +1140,7 @@ print("NumPy Lasso:  ", w_lasso_np.round(2))       # zeroes noise & collinear we
 	where $y_{i,k} \in \{0, 1\}$ is the one-hot target indicator for class $k$.
 	
 	\begin{practicebox}[Sigmoid, Softmax \& Cross-Entropy Loss from Scratch]
-\begin{lstlisting}
-import numpy as np
-
-def sigmoid(z):
-    return 1 / (1 + np.exp(-np.clip(z, -500, 500)))
-
-def softmax(Z, temp=1.0):
-    # Subtract max logit per row for numerical stability
-    Z_scaled = Z / temp
-    exp_Z = np.exp(Z_scaled - np.max(Z_scaled, axis=-1, keepdims=True))
-    return exp_Z / np.sum(exp_Z, axis=-1, keepdims=True)
-
-# 3 samples, 4 classes (logits Z in R^(3 x 4))
-logits = np.array([[2.0, 1.0, 0.1, 3.0],
-                   [0.5, 4.0, 1.2, 0.0],
-                   [-1.0, 0.0, 5.0, 0.2]])
-
-probs = softmax(logits, temp=1.0)
-y_true = np.array([3, 1, 2]) # True targets for each sample
-
-# Categorical Cross-Entropy Loss: -log(p_true)
-nll = -np.log(probs[np.arange(len(y_true)), y_true])
-print("Probabilities:\n", probs.round(3))
-print(f"Per-sample loss: {nll.round(3)} | Mean: {nll.mean():.3f}")
-\end{lstlisting}
+\lstinputlisting[language=Python]{code/sigmoid_softmax_cross_entropy.py}
 	\end{practicebox}
 	
 	\textbf{Naive Bayes and $k$-NN baselines.} Bridging directly from Bayes' theorem (equation~\ref{eq:bayes}), the \textbf{Naive Bayes classifier} computes the posterior probability of class $y \in \mathcal{Y}$ given features $\mathbf{x} = (x_1, \dots, x_n)$ by assuming features are conditionally independent given $y$:
@@ -1520,39 +1161,7 @@ print(f"Per-sample loss: {nll.round(3)} | Mean: {nll.mean():.3f}")
 	Hyperparameter $k$ controls the bias--variance trade-off: $k=1$ creates complex, low-bias decision boundaries prone to overfitting noise, whereas large $k$ over-smooths class margins (high bias). While $k$-NN requires zero training compute, inference cost scales linearly as $O(m \cdot n)$ per query; spatial indexing trees (KD-Trees, Ball Trees) accelerate spatial queries in low-to-moderate dimensions ($n \ll 50$).
 
 	\begin{practicebox}[Gaussian Naive Bayes from Scratch \& $k$-NN Baselines]
-\begin{lstlisting}
-import numpy as np
-from sklearn.neighbors import KNeighborsClassifier
-
-class GaussianNBScratch:
-    def fit(self, X, y):
-        self.classes = np.unique(y)
-        self.priors = np.array([np.mean(y == c) for c in self.classes])
-        self.means = np.array([X[y == c].mean(axis=0) for c in self.classes])
-        self.vars = np.array([X[y == c].var(axis=0) + 1e-9 for c in self.classes])
-        return self
-
-    def predict(self, X):
-        # Log likelihood for numerical stability: log P(y) + sum log P(x_j|y)
-        log_probs = []
-        for i, c in enumerate(self.classes):
-            log_prior = np.log(self.priors[i])
-            log_pdf = -0.5 * np.sum(np.log(2 * np.pi * self.vars[i]) + 
-                                   ((X - self.means[i])**2) / self.vars[i], axis=1)
-            log_probs.append(log_prior + log_pdf)
-        return self.classes[np.argmax(np.array(log_probs), axis=0)]
-
-# Synthetic binary dataset
-rng = np.random.default_rng(42)
-X = rng.normal(size=(200, 4))
-y = (X[:, 0] + X[:, 1] > 0).astype(int)
-
-gnb = GaussianNBScratch().fit(X[:150], y[:150])
-knn = KNeighborsClassifier(n_neighbors=5).fit(X[:150], y[:150])
-
-print(f"Gaussian NB (Scratch) Acc: {(gnb.predict(X[150:]) == y[150:]).mean():.3f}")
-print(f"k-NN (k=5) Test Acc:       {knn.score(X[150:], y[150:]):.3f}")
-\end{lstlisting}
+\lstinputlisting[language=Python]{code/gaussian_naive_bayes.py}
 		Naive Bayes computes class posterior probabilities in log-space via Gaussian feature likelihoods, matching $k$-NN baseline performance on smooth distributions.
 	\end{practicebox}
 
@@ -1569,28 +1178,7 @@ print(f"k-NN (k=5) Test Acc:       {knn.score(X[150:], y[150:]):.3f}")
 	\end{itemize}
 
 	\begin{practicebox}[Decision Trees, Gini Impurity \& Ensembles]
-\begin{lstlisting}
-import numpy as np
-from sklearn.ensemble import RandomForestClassifier, HistGradientBoostingClassifier
-
-def gini_impurity(y):
-    """Compute Gini Impurity I_G(p) = 1 - sum(p_k^2)"""
-    if len(y) == 0: return 0.0
-    p = np.bincount(y) / len(y)
-    return 1.0 - np.sum(p**2)
-
-# Synthetic classification dataset with non-linear interaction
-rng = np.random.default_rng(42)
-X = rng.normal(size=(500, 10))
-y = (X[:, 0]*2 - X[:, 1] + X[:, 2]**2 > 1.0).astype(int)
-
-rf = RandomForestClassifier(n_estimators=100, max_depth=5, random_state=42).fit(X[:400], y[:400])
-gb = HistGradientBoostingClassifier(max_iter=100, max_depth=5, random_state=42).fit(X[:400], y[:400])
-
-print(f"Root Split Gini Impurity:   {gini_impurity(y[:400]):.3f}")
-print(f"Random Forest Test Acc:     {rf.score(X[400:], y[400:]):.3f}")
-print(f"Gradient Boosting Test Acc: {gb.score(X[400:], y[400:]):.3f}")
-\end{lstlisting}
+\lstinputlisting[language=Python]{code/decision_tree_ensembles.py}
 		Ensembles aggregate decision tree splits; gradient boosting iteratively corrects prior tree errors to model complex non-linear feature interactions.
 	\end{practicebox}
 
@@ -1604,7 +1192,7 @@ print(f"Gradient Boosting Test Acc: {gb.score(X[400:], y[400:]):.3f}")
 	\begin{equation}
 		\max_{\boldsymbol{\alpha}}\; \sum_{i=1}^{m} \alpha_i - \frac{1}{2}\sum_{i=1}^{m}\sum_{j=1}^{m} \alpha_i \alpha_j y_i y_j \bigl(\mathbf{x}_i^{\!\top}\mathbf{x}_j\bigr) \qquad \text{s.t.}\quad 0 \le \alpha_i \le C, \quad \sum_{i=1}^{m} \alpha_i y_i = 0.
 	\end{equation}
-	Observations with $\alpha_i > 0$ form the \textbf{support vectors} lying on or inside the margin. The dual formulation reveals that predictions depend exclusively on dot products $\mathbf{x}_i^{\!\top}\mathbf{x}_j$. Replacing this dot product with a non-linear kernel function $K(\mathbf{x}_i, \mathbf{x}_j) = \boldsymbol{\phi}(\mathbf{x}_i)^{\!\top}\boldsymbol{\phi}(\mathbf{x}_j)$ --- the \textbf{Kernel Trick} --- allows SVMs to construct non-linear decision boundaries in high-dimensional Hilbert spaces without explicitly computing expensive feature maps $\boldsymbol{\phi}(\cdot)$:
+	Observations with $\alpha_i > 0$ form the \textbf{support vectors} lying on or inside the margin. The dual formulation reveals that predictions depend exclusively on dot products $\mathbf{x}_i^{\!\top}\mathbf{x}_j$. Replacing this dot product with a non-linear kernel function $K(\mathbf{x}_i, \mathbf{x}_j) = \boldsymbol{\phi}(\mathbf{x}_i)^{\!\top}\boldsymbol{\phi}(\mathbf{x}_j)$, known as the \textbf{Kernel Trick}, allows SVMs to construct non-linear decision boundaries in high-dimensional Hilbert spaces without explicitly computing expensive feature maps $\boldsymbol{\phi}(\cdot)$:
 	\begin{itemize}[nosep]
 		\item \textbf{Linear Kernel:} $K(\mathbf{x}, \mathbf{z}) = \mathbf{x}^{\!\top}\mathbf{z}$.
 		\item \textbf{Polynomial Kernel:} $K(\mathbf{x}, \mathbf{z}) = (\mathbf{x}^{\!\top}\mathbf{z} + c)^d$.
@@ -1612,23 +1200,7 @@ print(f"Gradient Boosting Test Acc: {gb.score(X[400:], y[400:]):.3f}")
 	\end{itemize}
 
 	\begin{practicebox}[Support Vector Machines: Linear vs.\ RBF Kernel]
-\begin{lstlisting}
-import numpy as np
-from sklearn.svm import SVC
-
-# Generate non-linearly separable concentric circles dataset
-rng = np.random.default_rng(42)
-X = rng.uniform(-2, 2, size=(300, 2))
-y = ((X[:, 0]**2 + X[:, 1]**2) < 1.5).astype(int)
-
-# Compare Linear vs RBF Kernel SVM
-svm_lin = SVC(kernel='linear', C=1.0).fit(X[:240], y[:240])
-svm_rbf = SVC(kernel='rbf', C=1.0, gamma='scale').fit(X[:240], y[:240])
-
-print(f"Linear Kernel Test Acc: {svm_lin.score(X[240:], y[240:]):.3f}")
-print(f"RBF Kernel Test Acc:    {svm_rbf.score(X[240:], y[240:]):.3f}")
-print(f"RBF Support Vectors:    {len(svm_rbf.support_vectors_)} / 240 samples")
-\end{lstlisting}
+\lstinputlisting[language=Python]{code/svm_kernels.py}
 		The RBF kernel projects non-linearly separable points into implicit infinite-dimensional space, creating complex circular decision boundaries governed by support vectors.
 	\end{practicebox}
 	
@@ -1679,23 +1251,30 @@ print(f"RBF Support Vectors:    {len(svm_rbf.support_vectors_)} / 240 samples")
 	\textbf{Anomaly Detection.} Methods include Isolation Forest \parencite{liu2008} (random feature splits isolating anomalies near root nodes), Elliptic Envelope, and Autoencoders (Module 4).
 	
 	\begin{practicebox}[DBSCAN, K-Means \& Silhouette Score]
-\begin{lstlisting}
-from sklearn.cluster import KMeans, DBSCAN
-from sklearn.metrics import silhouette_score
-from sklearn.datasets import make_blobs
-import numpy as np
+\lstinputlisting[language=Python]{code/clustering_kmeans_dbscan.py}
+	\end{practicebox}
 
-# Synthetic data generation for standalone execution
-X_tr, _ = make_blobs(n_samples=150, centers=3, cluster_std=0.6, random_state=42)
-
-# Fit K-Means and DBSCAN on synthetic data
-kmeans = KMeans(n_clusters=3, n_init=10, random_state=42).fit(X_tr)
-dbscan = DBSCAN(eps=0.5, min_samples=5).fit(X_tr)
-
-score = silhouette_score(X_tr, kmeans.labels_)
-print(f"K-Means Silhouette Score: {score:.3f}")
-print(f"DBSCAN Clusters Found:   {len(set(dbscan.labels_)) - (1 if -1 in dbscan.labels_ else 0)}")
-\end{lstlisting}
+	\subsection{Self-supervised learning: data self-annotation}
+	
+	While supervised learning requires manual target labels $(\mathbf{x}_i, y_i)$ and unsupervised learning discovers unlabelled structure without targets, \textbf{Self-Supervised Learning (SSL)} bridges this divide by turning unlabelled data into its own supervisor through \textbf{data self-annotation}.
+	
+	\textbf{The Paradigm Shift: From Manual to Self-Annotation.} Manual human annotation is expensive, slow, bottlenecked by labor, and subject to annotator bias. Self-supervised learning eliminates manual labeling by partitioning or transforming unlabelled raw inputs $\mathbf{x}$ so that the data automatically generates both context features $\mathbf{x}_{\text{context}}$ and target labels $y_{\text{target}}$ without human intervention.
+	
+	\textbf{Mechanisms of Data Self-Annotation (Pretext Tasks).} The self-annotation process relies on formulating \emph{pretext tasks} directly on unlabelled corpora:
+	\begin{itemize}[nosep]
+		\item \textbf{Masked / Predictive Self-Annotation:} The system hides or masks a portion of the input vector or sequence, defining the hidden portion as the ground-truth target $y_{\text{target}} = \mathbf{x}_{\text{masked}}$. For text, masking tokens in a sentence (e.g., BERT \parencite{devlin2019}) forces the network to annotate and predict missing words from surrounding context. In computer vision, Masked Autoencoders (MAE \parencite{he2022}) mask image patches and use raw pixel values as targets.
+		\item \textbf{Autoregressive Self-Annotation:} In sequence modeling, predicting the next token $x_{t+1}$ given preceding context $x_{1:t}$ self-annotates every token position. A text corpus of $N$ tokens automatically yields $N-1$ labeled training pairs $(x_{1:t}, x_{t+1})$ with zero manual annotation cost.
+		\item \textbf{Contrastive / Transformation Self-Annotation:} Applying spatial or chromatic augmentations (cropping, rotation, color jittering) to an image $\mathbf{x}_i$ creates two views $(\mathbf{x}_i^{(1)}, \mathbf{x}_i^{(2)})$. The framework automatically self-annotates this pair as a positive instance ($y = 1$), while pairing $\mathbf{x}_i^{(1)}$ with a different image sample $\mathbf{x}_j$ creates a negative instance ($y = 0$) \parencite{chen2020}.
+		\item \textbf{Context Restoration \& Spatial Permutations:} Shuffling image patches or introducing synthetic noise self-annotates the original spatial layout or uncorrupted signal as the target label.
+	\end{itemize}
+	
+	\begin{keyconcept}[Self-Supervised Learning: Data Self-Annotation]
+		Self-Supervised Learning converts unlabelled raw data into supervised training signals by having the data annotate itself. By masking, splitting, or transforming inputs, SSL algorithms create pretext target labels $y_{\text{target}}$ automatically, unlocking web-scale pre-training for foundation models.
+	\end{keyconcept}
+	
+	\begin{practicebox}[Data Self-Annotation in Python: Masked \& Autoregressive Pretext Tasks]
+\lstinputlisting[language=Python]{code/self_supervised_pretext_tasks.py}
+		Data self-annotation generates supervised training pairs directly from raw unlabelled input arrays.
 	\end{practicebox}
 
 	\subsection{Reinforcement learning}
@@ -1745,6 +1324,7 @@ print(f"DBSCAN Clusters Found:   {len(set(dbscan.labels_)) - (1 if -1 in dbscan.
 			\item In a $K$-armed bandit problem, how does increasing $\epsilon$ in an $\epsilon$-greedy strategy impact short-term vs.\ long-term return?
 			\item Your cross-validation scores vary from 0.62 to 0.91 across folds.
 			What does that variance tell you, and what would you do next?
+			\item Explain how Self-Supervised Learning (SSL) turns unlabelled data into supervised targets. Give one concrete example of a self-annotation pretext task.
 		\end{enumerate}
 	\end{checkpoint}
 	
@@ -1775,7 +1355,7 @@ print(f"DBSCAN Clusters Found:   {len(set(dbscan.labels_)) - (1 if -1 in dbscan.
 	\section{Transition to Deep Learning and Modern AI}
 	% =====================================================================
 	
-	\begin{modulecard}{\faBrain\ Module 4 --- at a glance \hfill \small\normalfont (Estimated Study: 8 hours \textbullet{} Level: Intermediate--Advanced)}{dpurple}
+	\begin{modulecard}{\faBrain\ Module 4, at a glance \hfill \small\normalfont (Estimated Study: 8 hours \textbullet{} Level: Intermediate--Advanced)}{dpurple}
 		\textbf{Focus.} The leap from engineered features to learned representation hierarchies: perceptrons, activation functions, backpropagation, regularization \& normalization, autoencoders, latent spaces, CNNs, RNNs/LSTMs, and self-attention in Transformers.
 		
 		\medskip
@@ -1787,7 +1367,7 @@ print(f"DBSCAN Clusters Found:   {len(set(dbscan.labels_)) - (1 if -1 in dbscan.
 	
 	The jump from classical ML to deep learning is a jump in \emph{who
 		designs the features}. A classical pipeline is given hand-crafted
-	inputs; a deep network learns a hierarchy of them --- edges, then
+	inputs; a deep network learns a hierarchy of them: edges, then
 	textures, then parts, then objects \parencite{lecun2015}. What
 	engineering achieved by hand, depth achieves with data and compute.
 	
@@ -1799,7 +1379,7 @@ print(f"DBSCAN Clusters Found:   {len(set(dbscan.labels_)) - (1 if -1 in dbscan.
 		\hat{y} = \mathbb{1}\{\mathbf{w}^{\!\top}\mathbf{x} + b > 0\} \in \{0, 1\}
 		\quad (\text{or }\mathrm{sgn}(\mathbf{w}^{\!\top}\mathbf{x} + b) \in \{-1, +1\}).
 	\end{equation}
-	It can learn any function that a straight line can separate --- and
+	It can learn any function that a straight line can separate, and
 	provably cannot learn XOR, a limitation that chilled the field's first
 	winter \parencite{minsky1969}. The repair is to \emph{stack} units and
 	interleave \textbf{nonlinear activation functions} between layers:
@@ -1808,11 +1388,11 @@ print(f"DBSCAN Clusters Found:   {len(set(dbscan.labels_)) - (1 if -1 in dbscan.
 		\mathbf{b}^{(\ell)}\right),
 		\qquad \ell = 1, \dots, L .
 	\end{equation}
-	Without $\phi$, the stack would collapse into a single linear map. The
+	Without $\phi$, the stack would collapse into a single linear map \parencite{strang2012linear}. The
 	rectified linear unit, $\phi(z) = \max(0, z)$, became the default for
 	being cheap, non-saturating, and sparse in its activations
 	\parencite{nair2010}. Such networks are universal approximators
-	\parencite{hornik1989} --- a statement about \emph{capacity}, with no
+	\parencite{hornik1989}, a statement about \emph{capacity}, with no
 	guarantee that training finds good parameters.
 	
 	\begin{figure}[ht]
@@ -1892,11 +1472,167 @@ print(f"DBSCAN Clusters Found:   {len(set(dbscan.labels_)) - (1 if -1 in dbscan.
 	gradient descent (equation~\eqref{eq:gd}), now run on mini-batches
 	through frameworks such as PyTorch or JAX.
 
+\section{Network Architecture and Forward Pass}
+
+Consider a standard feedforward artificial neural network with $L$ layers. We denote the input layer as layer $0$ and the output layer as layer $L$. Let $N_l$ be the number of neurons in layer $l$.
+
+For a specific layer $l$ (where $1 \le l \le L$), the forward propagation equations are:
+\begin{align}
+	z_j^{(l)} &= \sum_{k=1}^{N_{l-1}} W_{jk}^{(l)} a_k^{(l-1)} + b_j^{(l)} \\
+	a_j^{(l)} &= \sigma^{(l)}\left( z_j^{(l)} \right)
+\end{align}
+where:
+\begin{itemize}
+	\item $W_{jk}^{(l)}$ is the weight connecting neuron $k$ in layer $l-1$ to neuron $j$ in layer $l$.
+	\item $b_j^{(l)}$ is the bias of neuron $j$ in layer $l$.
+	\item $z_j^{(l)}$ is the weighted input (pre-activation) to neuron $j$ in layer $l$.
+	\item $a_j^{(l)}$ is the activation output of neuron $j$ in layer $l$. $a_k^{(0)}$ represents the raw input features.
+	\item $\sigma^{(l)}$ is the non-linear activation function for layer $l$ (e.g., ReLU, Sigmoid, Tanh).
+\end{itemize}
+
+\section{The Loss Function and the Goal}
+
+Let $\mathcal{L}$ be the scalar loss function that compares the network's final output $a^{(L)}$ to the true target values $y$. Common choices include Mean Squared Error (MSE) or Cross-Entropy. 
+
+Our goal is to minimize $\mathcal{L}$ by adjusting the parameters $W_{jk}^{(l)}$ and $b_j^{(l)}$. To do this using gradient descent, we must compute the partial derivatives:
+\begin{equation}
+	\frac{\partial \mathcal{L}}{\partial W_{jk}^{(l)}} \quad \text{and} \quad \frac{\partial \mathcal{L}}{\partial b_j^{(l)}}
+\end{equation}
+
+\section{The Error Term ($\delta$)}
+
+To simplify the application of the chain rule, we define an intermediate ``error term" for each neuron, denoted as $\delta_j^{(l)}$. This term represents the sensitivity of the overall loss to changes in the pre-activation $z_j^{(l)}$:
+\begin{equation}
+	\delta_j^{(l)} = \frac{\partial \mathcal{L}}{\partial z_j^{(l)}}
+\end{equation}
+By computing this error term for every neuron in the network, we can easily find the gradients for the weights and biases.
+
+\section{Deriving Gradients using the Chain Rule}
+
+The chain rule states that if a variable $y$ depends on $u$, and $u$ depends on $x$, then $\frac{\partial y}{\partial x} = \frac{\partial y}{\partial u} \frac{\partial u}{\partial x}$. We apply this to our network variables.
+
+\subsection{Gradient with respect to Weights}
+We want to find how the loss changes as we vary a specific weight $W_{jk}^{(l)}$. Notice that $W_{jk}^{(l)}$ only affects the network through $z_j^{(l)}$. Applying the chain rule:
+\begin{equation}
+	\frac{\partial \mathcal{L}}{\partial W_{jk}^{(l)}} = \frac{\partial \mathcal{L}}{\partial z_j^{(l)}} \frac{\partial z_j^{(l)}}{\partial W_{jk}^{(l)}}
+\end{equation}
+From our definition, the first term is exactly $\delta_j^{(l)}$. For the second term, differentiating equation (1) with respect to $W_{jk}^{(l)}$ yields:
+\begin{equation}
+	\frac{\partial z_j^{(l)}}{\partial W_{jk}^{(l)}} = a_k^{(l-1)}
+\end{equation}
+Therefore, the weight gradient is:
+\begin{equation}
+	\frac{\partial \mathcal{L}}{\partial W_{jk}^{(l)}} = \delta_j^{(l)} a_k^{(l-1)}
+\end{equation}
+
+\subsection{Gradient with respect to Biases}
+Similarly, $b_j^{(l)}$ only influences the loss through $z_j^{(l)}$:
+\begin{equation}
+	\frac{\partial \mathcal{L}}{\partial b_j^{(l)}} = \frac{\partial \mathcal{L}}{\partial z_j^{(l)}} \frac{\partial z_j^{(l)}}{\partial b_j^{(l)}}
+\end{equation}
+Differentiating equation (1) with respect to $b_j^{(l)}$ gives $1$. Thus, the bias gradient is simply:
+\begin{equation}
+	\frac{\partial \mathcal{L}}{\partial b_j^{(l)}} = \delta_j^{(l)}
+\end{equation}
+
+\section{Backpropagating the Error}
+
+Equations (6) and (8) show that if we know $\delta_j^{(l)}$, computing the parameter gradients is trivial. We now derive how to compute $\delta_j^{(l)}$ recursively, starting from the output layer and moving backwards to the first layer.
+
+\subsection{Step 1: Error at the Output Layer ($l=L$)}
+By definition and the chain rule:
+\begin{equation}
+	\delta_j^{(L)} = \frac{\partial \mathcal{L}}{\partial z_j^{(L)}} = \frac{\partial \mathcal{L}}{\partial a_j^{(L)}} \frac{\partial a_j^{(L)}}{\partial z_j^{(L)}}
+\end{equation}
+Using equation (2), the derivative of the activation function is ${\sigma^{(L)}}'(z_j^{(L)})$. This yields the output error equation:
+\begin{equation}
+	\delta_j^{(L)} = \frac{\partial \mathcal{L}}{\partial a_j^{(L)}} \odot {\sigma^{(L)}}'(z_j^{(L)})
+\end{equation}
+
+\subsection{Step 2: Error at Hidden Layers ($l < L$)}
+The propagation of errors backward through neural network layers relies on matrix multiplication by the transposed weight matrix $(W^{(l)})^\top$, expressing linear transformations between vector spaces \parencite{strang2012linear}.
+To find $\delta_k^{(l-1)}$ for a neuron $k$ in layer $l-1$, we must look at how its pre-activation $z_k^{(l-1)}$ affects the loss. The output of this neuron, $a_k^{(l-1)}$, acts as an input to \textit{every} neuron $j$ in the subsequent layer $l$. 
+
+By the multivariable chain rule, we must sum the contributions over all neurons $j$ in layer $l$:
+\begin{equation}
+	\delta_k^{(l-1)} = \frac{\partial \mathcal{L}}{\partial z_k^{(l-1)}} = \sum_{j=1}^{N_l} \frac{\partial \mathcal{L}}{\partial z_j^{(l)}} \frac{\partial z_j^{(l)}}{\partial z_k^{(l-1)}}
+\end{equation}
+Substitute $\delta_j^{(l)} = \frac{\partial \mathcal{L}}{\partial z_j^{(l)}}$. Now we need the derivative of $z_j^{(l)}$ with respect to $z_k^{(l-1)}$. 
+\begin{equation}
+	z_j^{(l)} = \sum_{k=1}^{N_{l-1}} W_{jk}^{(l)} \sigma^{(l-1)}(z_k^{(l-1)}) + b_j^{(l)}
+\end{equation}
+Differentiating this gives:
+\begin{equation}
+	\frac{\partial z_j^{(l)}}{\partial z_k^{(l-1)}} = W_{jk}^{(l)} {\sigma^{(l-1)}}'(z_k^{(l-1)})
+\end{equation}
+Substituting this back into our multivariable chain rule expression:
+\begin{equation}
+	\delta_k^{(l-1)} = \sum_{j=1}^{N_l} \delta_j^{(l)} W_{jk}^{(l)} {\sigma^{(l-1)}}'(z_k^{(l-1)})
+\end{equation}
+This is the recursive step of backpropagation: it allows us to calculate the error at layer $l-1$ using the weights $W$ and the error $\delta$ from layer $l$.
+
+\section{Summary of the Backpropagation Algorithm}
+
+In modern deep learning frameworks, these operations are heavily vectorized. Let $\mathbf{W}^{(l)}$ be the weight matrix, $\mathbf{b}^{(l)}$ be the bias vector, and $\odot$ denote element-wise multiplication. The four fundamental equations of backpropagation are:
+
+\vspace{0.5cm}
+\noindent\textbf{1. Output Layer Error:}
+\begin{equation}
+	\mathbf{\delta}^{(L)} = \nabla_{\mathbf{a}^{(L)}} \mathcal{L} \odot {\sigma^{(L)}}'(\mathbf{z}^{(L)})
+\end{equation}
+
+\noindent\textbf{2. Hidden Layer Error (Backpropagation Step):}
+\begin{equation}
+	\mathbf{\delta}^{(l)} = \left( (\mathbf{W}^{(l+1)})^T \mathbf{\delta}^{(l+1)} \right) \odot {\sigma^{(l)}}'(\mathbf{z}^{(l)})
+\end{equation}
+
+\noindent\textbf{3. Gradient with respect to Biases:}
+\begin{equation}
+	\nabla_{\mathbf{b}^{(l)}} \mathcal{L} = \mathbf{\delta}^{(l)}
+\end{equation}
+
+\noindent\textbf{4. Gradient with respect to Weights:}
+\begin{equation}
+	\nabla_{\mathbf{W}^{(l)}} \mathcal{L} = \mathbf{\delta}^{(l)} (\mathbf{a}^{(l-1)})^T
+\end{equation}
+\vspace{0.5cm}
+
+Once these gradients are computed, the parameters are updated using gradient descent (or variants like Adam) with a learning rate $\eta$:
+\begin{align}
+	\mathbf{W}^{(l)} &\leftarrow \mathbf{W}^{(l)} - \eta \nabla_{\mathbf{W}^{(l)}} \mathcal{L} \\
+	\mathbf{b}^{(l)} &\leftarrow \mathbf{b}^{(l)} - \eta \nabla_{\mathbf{b}^{(l)}} \mathcal{L}
+\end{align}
+
+
 	\textbf{Vanishing and exploding gradients.} In deep multi-layer architectures, backpropagating loss gradients across $L$ layers involves repeated matrix products backwards:
-	\begin{equation}
+	\begin{equation}\label{eq:backprop_product}
 		\boldsymbol{\delta}^{(1)} = \left( \prod_{\ell=2}^{L} W^{(\ell)\top} \mathrm{diag}\!\left(\phi'\!\left(\mathbf{z}^{(\ell)}\right)\right) \right) \boldsymbol{\delta}^{(L)}.
 	\end{equation}
-	Backpropagated signals scale with matrix singular values and activation derivatives $\phi'$. In naive unregularized deep stacks, if effective singular values or activation slopes remain consistently below 1, gradients decay exponentially to zero ($\boldsymbol{\delta}^{(1)} \to \mathbf{0}$, \emph{vanishing gradients}), leaving early layers untrained. Conversely, if effective products exceed 1, gradients explode exponentially ($\boldsymbol{\delta}^{(1)} \to \infty$, \emph{exploding gradients}). In modern deep networks, gradient dynamics depend strongly on architecture, initialization, normalization, and activation distributions. Deep networks employ explicit safeguards --- residual skip connections \parencite{he2016}, gradient clipping, Layer Normalization, Xavier/He weight initialization \parencite{glorot2010, he2015}, and non-saturating activations (ReLU) \parencite{nair2010} --- to maintain stable gradient norm propagation.
+	The long-term behavior of this product is governed by the \textbf{spectral radius} of the effective Jacobian at each layer. Define the per-layer Jacobian $J^{(\ell)} \equiv W^{(\ell)\top}\,\mathrm{diag}\!\bigl(\phi'(\mathbf{z}^{(\ell)})\bigr)$, so that equation~\eqref{eq:backprop_product} becomes $\boldsymbol{\delta}^{(1)} = J^{(2)} J^{(3)} \cdots J^{(L)} \, \boldsymbol{\delta}^{(L)}$. The spectral radius $\rho(A) \equiv \max_i |\lambda_i(A)|$ of a square matrix $A$ is the magnitude of its largest eigenvalue, and by the Gelfand formula it determines the asymptotic growth rate of iterated products:
+	\begin{equation}
+		\bigl\| A^n \bigr\|^{1/n} \xrightarrow{n\to\infty} \rho(A).
+	\end{equation}
+	Applying this to the product of Jacobians, when all $J^{(\ell)}$ are similar and $\rho(J^{(\ell)}) < 1$ uniformly, the gradient norm decays exponentially in the depth $L$:
+	\begin{equation}
+		\bigl\|\boldsymbol{\delta}^{(1)}\bigr\| \lesssim \rho^{L-1}\,\bigl\|\boldsymbol{\delta}^{(L)}\bigr\| \xrightarrow{L\to\infty} 0 \qquad (\text{\emph{vanishing gradients}}).
+	\end{equation}
+	Conversely, when $\rho(J^{(\ell)}) > 1$ the norm grows exponentially, yielding numerical overflow or pathological parameter updates (\emph{exploding gradients}). The critical regime $\rho(J^{(\ell)}) \approx 1$---the \textbf{edge of stability}---is where information can propagate across many layers without attenuation.
+
+	\textbf{Activation saturation and the sigmoid/tanh problem.} The spectral radius analysis makes the failure of sigmoidal activations transparent. For $\phi(z) = \sigma(z) = (1+e^{-z})^{-1}$, the derivative $\sigma'(z) = \sigma(z)(1-\sigma(z))$ saturates to zero for large $|z|$, with a maximum of $0.25$ at $z=0$. Since the effective Jacobian factors in $\mathrm{diag}(\phi')$, saturated neurons multiplicatively suppress the gradient by up to $75\%$ per layer. With $L=20$ layers and mean slope $0.25$, the gradient magnitude scales as $0.25^{20} \approx 10^{-12}$---numerically zero. The \textbf{Rectified Linear Unit} (ReLU, $\phi(z)=\max(0,z)$) eliminates saturation for positive pre-activations, since $\phi'(z)=1$ for $z>0$, keeping the corresponding diagonal entries at unity and preventing activation-driven spectral collapse \parencite{glorot2010}.
+
+	\textbf{Vanishing gradients in recurrent networks.} The problem is particularly acute in \textbf{Recurrent Neural Networks (RNNs)}, where the same weight matrix $W_h$ is shared across all time steps. Unrolling a sequence of $T$ steps through time (Backpropagation Through Time, BPTT) yields a product of $T$ copies of $W_h^\top \mathrm{diag}(\phi'(\mathbf{h}_t))$, so the spectral radius condition directly governs the maximum useful sequence length \parencite{bengio1994}. If $\rho(W_h) < 1$, the network cannot propagate credit over more than $\mathcal{O}(1/(1-\rho))$ steps; if $\rho(W_h) > 1$, training diverges. LSTMs and GRUs circumvent this by introducing \emph{additive} state updates through gated paths, maintaining a near-identity Jacobian along the gradient highway.
+
+	\textbf{Spectral radius and orthogonal initialization.} The most principled remedy at initialization is to set each weight matrix $W^{(\ell)}$ to be \textbf{orthogonal}, satisfying $W^{(\ell)\top} W^{(\ell)} = I$. Orthogonal matrices have all singular values equal to 1, so $\rho(W^{(\ell)}) = 1$ exactly, and the isometric property $\|W^{(\ell)}\mathbf{v}\| = \|\mathbf{v}\|$ for all $\mathbf{v}$ ensures that gradient norms are preserved perfectly as they pass through linear layers:
+	\begin{equation}
+		\bigl\| W^{(\ell)\top} \boldsymbol{\delta}^{(\ell)} \bigr\| = \bigl\| \boldsymbol{\delta}^{(\ell)} \bigr\|.
+	\end{equation}
+	\textcite{saxe2013} demonstrated that deep linear networks initialized with random orthogonal matrices learn in a qualitatively different regime than Gaussian-initialized networks: orthogonal initialization places the system precisely at the boundary of gradient stability, allowing gradient signals to propagate across arbitrary depth at the start of training. In practice, orthogonal initialization is generated via the QR decomposition of a random Gaussian matrix: if $G \sim \mathcal{N}(0,1)^{n \times m}$ and $G = QR$ is its QR decomposition, then $Q$ is orthogonal and is used as the initial weight matrix.
+
+	For nonlinear networks, the activation derivative $\phi'$ perturbs the singular values of the effective Jacobian away from 1. With ReLU activations approximately half the units are active, so the effective gain is $\approx 0.5$; to compensate, \textcite{he2015} derived the \textbf{He (Kaiming) initialization} variance $\sigma^2 = 2/n_{\mathrm{in}}$, which keeps the pre-activation variances stable across layers. Glorot (Xavier) initialization \parencite{glorot2010} targets the geometric mean $\sigma^2 = 2/(n_{\mathrm{in}}+n_{\mathrm{out}})$ and is standard for sigmoid/tanh activations.
+
+	\begin{keyconcept}[Spectral Radius and Gradient Flow Stability]
+		The spectral radius $\rho(J^{(\ell)})$ of the per-layer Jacobian is the fundamental quantity controlling gradient flow. When $\rho < 1$ uniformly, gradients vanish exponentially with depth; when $\rho > 1$, they explode. Orthogonal initialization targets $\rho = 1$ exactly at the start of training, preserving gradient norms across all layers. In modern deep architectures, four complementary strategies together ensure stable gradient propagation: (1)~variance-preserving initialization (He or Glorot); (2)~non-saturating activations (ReLU and its variants); (3)~residual (skip) connections that introduce an unattenuated identity gradient path; and (4)~normalization layers (Batch Norm or Layer Norm) that re-center and rescale activations to prevent spectral drift during training. Exploding gradients are additionally controlled by \textbf{gradient clipping}: rescaling $\boldsymbol{g} \leftarrow \boldsymbol{g}\,\tau/\max(\tau, \|\boldsymbol{g}\|)$ whenever the global gradient norm exceeds threshold $\tau$.
+	\end{keyconcept}
 
 	\textbf{Regularization and normalization in deep networks.} Beyond basic weight decay, deep network training relies on specialized techniques to prevent overfitting and stabilize activation distributions across layers:
 	
@@ -1921,42 +1657,12 @@ print(f"DBSCAN Clusters Found:   {len(set(dbscan.labels_)) - (1 if -1 in dbscan.
 	\end{table}
 
 	\begin{practicebox}[Two-Layer MLP with Manual Backpropagation on Non-Linear Data]
-\begin{lstlisting}
-import numpy as np
-
-# Non-linear XOR / concentric circle dataset
-rng = np.random.default_rng(42)
-X_b = rng.uniform(-2, 2, size=(200, 2))
-y_b = ((X_b[:, 0]**2 + X_b[:, 1]**2) < 1.2).astype(int).reshape(-1, 1)
-
-# Initialize weights with He Normalization (scaling by sqrt(2/fan_in))
-W1 = rng.normal(0, np.sqrt(2/2), size=(2, 8)); b1 = np.zeros((1, 8))
-W2 = rng.normal(0, np.sqrt(2/8), size=(8, 1)); b2 = np.zeros((1, 1))
-
-for epoch in range(500):
-    # Forward pass: Input -> Hidden (ReLU) -> Output (Sigmoid)
-    z1 = X_b @ W1 + b1; a1 = np.maximum(0, z1)   # ReLU activation
-    z2 = a1 @ W2 + b2;  hat_y = 1 / (1 + np.exp(-np.clip(z2, -500, 500)))
-    
-    # Backward pass (Gradient computation via chain rule)
-    dz2 = (hat_y - y_b) / len(X_b)               # dL/dz2 for BCE loss
-    dW2 = a1.T @ dz2; db2 = dz2.sum(axis=0, keepdims=True)
-    da1 = dz2 @ W2.T;  dz1 = da1 * (z1 > 0)      # ReLU derivative
-    dW1 = X_b.T @ dz1; db1 = dz1.sum(axis=0, keepdims=True)
-    
-    # Gradient descent parameter updates
-    W1 -= 0.1 * dW1; b1 -= 0.1 * db1
-    W2 -= 0.1 * dW2; b2 -= 0.1 * db2
-
-bce_loss = -np.mean(y_b*np.log(hat_y+1e-7) + (1-y_b)*np.log(1-hat_y+1e-7))
-acc = np.mean((hat_y > 0.5) == y_b)
-print(f"Epoch 500 | BCE Loss: {bce_loss:.4f} | Accuracy: {acc:.3f}")
-\end{lstlisting}
+\lstinputlisting[language=Python]{code/mlp_manual_backprop.py}
 	\end{practicebox}
 	
 	\subsection{Representation learning: from manual engineering to latent spaces}
 	
-	In classical machine learning (Module~3), algorithm accuracy hinges on manual feature engineering --- crafting input matrix columns $\mathbf{x} \in \mathbb{R}^n$ using domain heuristics (e.g., SIFT descriptors in vision, TF-IDF in NLP, polynomial features). Manual feature engineering is laborious, task-specific, fragile, and fails to scale to high-dimensional unstructured inputs like pixels or continuous audio waveforms. \textbf{Representation learning} \parencite{bengio2013} eliminates manual feature engineering: neural networks discover parameterized continuous transformations $\mathbf{z} = f_{\boldsymbol{\theta}}(\mathbf{x}) \in \mathbb{R}^d$ that automatically extract latent semantic structures and data-generating invariants.
+	In classical machine learning (Module 3), algorithm accuracy hinges on manual feature engineering, crafting input matrix columns $\mathbf{x} \in \mathbb{R}^n$ using domain heuristics (e.g., SIFT descriptors in vision, TF-IDF in NLP, polynomial features). Manual feature engineering is laborious, task-specific, fragile, and fails to scale to high-dimensional unstructured inputs like pixels or continuous audio waveforms. \textbf{Representation learning} \parencite{bengio2013} eliminates manual feature engineering: neural networks discover parameterized continuous transformations $\mathbf{z} = f_{\boldsymbol{\theta}}(\mathbf{x}) \in \mathbb{R}^d$ that automatically extract latent semantic structures and data-generating invariants.
 	
 	\textbf{The Manifold Hypothesis: linear vs.\ non-linear projections.} High-dimensional real-world data vectors $\mathbf{x} \in \mathbb{R}^n$ (such as $256 \times 256 \times 3$ RGB images in $\mathbb{R}^{196,608}$) occupy an infinitesimal fraction of ambient space. The \textbf{Manifold Hypothesis} posits that real-world data concentrates near a smooth, low-dimensional non-linear manifold $\mathcal{M} \subset \mathbb{R}^n$ of intrinsic dimension $d \ll n$. Linear dimensionality reduction (PCA, Module~2) computes orthogonal projections $\mathbf{z} = W^{\!\top}\mathbf{x}$, which capture global variance but fail to unfold non-linear manifolds (e.g., Swiss Roll geometry). Interleaving non-linear activation functions across hidden layers allows deep networks to learn non-linear coordinate charts, flattening complex curved manifolds in input space into linearly separable representations in latent space $\mathcal{Z}$.
 	
@@ -1993,58 +1699,7 @@ print(f"Epoch 500 | BCE Loss: {bce_loss:.4f} | Accuracy: {acc:.3f}")
 	\end{equation}
 
 	\begin{practicebox}[Deep Autoencoder Feature Extraction \& Latent Space Analysis]
-\begin{lstlisting}
-import numpy as np
-from sklearn.linear_model import LogisticRegression
-
-# 1. Generate non-linear 10D synthetic dataset with 2D intrinsic manifold
-rng = np.random.default_rng(42)
-t = rng.uniform(-np.pi, np.pi, size=600)
-# Non-linear 2D manifold embedded in 10D ambient space
-X_raw = np.column_stack([np.sin(t), np.cos(t), t**2, np.sin(2*t), np.cos(2*t),
-                         t, np.exp(t/5), np.sin(3*t), np.cos(3*t), t**3/10])
-y_labels = (np.sin(t) + np.cos(2*t) > 0).astype(int)
-
-# 2. Define 10D -> 4D -> 2D -> 4D -> 10D Deep Autoencoder in NumPy
-W_e1 = rng.normal(0, np.sqrt(2/10), size=(10, 4)); b_e1 = np.zeros((1, 4))
-W_e2 = rng.normal(0, np.sqrt(2/4), size=(4, 2));   b_e2 = np.zeros((1, 2))  # Bottleneck z in R^2
-W_d1 = rng.normal(0, np.sqrt(2/2), size=(2, 4));   b_d1 = np.zeros((1, 4))
-W_d2 = rng.normal(0, np.sqrt(2/4), size=(4, 10));  b_d2 = np.zeros((1, 10))
-
-# 3. Train Autoencoder via SGD with MSE Reconstruction Loss
-lr = 0.05
-for epoch in range(400):
-    # Forward Pass
-    h1 = np.maximum(0, X_raw @ W_e1 + b_e1)           # Encoder L1 (ReLU)
-    z  = h1 @ W_e2 + b_e2                             # Bottleneck representation z in R^2
-    h2 = np.maximum(0, z @ W_d1 + b_d1)               # Decoder L1 (ReLU)
-    X_hat = h2 @ W_d2 + b_d2                          # Reconstructed output in R^10
-    
-    # Backward Pass (Chain rule gradients)
-    dX_hat = 2 * (X_hat - X_raw) / len(X_raw)
-    dW_d2 = h2.T @ dX_hat;         db_d2 = dX_hat.sum(axis=0, keepdims=True)
-    dh2   = (dX_hat @ W_d2.T) * (h2 > 0)
-    dW_d1 = z.T @ dh2;            db_d1 = dh2.sum(axis=0, keepdims=True)
-    dz    = dh2 @ W_d1.T
-    dW_e2 = h1.T @ dz;             db_e2 = dz.sum(axis=0, keepdims=True)
-    dh1   = (dz @ W_e2.T) * (h1 > 0)
-    dW_e1 = X_raw.T @ dh1;        db_e1 = dh1.sum(axis=0, keepdims=True)
-    
-    # Parameter Updates
-    W_e1 -= lr * dW_e1; b_e1 -= lr * db_e1; W_e2 -= lr * dW_e2; b_e2 -= lr * db_e2
-    W_d1 -= lr * dW_d1; b_d1 -= lr * db_d1; W_d2 -= lr * dW_d2; b_d2 -= lr * db_d2
-
-# 4. Extract 2D latent representation z and evaluate linear separability
-z_latent = np.maximum(0, X_raw[:450] @ W_e1 + b_e1) @ W_e2 + b_e2
-z_test   = np.maximum(0, X_raw[450:] @ W_e1 + b_e1) @ W_e2 + b_e2
-
-clf_raw = LogisticRegression().fit(X_raw[:450], y_labels[:450])
-clf_z   = LogisticRegression().fit(z_latent, y_labels[:450])
-
-print(f"Epoch 400 Reconstruction MSE: {np.mean((X_hat - X_raw)**2):.4f}")
-print(f"Linear Classifier Acc (Raw 10D Features):   {clf_raw.score(X_raw[450:], y_labels[450:]):.3f}")
-print(f"Linear Classifier Acc (Learned 2D Latent z): {clf_z.score(z_test, y_labels[450:]):.3f}")
-\end{lstlisting}
+\lstinputlisting[language=Python]{code/deep_autoencoder.py}
 	\end{practicebox}
 	
 	\subsection{Architectures: CNNs, RNNs, and transformers}
@@ -2065,29 +1720,10 @@ print(f"Linear Classifier Acc (Learned 2D Latent z): {clf_z.score(z_test, y_labe
 	\begin{equation}
 		\mathrm{Attention}(Q, K, V) = \softmax\!\left(\frac{Q\,K^{\!\top}}{\sqrt{d_k}}\right) V .
 	\end{equation}
-	Because every token attends to all others in a single parallel step, transformers train vastly faster than RNNs on modern parallel hardware. However, computing pairwise attention scores across sequence length $n$ incurs $O(n^2)$ computational and memory complexity, creating a bottleneck for long \emph{context windows}.
+	Because every token attends to all others in a single parallel step, transformers train vastly faster than RNNs on modern parallel hardware. However, this global connectivity introduces two distinct quadratic bottlenecks. \textbf{Training memory:} the full $n \times n$ attention score matrix $A = \softmax(QK^\top/\sqrt{d_k})$ must be materialised and retained for backpropagation, incurring $O(n^2)$ memory per layer per head. \textbf{Inference memory (KV-cache):} to avoid recomputing keys and values at every decoding step, the key and value projections $K, V \in \mathbb{R}^{n \times d_k}$ are cached across all layers; with $L$ layers and $h$ heads, the cache occupies $O(L \cdot h \cdot n \cdot d_k) = O(n \cdot d_{\text{model}})$ memory per token in the growing context, which becomes the dominant memory cost during long-sequence generation. Together these two bottlenecks explain why the effective context window of deployed LLMs is constrained by hardware VRAM, and have motivated approximations such as FlashAttention (which avoids materialising the full $A$ matrix) and sliding-window or sparse attention patterns.
 
 	\begin{practicebox}[Scaled Dot-Product Attention from Scratch in NumPy]
-\begin{lstlisting}
-import numpy as np
-
-def scaled_dot_product_attention(Q, K, V, mask=None):
-    d_k = Q.shape[-1]
-    scores = (Q @ K.T) / np.sqrt(d_k)
-    if mask is not None:
-        scores = np.where(mask == 0, -1e9, scores)
-    weights = np.exp(scores - np.max(scores, axis=-1, keepdims=True))
-    weights /= weights.sum(axis=-1, keepdims=True)  # Softmax
-    return weights @ V, weights
-
-# Demonstrate with 4 tokens of dimension 8
-seq_len, d_k = 4, 8
-Q = K = V = np.random.default_rng(0).standard_normal((seq_len, d_k))
-causal_mask = np.tril(np.ones((seq_len, seq_len)))  # Lower-triangular mask
-out, attn = scaled_dot_product_attention(Q, K, V, mask=causal_mask)
-print("Attention Output Shape:", out.shape)
-print("Causal Attention Weights Matrix:\n", np.round(attn, 3))
-\end{lstlisting}
+\lstinputlisting[language=Python]{code/scaled_dot_product_attention.py}
 	\end{practicebox}
 
 	\textbf{Multi-Head Attention (MHA).} Single-head attention averages relationships across the full representation space. To allow the network to jointly attend to information from different representation subspaces at different positions, \textbf{Multi-Head Attention} \parencite{vaswani2017} projects queries, keys, and values $h$ times with distinct learnable linear projections:
@@ -2100,34 +1736,7 @@ print("Causal Attention Weights Matrix:\n", np.round(attn, 3))
 	with projection parameter matrices $W_i^Q \in \mathbb{R}^{d_{\text{model}} \times d_k}$, $W_i^K \in \mathbb{R}^{d_{\text{model}} \times d_k}$, $W_i^V \in \mathbb{R}^{d_{\text{model}} \times d_v}$, and output projection $W^O \in \mathbb{R}^{h d_v \times d_{\text{model}}}$. In practice, $d_k = d_v = d_{\text{model}} / h$, keeping total computational cost comparable to single-head attention with full dimensionality.
 
 	\begin{practicebox}[Multi-Head Attention from Scratch in NumPy]
-\begin{lstlisting}
-import numpy as np
-
-def multi_head_attention(X, num_heads=4, d_model=64):
-    B, N, _ = X.shape
-    d_k = d_model // num_heads
-    rng = np.random.default_rng(42)
-    W_Q, W_K, W_V = [rng.normal(0, 0.1, size=(d_model, d_model)) for _ in range(3)]
-    W_O = rng.normal(0, 0.1, size=(d_model, d_model))
-    
-    # Linear projection & reshape into (B, num_heads, N, d_k)
-    Q = (X @ W_Q).reshape(B, N, num_heads, d_k).transpose(0, 2, 1, 3)
-    K = (X @ W_K).reshape(B, N, num_heads, d_k).transpose(0, 2, 1, 3)
-    V = (X @ W_V).reshape(B, N, num_heads, d_k).transpose(0, 2, 1, 3)
-    
-    # Parallel dot-product attention per head
-    scores = (Q @ K.transpose(0, 1, 3, 2)) / np.sqrt(d_k)
-    weights = np.exp(scores - np.max(scores, axis=-1, keepdims=True))
-    weights /= weights.sum(axis=-1, keepdims=True)
-    
-    # Concatenate heads & final linear projection -> (B, N, d_model)
-    heads_out = (weights @ V).transpose(0, 2, 1, 3).reshape(B, N, d_model)
-    return heads_out @ W_O
-
-X_in = np.random.default_rng(42).normal(size=(2, 8, 64))  # Batch 2, Seq 8, Dim 64
-mha_out = multi_head_attention(X_in, num_heads=4, d_model=64)
-print("Multi-Head Attention Output Shape:", mha_out.shape)  # (2, 8, 64)
-\end{lstlisting}
+\lstinputlisting[language=Python]{code/multi_head_attention.py}
 	\end{practicebox}
 
 	\textbf{Positional encodings.} Plain self-attention is permutation-invariant. To inject sequence order, \textbf{positional encodings} are added to input embeddings. The original Transformer used sinusoidal frequencies \parencite{vaswani2017}. Modern LLMs (e.g., Llama 3) predominantly use \textbf{Rotary Position Embeddings (RoPE)} \parencite{su2024}, rotating query and key vectors in complex 2D planes to encode relative distance directly into $Q K^\top$.
@@ -2137,6 +1746,64 @@ print("Multi-Head Attention Output Shape:", mha_out.shape)  # (2, 8, 64)
 		\mathbf{y} = \mathbf{x} + \mathcal{F}\bigl(\mathrm{LayerNorm}(\mathbf{x})\bigr).
 	\end{equation}
 	Pre-LN preserves an unattenuated identity gradient highway ($\mathbf{x}$ passed directly to addition), enabling stable training across hundreds of layers without delicate warm-up schedules. Model optimization relies on \textbf{AdamW} \parencite{loshchilov2019} with learning rate warmup and cosine decay schedules.
+
+	% -----------------------------------------------------------------
+	\subsection{Transformer architecture variants: encoder, decoder, and encoder--decoder}
+	% -----------------------------------------------------------------
+
+	The original Transformer \parencite{vaswani2017} was designed for sequence-to-sequence tasks and contains two stacks: an \textbf{encoder} that maps a source sequence to contextual representations, and a \textbf{decoder} that generates a target sequence one token at a time. Modern architectures specialize one or both stacks for their primary task.
+
+	\begin{table}[ht]
+		\centering
+		\small\sffamily
+		\renewcommand{\arraystretch}{1.35}
+		\rowcolors{2}{white}{primary!7}
+		\begin{tabular}{@{}L{2.8cm} L{3.2cm} L{4.0cm} L{3.5cm}@{}}
+			\toprule
+			\rowcolor{primary}
+			\textcolor{white}{\textbf{Variant}} &
+			\textcolor{white}{\textbf{Attention type}} &
+			\textcolor{white}{\textbf{Typical use}} &
+			\textcolor{white}{\textbf{Examples}} \\
+			\midrule
+			Encoder-only  & Bidirectional self-attention & Classification, NER, embeddings & BERT, RoBERTa \\
+			Decoder-only  & Causal (masked) self-attention & Autoregressive generation & GPT, Llama, Mistral \\
+			Encoder--decoder & Enc: bidirectional; Dec: causal + cross-attention & Seq2seq: translation, summarisation & T5, BART, Whisper \\
+			\bottomrule
+		\end{tabular}
+		\caption{The three principal Transformer variants and their defining attention patterns.}
+		\label{tab:transformer_variants}
+	\end{table}
+
+	\textbf{Encoder-only models.} The encoder stack applies \emph{bidirectional} (non-causal) self-attention: every token attends to every other token. Because there is no autoregressive constraint, the model can exploit both past and future context, making encoder representations particularly rich for classification and retrieval tasks. BERT \parencite{devlin2019} is pre-trained with Masked Language Modeling (MLM), randomly masking 15\% of tokens and training the model to recover them from full bidirectional context.
+
+	\textbf{Decoder-only models.} The decoder stack applies \emph{causal} (autoregressive) self-attention by adding a lower-triangular mask $M$ to the attention logits before softmax:
+	\begin{equation}
+		\mathrm{Attention}(Q, K, V) = \softmax\!\left(\frac{QK^\top + M}{\sqrt{d_k}}\right) V,
+		\quad M_{ij} = \begin{cases} 0 & j \le i \\ -\infty & j > i. \end{cases}
+	\end{equation}
+	This ensures that the prediction of token $t$ depends only on tokens $1,\ldots,t{-}1$, preserving the autoregressive factorisation $p(\mathbf{x}) = \prod_{t} p(x_t \mid x_{<t})$. The GPT family \parencite{radford2018, brown2020} and modern LLMs (Llama \parencite{dubey2024}, Mistral) follow this design exclusively.
+
+	\textbf{Encoder--decoder models and cross-attention.} The original Transformer \parencite{vaswani2017} separates \emph{understanding} from \emph{generation} into two distinct stacks connected by \textbf{cross-attention}. Each decoder layer contains three sub-layers:
+	\begin{enumerate}[nosep]
+		\item \textbf{Masked (causal) self-attention} over the target sequence generated so far.
+		\item \textbf{Cross-attention:} queries $Q$ come from the decoder's hidden state, while keys $K$ and values $V$ come from the encoder's output $\mathbf{H}^{\mathrm{enc}} \in \mathbb{R}^{n_{\mathrm{src}} \times d_{\mathrm{model}}}$:
+		\begin{equation}
+			\mathrm{CrossAttention}(Q_{\mathrm{dec}},\, K_{\mathrm{enc}},\, V_{\mathrm{enc}}) = \softmax\!\left(\frac{Q_{\mathrm{dec}}\,K_{\mathrm{enc}}^\top}{\sqrt{d_k}}\right) V_{\mathrm{enc}}.
+		\end{equation}
+		Cross-attention lets each generated token selectively ``look up'' any position in the source sequence, providing a dynamic, content-based alignment between source and target.
+		\item \textbf{Position-wise feed-forward network} (two linear layers with a ReLU or GELU nonlinearity).
+	\end{enumerate}
+
+	\begin{keyconcept}[When to use which Transformer variant]
+		Choose the architecture by the information access pattern required at inference:
+		\begin{itemize}[nosep]
+			\item \textbf{Need full bidirectional context over a fixed input} (classification, semantic search, NER) $\Rightarrow$ \textbf{encoder-only}.
+			\item \textbf{Need to generate an open-ended continuation} (chat, code completion, story generation) $\Rightarrow$ \textbf{decoder-only}.
+			\item \textbf{Need to transform one sequence into another} where source length $\neq$ target length and alignment is non-trivial (translation, abstractive summarisation, speech recognition) $\Rightarrow$ \textbf{encoder--decoder}.
+		\end{itemize}
+		Decoder-only models have largely displaced encoder--decoder designs for generation tasks because a single unified stack enables more efficient pre-training at scale; however encoder--decoder remains the preferred choice when a separate high-quality source representation is beneficial.
+	\end{keyconcept}
 
 	\begin{checkpoint}
 		\begin{enumerate}
@@ -2162,6 +1829,8 @@ print("Multi-Head Attention Output Shape:", mha_out.shape)  # (2, 8, 64)
 			\item \fullcite{vaswani2017}
 			\item \fullcite{glorot2010}
 			\item \fullcite{he2015}
+			\item \fullcite{bengio1994}
+			\item \fullcite{saxe2013}
 		\end{itemize}
 	\end{sourcesbox}
 
@@ -2170,7 +1839,7 @@ print("Multi-Head Attention Output Shape:", mha_out.shape)  # (2, 8, 64)
 	\section{Foundation Models and Generative AI}
 	% =====================================================================
 	
-	\begin{modulecard}{\faRobot\ Module 5 --- at a glance \hfill \small\normalfont (Estimated Study: 8 hours \textbullet{} Level: Advanced)}{primary!80!black}
+	\begin{modulecard}{\faRobot\ Module 5, at a glance \hfill \small\normalfont (Estimated Study: 8 hours \textbullet{} Level: Advanced)}{primary!80!black}
 		\textbf{Focus.} The self-supervised foundation model paradigm: subword tokenization, SSL pretext objectives, scaling laws, generative models (diffusion, LLMs), fine-tuning alignment (LoRA, RLHF, DPO), high-performance inference (KV-caching, RAG), and responsible AI revisited.
 		
 		\medskip
@@ -2184,38 +1853,10 @@ print("Multi-Head Attention Output Shape:", mha_out.shape)  # (2, 8, 64)
 	
 	The transition from classical machine learning to modern foundation models rests fundamentally on \textbf{Self-Supervised Learning (SSL)}. Classical supervised learning achieves high accuracy but is strictly bottlenecked by expensive, non-scalable human annotations $(\mathbf{x}_i, y_i)$. Traditional unsupervised learning (K-Means, PCA) scales to unlabelled data but struggles to discover task-relevant high-level semantics without targets. Self-supervised learning bridges this divide by turning unlabelled raw data into its own supervisor: the model automatically constructs artificial target signals (\emph{pretext tasks}) directly from intrinsic structural patterns within raw inputs $\mathbf{x}$.
 
-	\textbf{Tokenization: Bridging Raw Text and Model Inputs.} Foundation models do not process raw string characters or whole dictionary words directly. Whole-word vocabularies suffer from out-of-vocabulary (OOV) failures and massive matrix dimensions, while character-level models yield long sequence lengths. Modern LLMs use \textbf{Subword Tokenization} --- primarily \textbf{Byte-Pair Encoding (BPE)} --- which iteratively merges the most frequent adjacent character or byte pairs into subwords.
+	\textbf{Tokenization: Bridging Raw Text and Model Inputs.} Foundation models do not process raw string characters or whole dictionary words directly. Whole-word vocabularies suffer from out-of-vocabulary (OOV) failures and massive matrix dimensions, while character-level models yield long sequence lengths. Modern LLMs use \textbf{Subword Tokenization}, primarily \textbf{Byte-Pair Encoding (BPE)}, which iteratively merges the most frequent adjacent character or byte pairs into subwords.
 
 	\begin{practicebox}[Byte-Pair Encoding (BPE) Tokenization Step from Scratch]
-\begin{lstlisting}
-from collections import defaultdict
-
-def get_stats(vocab):
-    pairs = defaultdict(int)
-    for word, freq in vocab.items():
-        symbols = word.split()
-        for i in range(len(symbols) - 1):
-            pairs[symbols[i], symbols[i+1]] += freq
-    return pairs
-
-def merge_vocab(pair, v_in):
-    v_out = {}
-    bigram = ' '.join(pair)
-    replacement = ''.join(pair)
-    for word in v_in:
-        w_out = word.replace(bigram, replacement)
-        v_out[w_out] = v_in[word]
-    return v_out
-
-# Synthetic toy vocabulary with word frequencies
-vocab = {'l o w </w>': 5, 'l o w e r </w>': 2, 'n e w e s t </w>': 6, 'w i d e s t </w>': 3}
-print("Initial Subword Vocab:", vocab)
-for step in range(3):
-    pairs = get_stats(vocab)
-    best_pair = max(pairs, key=pairs.get)
-    vocab = merge_vocab(best_pair, vocab)
-    print(f"Step {step+1} Best Pair {best_pair} -> Merged Vocab: {vocab}")
-\end{lstlisting}
+\lstinputlisting[language=Python]{code/bpe_tokenization.py}
 	\end{practicebox}
 
 	\begin{keyconcept}[Self-Supervised Learning: The Foundation Model Engine]
@@ -2253,62 +1894,7 @@ for step in range(3):
 	\end{itemize}
 
 	\begin{practicebox}[SimCLR Contrastive Learning with InfoNCE Loss from Scratch]
-\begin{lstlisting}
-import numpy as np
-
-# 1. Define vectorized InfoNCE Loss with Temperature Scaling (SimCLR style)
-def infonce_loss(z1, z2, temperature=0.1):
-    """
-    z1, z2: (N, d) L2-normalized embedding projections for 2 augmented views
-    """
-    N = len(z1)
-    # Concatenate both views -> 2N x d matrix
-    z = np.vstack([z1, z2])
-    
-    # Compute 2N x 2N cosine similarity matrix (since vectors are L2-normalized)
-    sim_matrix = (z @ z.T) / temperature
-    
-    # Mask out self-similarity along main diagonal
-    np.fill_diagonal(sim_matrix, -1e9)
-    
-    # Positive pair target indices: row i pairs with (i + N) % (2N)
-    labels = np.arange(2 * N)
-    labels[:N] += N
-    labels[N:] -= N
-    
-    # Numerically stable Log-Softmax Cross-Entropy Loss
-    max_sim = np.max(sim_matrix, axis=1, keepdims=True)
-    exp_sim = np.exp(sim_matrix - max_sim)
-    log_prob = sim_matrix - max_sim - np.log(np.sum(exp_sim, axis=1, keepdims=True))
-    
-    loss = -np.mean(log_prob[np.arange(2 * N), labels])
-    return loss
-
-# 2. Simulate 2 augmented views of 4 samples in 8-dimensional projection space
-rng = np.random.default_rng(42)
-N, d = 4, 8
-# Base representations
-z_base = rng.normal(size=(N, d))
-z_base /= np.linalg.norm(z_base, axis=1, keepdims=True)
-
-# Positive views (small random augmentation perturbation)
-z1 = z_base + 0.05 * rng.normal(size=(N, d))
-z2 = z_base + 0.05 * rng.normal(size=(N, d))
-
-# L2 normalize projection vectors
-z1 /= np.linalg.norm(z1, axis=1, keepdims=True)
-z2 /= np.linalg.norm(z2, axis=1, keepdims=True)
-
-loss_aligned = infonce_loss(z1, z2, temperature=0.1)
-
-# Unaligned random representations baseline
-z_rand = rng.normal(size=(N, d))
-z_rand /= np.linalg.norm(z_rand, axis=1, keepdims=True)
-loss_unaligned = infonce_loss(z1, z_rand, temperature=0.1)
-
-print(f"InfoNCE Loss (Aligned Positive Pairs):    {loss_aligned:.4f}")
-print(f"InfoNCE Loss (Random Unaligned Pairs):   {loss_unaligned:.4f}")
-\end{lstlisting}
+\lstinputlisting[language=Python]{code/simclr_infonce_loss.py}
 	\end{practicebox}
 	
 	\subsection{Scaling laws and generative architectures}
@@ -2321,16 +1907,72 @@ print(f"InfoNCE Loss (Random Unaligned Pairs):   {loss_unaligned:.4f}")
 	\end{equation}
 	Causal attention masking ($M_{ij} = -\infty$ for $j > i$) prevents tokens from viewing future positions.
 	
-	\textbf{Compute-Optimal Scaling Laws.} Pretraining consumes trillions of tokens. Empirical \textbf{scaling laws} \parencite{kaplan2020} showed power-law scaling of performance with compute, parameters, and tokens. Compute-optimal \textbf{Chinchilla scaling analysis} \parencite{hoffmann2022} demonstrated that model capacity and training token count should scale in roughly equal $1:1$ proportion under compute-optimal budgets.
+	\textbf{Empirical Scaling Laws.} \textcite{kaplan2020} showed that language model loss $\mathcal{L}$ follows a power law in each of three independent variables when the others are held fixed:
+	\begin{equation}\label{eq:scaling_laws}
+		\mathcal{L}(N) \approx \left(\frac{N_c}{N}\right)^{\!\alpha_N},\quad
+		\mathcal{L}(D) \approx \left(\frac{D_c}{D}\right)^{\!\alpha_D},\quad
+		\mathcal{L}(C) \approx \left(\frac{C_c}{C}\right)^{\!\alpha_C},
+	\end{equation}
+	where $N$ is the number of non-embedding parameters, $D$ is the training token count, $C$ the total compute (FLOPs), and $N_c, D_c, C_c, \alpha_N, \alpha_D, \alpha_C$ are empirically fitted constants ($\alpha_N \approx 0.076$, $\alpha_D \approx 0.095$ in the original work). Crucially, the three scaling directions are \emph{not} independent in practice: training always consumes compute $C \approx 6ND$ FLOPs (6 FLOPs per parameter per token: 2 for the forward pass and 4 for backward).
+
+	\begin{keyconcept}[Chinchilla Compute-Optimal Scaling (Hoffmann et al.\ 2022)]
+		Given a fixed compute budget $C$ (in FLOPs), the cross-entropy loss is minimised by the parameter count $N^*$ and token count $D^*$ satisfying:
+		\begin{equation}\label{eq:chinchilla}
+			N^*(C) = G\left(\frac{C}{6}\right)^{a}, \qquad D^*(C) = G^{-1}\left(\frac{C}{6}\right)^{b},
+		\end{equation}
+		where $a \approx b \approx 0.50$ (Hoffmann et al.\ fit $a{=}0.46$, $b{=}0.54$) and $G$ is a scale constant. To a good approximation both exponents are equal, meaning \textbf{$N$ and $D$ should scale at the same rate as $C$ grows}. The concrete rule of thumb emerging from the paper is:
+		\begin{equation}
+			D^* \approx 20 N^*.
+		\end{equation}
+		This is a statement about the \emph{ratio} under a fixed budget, not about absolute magnitudes. Example: a compute-optimal 70B-parameter model requires $\approx$1.4 trillion tokens, not 70 billion.
+	\end{keyconcept}
+
+	\textbf{Inference-Optimal (``Overtrained'') Scaling.} The Chinchilla result assumes each training FLOP costs the same as each inference FLOP. In production, a model is trained once but served billions of times. \textbf{Inference-optimal} strategies deliberately \emph{overtrain} a smaller model beyond the Chinchilla-optimal token budget: a smaller $N$ lowers per-query cost, and additional tokens keep improving loss even past $D^* = 20N$ \parencite{dubey2024}. The Llama family exemplifies this---Llama~3 8B was trained on $\sim$15\,T tokens, roughly $10{\times}$ the Chinchilla optimum---achieving loss competitive with much larger models while remaining cheap to deploy.
 
 	\subsection{Fine-tuning, parameter efficiency, and preference alignment}
 
-	Following pretraining, alignment transforms raw base models into helpful assistants:
-	\begin{enumerate}[nosep]
-		\item \textbf{Supervised Fine-Tuning (SFT):} Fine-tuning on curated demonstration pairs.
-		\item \textbf{Preference Optimization (RLHF \& DPO):} Reinforcement Learning from Human Feedback \parencite{christiano2017, ouyang2022} or Direct Preference Optimization (DPO) \parencite{rafailov2023} optimizes policy preference loss directly without fitting an explicit reward model.
-		\item \textbf{Parameter-Efficient Fine-Tuning (PEFT / LoRA):} \textbf{LoRA} \parencite{hu2021} freezes pretrained weight matrices $W_0 \in \mathbb{R}^{d \times k}$ and injects trainable low-rank decomposition matrices $\Delta W = B A$ ($B \in \mathbb{R}^{d \times r}, A \in \mathbb{R}^{r \times k}, r \ll \min(d,k)$), reducing trainable parameters by $>99\%$. \textbf{QLoRA} \parencite{dettmers2024} quantizes base model weights to 4-bit NormalFloat while preserving full-precision low-rank adapters.
-	\end{enumerate}
+	Following pretraining, alignment transforms raw base models into helpful assistants. The standard pipeline proceeds in three stages:
+
+	\textbf{Stage 1 --- Supervised Fine-Tuning (SFT).} The pretrained model is fine-tuned on a curated dataset of $(\text{prompt}, \text{demonstration})$ pairs written by human labellers. SFT teaches the model the \emph{format} of a helpful response; it does not yet optimise human preference directly.
+
+	\textbf{Stage 2a --- Reinforcement Learning from Human Feedback (RLHF).} \parencite{christiano2017, ouyang2022} RLHF introduces a separate \textbf{reward model} $r_\phi$ trained on human preference comparisons. Given two model outputs $y_w$ (preferred) and $y_l$ (dispreferred) for the same prompt $x$, human raters select the winner. The reward model is fitted via the \textbf{Bradley--Terry} pairwise preference model:
+	\begin{equation}\label{eq:bradley_terry}
+		\mathcal{L}_{\mathrm{RM}}(\phi) = -\mathbb{E}_{(x,\,y_w,\,y_l)\sim\mathcal{D}}\!\left[\ln \sigma\bigl(r_\phi(x, y_w) - r_\phi(x, y_l)\bigr)\right],
+	\end{equation}
+	where $\sigma$ is the sigmoid function. Once $r_\phi$ is trained, the SFT policy $\pi_{\theta}$ is updated via \textbf{Proximal Policy Optimization (PPO)} to maximise expected reward while staying close to the SFT reference policy $\pi_{\mathrm{ref}}$ via a KL-divergence penalty:
+	\begin{equation}\label{eq:rlhf_objective}
+		\max_{\pi_\theta}\; \mathbb{E}_{x \sim \mathcal{D},\; y \sim \pi_\theta(\cdot \mid x)}\!\bigl[r_\phi(x,y)\bigr] - \beta\, D_{\mathrm{KL}}\bigl(\pi_\theta(\cdot \mid x) \,\|\, \pi_{\mathrm{ref}}(\cdot \mid x)\bigr),
+	\end{equation}
+	where $\beta > 0$ controls the strength of the regularisation. The KL penalty prevents \emph{reward hacking}: without it the policy exploits weaknesses in $r_\phi$ to produce outputs that score highly but are not genuinely helpful.
+
+	\textbf{Stage 2b --- Direct Preference Optimization (DPO).} \parencite{rafailov2023} DPO eliminates the explicit reward model by observing that the optimal policy $\pi^*$ that solves the RLHF objective \eqref{eq:rlhf_objective} can be written in closed form:
+	\begin{equation}
+		\pi^*(y \mid x) \propto \pi_{\mathrm{ref}}(y \mid x)\,\exp\!\left(\frac{r^*(x,y)}{\beta}\right).
+	\end{equation}
+	Inverting this relationship expresses the implicit reward as $r^*(x,y) = \beta\ln\frac{\pi^*(y\mid x)}{\pi_{\mathrm{ref}}(y\mid x)} + \beta\ln Z(x)$. Substituting into the Bradley--Terry objective and cancelling the partition function $Z(x)$ yields the \textbf{DPO loss}, which can be optimised directly on preference pairs without a reward model:
+	\begin{equation}\label{eq:dpo}
+		\mathcal{L}_{\mathrm{DPO}}(\theta) = -\mathbb{E}_{(x,\,y_w,\,y_l)}\!\left[\ln \sigma\!\left(\beta\ln\frac{\pi_\theta(y_w \mid x)}{\pi_{\mathrm{ref}}(y_w \mid x)} - \beta\ln\frac{\pi_\theta(y_l \mid x)}{\pi_{\mathrm{ref}}(y_l \mid x)}\right)\right].
+	\end{equation}
+
+	\begin{keyconcept}[RLHF vs.\ DPO: key trade-offs]
+		\begin{center}
+		\small\sffamily
+		\renewcommand{\arraystretch}{1.25}
+		\begin{tabular}{@{}lll@{}}
+			\toprule
+			\textbf{Property} & \textbf{RLHF (PPO)} & \textbf{DPO} \\
+			\midrule
+			Reward model & Explicit $r_\phi$, trained separately & Implicit; absorbed into policy loss \\
+			Optimizer & Online RL (PPO); requires a rollout & Offline supervised; no rollout needed \\
+			Stability & Sensitive to $r_\phi$ quality; reward hacking risk & More stable; simpler implementation \\
+			Flexibility & Can optimise non-differentiable reward signals & Requires pre-collected preference pairs \\
+			Practice & InstructGPT, Claude (early), Gemini & Zephyr, Llama-3-Instruct, Phi-3 \\
+			\bottomrule
+		\end{tabular}
+		\end{center}
+	\end{keyconcept}
+
+	\textbf{Stage 3 --- Parameter-Efficient Fine-Tuning (PEFT / LoRA).} Full fine-tuning of a billion-parameter model is prohibitively expensive. \textbf{LoRA} \parencite{hu2021} freezes pretrained weight matrices $W_0 \in \mathbb{R}^{d \times k}$ and injects trainable low-rank decomposition matrices $\Delta W = BA$ ($B \in \mathbb{R}^{d \times r},\, A \in \mathbb{R}^{r \times k},\, r \ll \min(d,k)$), leveraging classical low-rank matrix factorisation \parencite{strang2012linear} to reduce trainable parameters by ${>}99\%$. \textbf{QLoRA} \parencite{dettmers2024} extends this by quantising base weights to 4-bit NormalFloat while preserving full-precision low-rank adapters, enabling fine-tuning of 70B+ models on a single GPU.
 
 	\subsection{Foundation model inference, KV-caching, and RAG}
 
@@ -2371,7 +2013,7 @@ print(f"InfoNCE Loss (Random Unaligned Pairs):   {loss_unaligned:.4f}")
 			\item Why does Self-Supervised Learning (SSL) depend so critically on the parallel self-attention mechanism of Transformers compared to sequential RNNs?
 			\item Mathematically, what role does temperature $\tau$ play in the InfoNCE loss for contrastive learning?
 			\item What key trade-off does subword tokenization (e.g. Byte-Pair Encoding) balance compared to whole-word or character-level tokenization?
-			\item According to Chinchilla scaling laws, what is the compute-optimal ratio between scaling model parameters vs.\ scaling training tokens?
+			\item According to Chinchilla scaling laws, what is the compute-optimal ratio between model parameters and training tokens, and why might a practitioner deliberately deviate from it?
 			\item Explain how LoRA achieves $>99\%$ parameter reduction during fine-tuning via low-rank matrix decomposition.
 		\end{enumerate}
 	\end{checkpoint}
@@ -2406,6 +2048,602 @@ print(f"InfoNCE Loss (Random Unaligned Pairs):   {loss_unaligned:.4f}")
 
 	% =====================================================================
 	\clearpage
+	\section{Modern LLM Architectures}
+	\label{sec:modern-llm}
+	% =====================================================================
+
+	\begin{modulecard}{\faRobot\ Module 6, at a glance \hfill \small\normalfont (Estimated Study: 5 hours \textbullet{} Level: Advanced)}{primary!80!black}
+		\textbf{Focus.} How leading open-weight LLMs (Llama, Mistral, Mixtral) modernise the vanilla Transformer decoder: replacing Layer Norm with RMSNorm, GELU with SwiGLU, absolute positional encodings with RoPE, Multi-Head Attention (MHA) with Grouped-Query Attention (GQA), and dense FFNs with Sparse Mixture-of-Experts (MoE) routing.
+
+		\medskip
+		\textbf{Key concepts.} RMSNorm, SwiGLU, Grouped-Query Attention, Mixture of Experts, Top-$k$ gating, load-balancing loss, sliding-window attention, decoder-only architecture.
+
+		\medskip
+		\textbf{After this module you will be able to} identify the architectural components of Llama 3, Mistral 7B, and Mixtral 8$\times$7B, explain the motivation for each design choice in terms of efficiency and quality, and derive the MoE gating computation.
+	\end{modulecard}
+
+	\subsection{Core modifications in modern decoder-only LLMs}
+
+	The vanilla Transformer decoder \parencite{vaswani2017} uses Post-Layer Normalization, learned sinusoidal positional encodings, Multi-Head Attention, and feed-forward networks with GELU activations. Every major open-weight LLM released since 2023 makes systematic improvements to each of these components.
+
+	\textbf{RMSNorm.} Standard Layer Normalization \parencite{vaswani2017} centres and rescales activations:
+	\begin{equation}
+		\mathrm{LayerNorm}(\mathbf{x}) = \frac{\mathbf{x} - \mu}{\sigma + \epsilon}\,\boldsymbol{\gamma} + \boldsymbol{\beta},
+		\quad \mu = \frac{1}{d}\sum_i x_i,\quad \sigma^2 = \frac{1}{d}\sum_i (x_i-\mu)^2.
+	\end{equation}
+	\textbf{Root Mean Square Layer Normalization (RMSNorm)} \parencite{zhang2019rmsnorm} drops mean subtraction, computing only the re-scaling:
+	\begin{equation}
+		\mathrm{RMSNorm}(\mathbf{x}) = \frac{\mathbf{x}}{\mathrm{RMS}(\mathbf{x})}\,\boldsymbol{\gamma},
+		\quad \mathrm{RMS}(\mathbf{x}) = \sqrt{\frac{1}{d}\sum_i x_i^2 + \epsilon}.
+	\end{equation}
+	Removing the mean-subtraction eliminates the implicit centering invariance, which is empirically redundant, saving $\approx 7$--$8\%$ of normalization compute. Llama 3 \parencite{dubey2024} and Mistral \parencite{jiang2023mistral} both adopt RMSNorm.
+
+	\textbf{SwiGLU feed-forward networks.} The original Transformer FFN applies two linear layers with a GELU nonlinearity between them. \textcite{shazeer2020glu} introduced \emph{Gated Linear Units (GLU)} variants. \textbf{SwiGLU}, used in Llama and PaLM, replaces the standard FFN:
+	\begin{equation}
+		\mathrm{FFN}_{\mathrm{SwiGLU}}(\mathbf{x}) = \bigl(\mathrm{Swish}(W_1 \mathbf{x}) \odot W_3 \mathbf{x}\bigr)\,W_2,
+	\end{equation}
+	where $\mathrm{Swish}(z) = z \cdot \sigma(z)$ is a smooth, non-monotonic activation and $\odot$ is element-wise multiplication. The gating mechanism ($W_3\mathbf{x}$) allows the network to selectively suppress or amplify intermediate activations, improving representational capacity without increasing depth. To keep FLOPs constant vs.\ the vanilla FFN, the hidden dimension is scaled to $\frac{2}{3} \cdot 4d_{\mathrm{model}}$.
+
+	\subsection{Grouped-Query Attention (GQA)}
+
+	\textbf{Multi-Head Attention} (MHA) with $h$ heads maintains $h$ independent Key and Value matrices, incurring a KV-cache of size $O(h \cdot n \cdot d_k)$ per layer. \textbf{Multi-Query Attention (MQA)} reduces this to a single shared KV head, dramatically shrinking the cache but sometimes hurting quality. \textbf{Grouped-Query Attention (GQA)} \parencite{ainslie2023gqa} interpolates: $G$ groups share a single KV head, while each group contains $h/G$ query heads:
+	\begin{equation}
+		\mathrm{GQA}(Q, K, V) = \mathrm{Concat}\Bigl(\mathrm{head}_1, \ldots, \mathrm{head}_h\Bigr)\,W^O,
+		\quad \mathrm{head}_{g,i} = \mathrm{Attention}\bigl(Q_{g,i}\,W^Q_{g,i},\; K_g\,W^K_g,\; V_g\,W^V_g\bigr).
+	\end{equation}
+	With $G = h$ we recover MHA; with $G = 1$ we recover MQA. Llama 3 uses $G = 8$ (8 KV heads for 32 query heads), reducing KV-cache memory by $4\times$ with minimal quality degradation.
+
+	\subsection{Mixture-of-Experts (MoE)}
+
+	\textbf{Sparse Mixture-of-Experts (MoE)} \parencite{shazeer2017moe} replaces each dense FFN with $E$ independent \emph{expert} networks and a learned \emph{router} that activates only a top-$k$ subset of experts per token. For input token $\mathbf{x}$:
+	\begin{align}
+		g(\mathbf{x}) &= \mathrm{Softmax}\!\bigl(\mathbf{x}\,W_r\bigr) \in \mathbb{R}^E, \\
+		\mathcal{S}(\mathbf{x}) &= \mathrm{Top}\text{-}k\bigl\{(i, g_i(\mathbf{x}))\bigr\}, \\
+		\mathrm{MoE}(\mathbf{x}) &= \sum_{(i,g_i)\in\mathcal{S}(\mathbf{x})} g_i(\mathbf{x})\,\mathrm{FFN}_i(\mathbf{x}).
+	\end{align}
+	\textbf{Mixtral 8$\times$7B} \parencite{jiang2024mixtral} uses $E=8$ experts and $k=2$: each token is processed by 2 of 8 FFN experts, giving $\sim\!13$B active parameters out of $\sim\!47$B total. A \emph{load-balancing auxiliary loss} penalises unequal expert utilisation:
+	\begin{equation}
+		\mathcal{L}_{\mathrm{aux}} = \alpha \cdot E \sum_{i=1}^{E} f_i \cdot P_i,
+	\end{equation}
+	where $f_i$ is the fraction of tokens routed to expert $i$ and $P_i$ is the average routing probability, encouraging uniform load across experts.
+
+	\begin{keyconcept}[Modern LLM Architecture Signature]
+		Every modern open-weight LLM decoder combines: \textbf{Pre-RMSNorm}, \textbf{RoPE} positional encoding, \textbf{GQA} for memory-efficient attention, and \textbf{SwiGLU} feed-forward blocks. Larger models additionally use \textbf{Sparse MoE} FFN layers to scale parameter count without scaling compute proportionally.
+	\end{keyconcept}
+
+	\begin{table}[ht]
+		\centering
+		\small\sffamily
+		\renewcommand{\arraystretch}{1.3}
+		\rowcolors{2}{white}{primary!7}
+		\begin{tabular}{@{}L{2.8cm} L{1.8cm} L{2.0cm} L{2.2cm} L{2.0cm} L{2.5cm}@{}}
+			\toprule
+			\rowcolor{primary}
+			\textcolor{white}{\textbf{Model}} &
+			\textcolor{white}{\textbf{Params}} &
+			\textcolor{white}{\textbf{Norm}} &
+			\textcolor{white}{\textbf{Activation}} &
+			\textcolor{white}{\textbf{Pos.\ Enc.}} &
+			\textcolor{white}{\textbf{Attention}} \\
+			\midrule
+			GPT-2        & 1.5B   & LayerNorm  & GELU   & Learned abs.  & MHA \\
+			Llama 2      & 7--70B & RMSNorm    & SwiGLU & RoPE          & GQA (34B+) \\
+			Llama 3      & 8--70B & RMSNorm    & SwiGLU & RoPE          & GQA \\
+			Mistral 7B   & 7B     & RMSNorm    & SwiGLU & RoPE          & GQA + SWA \\
+			Mixtral 8$\times$7B & 47B total & RMSNorm & SwiGLU & RoPE & GQA + MoE \\
+			Gemma 2      & 2--27B & RMSNorm    & GEGLU  & RoPE          & GQA \\
+			\bottomrule
+		\end{tabular}
+		\caption{Architectural components across representative modern decoder-only LLMs. SWA = Sliding-Window Attention; GQA = Grouped-Query Attention; MoE = Mixture-of-Experts.}
+		\label{tab:llm_architectures}
+	\end{table}
+
+	\begin{checkpoint}
+		\begin{enumerate}
+			\item Why does RMSNorm eliminate mean subtraction, and what property of representations makes this acceptable?
+			\item Derive the FLOPs of GQA with $G$ groups versus standard MHA, and show the KV-cache reduction factor.
+			\item In Mixtral's MoE architecture, why is a load-balancing auxiliary loss necessary, and what pathological behaviour does it prevent?
+		\end{enumerate}
+	\end{checkpoint}
+
+	\begin{sourcesbox}
+		\small
+		\begin{itemize}[nosep]
+			\item \fullcite{vaswani2017}
+			\item \fullcite{dubey2024}
+			\item \fullcite{touvron2023llama2}
+			\item \fullcite{jiang2023mistral}
+			\item \fullcite{jiang2024mixtral}
+			\item \fullcite{shazeer2020glu}
+			\item \fullcite{ainslie2023gqa}
+		\end{itemize}
+	\end{sourcesbox}
+
+	% =====================================================================
+	\clearpage
+	\section{Efficient Attention Mechanisms}
+	\label{sec:efficient-attention}
+	% =====================================================================
+
+	\begin{modulecard}{\faMemory\ Module 7, at a glance \hfill \small\normalfont (Estimated Study: 4 hours \textbullet{} Level: Advanced)}{primary!80!black}
+		\textbf{Focus.} Why standard self-attention is a memory bottleneck, and how FlashAttention, sliding-window attention, and ALiBi overcome it without sacrificing output quality.
+
+		\medskip
+		\textbf{Key concepts.} IO-awareness, HBM vs.\ SRAM, tiling, online softmax, FlashAttention, sliding-window attention, ALiBi, sparse attention, linear attention.
+
+		\medskip
+		\textbf{After this module you will be able to} explain the IO complexity of standard vs.\ FlashAttention, derive the tiling recurrence for online softmax, and compare length-extrapolation strategies.
+	\end{modulecard}
+
+	\subsection{The memory bottleneck: IO complexity of self-attention}
+
+	Standard self-attention materialises the full $n \times n$ attention score matrix $A = QK^\top / \sqrt{d_k}$ in High-Bandwidth Memory (HBM), before applying softmax and multiplying by $V$. The number of HBM reads and writes (measured in bytes, not FLOPs) is:
+	\begin{equation}
+		\mathrm{IO}_{\mathrm{standard}} = \Theta\!\bigl(n d_k + n^2\bigr),
+	\end{equation}
+	where the $n^2$ term corresponds to reading and writing the full attention matrix. For long contexts ($n = 128$k tokens), this dominates compute time because the GPU's arithmetic units are \emph{memory-bandwidth bound}, not \emph{compute bound}.
+
+	\subsection{FlashAttention: IO-aware tiled attention}
+
+	\textcite{dao2022flashattention} observed that self-attention can be computed \emph{without ever materialising} the full $n \times n$ matrix, provided keys, queries, and values are processed in tiles that fit in on-chip SRAM ($\ll$HBM). The key insight is the \textbf{online softmax recurrence}: given partial sums $m^{(\mathrm{old})}$ (running max) and $\ell^{(\mathrm{old})}$ (running normalizer), updating the softmax denominator when a new tile of scores $\mathbf{s}^{(\mathrm{new})}$ arrives requires only:
+	\begin{align}
+		m^{(\mathrm{new})} &= \max\bigl(m^{(\mathrm{old})},\, \max(\mathbf{s}^{(\mathrm{new})})\bigr), \\
+		\ell^{(\mathrm{new})} &= e^{m^{(\mathrm{old})} - m^{(\mathrm{new})}}\,\ell^{(\mathrm{old})} + \sum_j e^{s^{(\mathrm{new})}_j - m^{(\mathrm{new})}}.
+	\end{align}
+	The accumulated output $O$ is rescaled at each tile step, yielding the exact softmax output without storing intermediate $n \times n$ matrices. FlashAttention achieves:
+	\begin{equation}
+		\mathrm{IO}_{\mathrm{Flash}} = \Theta\!\bigl(n^2 d_k / M\bigr),
+	\end{equation}
+	where $M$ is the SRAM size. For practical values ($M \approx 100$~KB, $d_k = 64$), this is $4$--$20\times$ fewer HBM accesses, translating directly to wall-clock speedup and $O(n)$ HBM memory footprint (vs.\ $O(n^2)$). \textbf{FlashAttention-2} \parencite{dao2023flashattention2} further improves work partitioning across warps to achieve $\approx 70\%$ of theoretical A100 GPU FLOPs utilisation.
+
+	\subsection{Sliding-Window Attention (SWA)}
+
+	For long documents, full attention is often unnecessary: most token interactions decay rapidly with distance. \textbf{Sliding-Window Attention} restricts each token to attend only to its $w$ nearest tokens:
+	\begin{equation}
+		A_{ij} = \begin{cases} \mathrm{Attention}(q_i, k_j, v_j) & |i - j| \le w/2 \\ 0 & \text{otherwise.} \end{cases}
+	\end{equation}
+	With $L$ layers, the \emph{effective receptive field} grows to $L \cdot w$ positions --- sufficient for most practical document lengths. SWA reduces attention complexity from $O(n^2)$ to $O(n \cdot w)$ and is deployed in Mistral 7B \parencite{jiang2023mistral} for its 32k-token context.
+
+	\subsection{Positional encoding and length extrapolation}
+
+	\textbf{ALiBi (Attention with Linear Biases)} \parencite{press2022alibi} eliminates learned or sinusoidal positional embeddings entirely, instead adding a fixed negative linear bias to attention logits proportional to distance:
+	\begin{equation}
+		\mathrm{Attention}(Q, K, V) = \softmax\!\Bigl(\frac{QK^\top}{\sqrt{d_k}} - m \cdot |i - j|\Bigr)\,V,
+	\end{equation}
+	where scalar $m$ is head-specific. This design enables \emph{length extrapolation}: models trained on sequences of length $L$ generalise to $L' \gg L$ at inference, a property not shared by RoPE or sinusoidal encodings without finetuning.
+
+	\begin{keyconcept}[Efficient Attention Trade-offs]
+		\begin{itemize}[nosep]
+			\item \textbf{FlashAttention}: exact attention, $O(n^2 d/M)$ IO (vs.\ $O(n^2)$), best for moderate context.
+			\item \textbf{Sliding-Window}: $O(nw)$ compute, limited receptive field unless layered.
+			\item \textbf{Sparse/Block Sparse}: $O(n \sqrt{n})$ or $O(n \log n)$ patterns; approximate.
+			\item \textbf{Linear Attention}: $O(nd^2)$ via kernel trick; approximate, no softmax guarantee.
+		\end{itemize}
+		FlashAttention is the near-universal choice for dense attention today; SWA provides additional savings for very long contexts.
+	\end{keyconcept}
+
+	\begin{checkpoint}
+		\begin{enumerate}
+			\item Why is the $n \times n$ attention matrix a \emph{memory-bandwidth} bottleneck rather than a \emph{FLOPs} bottleneck on modern GPUs?
+			\item Explain the online softmax recurrence used by FlashAttention: what two running statistics does it maintain, and why is their update numerically stable?
+			\item Compare the length-extrapolation properties of RoPE, ALiBi, and learned absolute positional embeddings.
+		\end{enumerate}
+	\end{checkpoint}
+
+	\begin{sourcesbox}
+		\small
+		\begin{itemize}[nosep]
+			\item \fullcite{vaswani2017}
+			\item \fullcite{dao2022flashattention}
+			\item \fullcite{dao2023flashattention2}
+			\item \fullcite{press2022alibi}
+			\item \fullcite{child2019sparse}
+			\item \fullcite{jiang2023mistral}
+			\item \fullcite{su2024}
+		\end{itemize}
+	\end{sourcesbox}
+
+	% =====================================================================
+	\clearpage
+	\section{Model Quantization}
+	\label{sec:quantization}
+	% =====================================================================
+
+	\begin{modulecard}{\faCompress\ Module 8, at a glance \hfill \small\normalfont (Estimated Study: 4 hours \textbullet{} Level: Advanced)}{primary!80!black}
+		\textbf{Focus.} Reducing the memory and compute footprint of LLMs through weight and activation quantization: from first principles of uniform quantization through GPTQ, AWQ, and bitsandbytes.
+
+		\medskip
+		\textbf{Key concepts.} Symmetric/asymmetric quantization, calibration, Post-Training Quantization (PTQ), Quantization-Aware Training (QAT), GPTQ, AWQ, NF4, LLM.int8().
+
+		\medskip
+		\textbf{After this module you will be able to} derive the quantization error bound, explain why second-order information is used in GPTQ, describe how AWQ selects salient weights, and compare deployment formats (GGUF, bitsandbytes, TensorRT-LLM).
+	\end{modulecard}
+
+	\subsection{Quantization fundamentals}
+
+	A floating-point weight tensor $W \in \mathbb{R}^{m \times n}$ is quantized to $b$ bits by mapping the range $[w_{\min}, w_{\max}]$ to $2^b$ integers. \textbf{Uniform symmetric quantization} uses:
+	\begin{equation}
+		W_q = \mathrm{clip}\!\left(\mathrm{round}\!\left(\frac{W}{\Delta}\right),\; -2^{b-1},\; 2^{b-1}-1\right),
+		\quad \Delta = \frac{\max(|W|)}{2^{b-1}-1},
+	\end{equation}
+	and the dequantized approximation $\hat{W} = W_q \cdot \Delta$ introduces a worst-case absolute error bounded by $|\Delta|/2$ per element. The \textbf{quantization SNR} (signal-to-noise ratio) decreases as $b$ decreases: moving from FP32 to INT8 loses roughly $\log_2(2^{32}/2^8) = 24$ bits of effective precision.
+
+	\begin{table}[ht]
+		\centering
+		\small\sffamily
+		\renewcommand{\arraystretch}{1.3}
+		\rowcolors{2}{white}{primary!7}
+		\begin{tabular}{@{}L{2.5cm} L{2.5cm} L{2.8cm} L{5cm}@{}}
+			\toprule
+			\rowcolor{primary}
+			\textcolor{white}{\textbf{Format}} &
+			\textcolor{white}{\textbf{Bits / Param}} &
+			\textcolor{white}{\textbf{Memory (7B)}} &
+			\textcolor{white}{\textbf{Notes}} \\
+			\midrule
+			FP32    & 32 & $\sim$28 GB & Training reference \\
+			BF16    & 16 & $\sim$14 GB & Standard inference \\
+			FP8     & 8  & $\sim$7 GB  & H100 native; NVIDIA TensorRT-LLM \\
+			INT8    & 8  & $\sim$7 GB  & LLM.int8(), bitsandbytes \\
+			GPTQ-4  & 4  & $\sim$3.5 GB & Group-wise, second-order PTQ \\
+			NF4     & 4  & $\sim$3.5 GB & Normally-distributed float; QLoRA \\
+			GGUF Q4 & 4  & $\sim$3.5 GB & llama.cpp mixed-precision blocks \\
+			GGUF Q2 & 2  & $\sim$1.8 GB & Severe quality degradation \\
+			\bottomrule
+		\end{tabular}
+		\caption{Common quantization formats, their memory footprint for a 7B-parameter model, and typical deployment context.}
+		\label{tab:quant_formats}
+	\end{table}
+
+	\subsection{GPTQ: second-order post-training quantization}
+
+	\textbf{GPTQ} \parencite{frantar2022gptq} applies the Optimal Brain Quantization (OBQ) framework to quantize an entire LLM layer by layer. For each weight matrix $W \in \mathbb{R}^{d_{\mathrm{out}} \times d_{\mathrm{in}}}$, the quantization error on the layer output is:
+	\begin{equation}
+		\mathcal{L}_{\mathrm{quant}}(W, \hat{W}) = \bigl\|(W - \hat{W})\,X\bigr\|_F^2,
+	\end{equation}
+	where $X \in \mathbb{R}^{d_{\mathrm{in}} \times T}$ is the layer's input activations over a calibration dataset ($T \approx 128$ samples). GPTQ greedily quantizes columns one by one, at each step computing the optimal compensating update to the remaining unquantized weights via the inverse Hessian $H^{-1} = (2XX^\top)^{-1}$:
+	\begin{equation}
+		\delta W_{:,j'} = -\frac{w_{:,j} - \hat{w}_{:,j}}{[H^{-1}]_{jj}} \cdot [H^{-1}]_{j, j'>j},
+	\end{equation}
+	which propagates quantization error to remaining columns. Using Cholesky decomposition of $H^{-1}$, GPTQ quantizes a 175B-parameter model in $\approx$4 GPU-hours with less than 1\% perplexity increase at 4 bits.
+
+	\subsection{AWQ: activation-aware weight quantization}
+
+	\textbf{AWQ} \parencite{lin2023awq} observes that only $\approx 1\%$ of weight channels correspond to \emph{salient} input activations with large magnitudes, and that quantizing these salient channels introduces disproportionately large output error. AWQ protects salient channels by scaling them up before quantization (and inverting the scale after), effectively assigning more quantization levels to high-activation-magnitude channels:
+	\begin{equation}
+		\hat{W} = \mathrm{Quantize}(W \cdot \mathrm{diag}(\mathbf{s})) \cdot \mathrm{diag}(\mathbf{s})^{-1},
+	\end{equation}
+	where saliency scale vector $\mathbf{s}$ is chosen to minimize per-channel output error on a calibration set. AWQ achieves comparable quality to GPTQ with lower calibration cost and better hardware compatibility (no sequential column-by-column dependency).
+
+	\subsection{bitsandbytes and NF4}
+
+	\textbf{LLM.int8()} \parencite{dettmers2022llmint8} performs mixed-precision decomposition: extreme-magnitude \emph{outlier} columns (identified at runtime) are kept in FP16, while the remaining $\approx 99.9\%$ of weights are quantized to INT8. Matrix multiplication is split across the two precisions and the results are summed. This preserves model quality at INT8 with no calibration dataset needed.
+
+	\textbf{NF4 (NormalFloat-4)} \parencite{dettmers2024} is a 4-bit data type that minimizes quantization error under the assumption that pre-trained weights follow a zero-centred normal distribution $\mathcal{N}(0, \sigma^2)$. The 16 quantization levels are placed at the quantiles of the normal distribution, not uniformly: $\{q_i\}_{i=1}^{16}$ where $q_i = \Phi^{-1}(i/17)\,\sigma$ (re-normalised to $[-1,1]$). NF4 is the default quantization format for QLoRA fine-tuning.
+
+	\begin{keyconcept}[When to Use Which Quantization Scheme]
+		\begin{itemize}[nosep]
+			\item \textbf{BF16}: default for inference on H100/A100 with sufficient VRAM.
+			\item \textbf{GPTQ-4 / AWQ-4}: best quality at 4-bit for GPU deployment; requires calibration.
+			\item \textbf{LLM.int8()}: drop-in 8-bit for any model without calibration (bitsandbytes).
+			\item \textbf{QLoRA + NF4}: 4-bit base model + 16-bit LoRA adapters for fine-tuning on consumer GPUs.
+			\item \textbf{GGUF}: CPU/mixed inference via llama.cpp, supports Q2--Q8 per-block quantization.
+		\end{itemize}
+	\end{keyconcept}
+
+	\begin{checkpoint}
+		\begin{enumerate}
+			\item Derive the maximum absolute quantization error for symmetric $b$-bit uniform quantization with scale $\Delta$.
+			\item Why does GPTQ use the inverse Hessian $H^{-1}$ when propagating quantization error? What quantity does the Hessian measure?
+			\item Explain the key insight behind AWQ's saliency-weighted scaling, and why it achieves lower output error than naive per-tensor or per-channel quantization.
+		\end{enumerate}
+	\end{checkpoint}
+
+	\begin{sourcesbox}
+		\small
+		\begin{itemize}[nosep]
+			\item \fullcite{frantar2022gptq}
+			\item \fullcite{lin2023awq}
+			\item \fullcite{dettmers2022llmint8}
+			\item \fullcite{dettmers2024}
+			\item \fullcite{hu2021}
+		\end{itemize}
+	\end{sourcesbox}
+
+	% =====================================================================
+	\clearpage
+	\section{Distributed Training}
+	\label{sec:distributed-training}
+	% =====================================================================
+
+	\begin{modulecard}{\faServer\ Module 9, at a glance \hfill \small\normalfont (Estimated Study: 5 hours \textbullet{} Level: Advanced)}{primary!80!black}
+		\textbf{Focus.} Training large models across hundreds or thousands of GPUs using Data Parallelism (DDP), the ZeRO memory optimisation stages (PyTorch FSDP), Tensor Parallelism, and Pipeline Parallelism as used in Megatron-LM.
+
+		\medskip
+		\textbf{Key concepts.} All-Reduce, gradient averaging, ZeRO stages 1--3, Fully Sharded Data Parallelism (FSDP), tensor parallelism, pipeline parallelism, micro-batching, gradient checkpointing, BF16 mixed-precision.
+
+		\medskip
+		\textbf{After this module you will be able to} derive the memory savings of ZeRO stage 3, explain the All-Reduce collective and its bandwidth cost, and understand how 3D parallelism composes all three parallelism dimensions.
+	\end{modulecard}
+
+	\subsection{Data parallelism and the All-Reduce bottleneck}
+
+	\textbf{Data Parallelism (DP)} replicates the full model on every GPU and partitions the training mini-batch across $D$ workers. After each forward/backward pass, workers must synchronise gradients via an \textbf{All-Reduce} collective:
+	\begin{equation}
+		\bar{\mathbf{g}} = \frac{1}{D}\sum_{d=1}^{D} \mathbf{g}_d,
+	\end{equation}
+	which reduces the per-GPU gradient $\mathbf{g}_d$ to the global mean and broadcasts it back. The communication volume per All-Reduce is $2P$ parameters (reduce + broadcast), where $P$ is parameter count. \textbf{PyTorch DistributedDataParallel (DDP)} overlaps this gradient communication with the backward pass via \emph{gradient bucketing}, hiding latency behind compute.
+
+	\subsection{ZeRO: sharding optimizer state, gradients, and parameters}
+
+	Standard DP replicates not just model parameters ($16P$ bytes in BF16 + FP32 master copy) but also optimizer states ($8P$ bytes for Adam's first and second moments) on every GPU. For a 7B-parameter model this totals $\approx$112~GB --- far beyond a single 80~GB A100. \textbf{ZeRO (Zero Redundancy Optimizer)} \parencite{rajbhandari2020zero} shards memory across $D$ workers in three stages:
+
+	\begin{table}[ht]
+		\centering
+		\small\sffamily
+		\renewcommand{\arraystretch}{1.3}
+		\rowcolors{2}{white}{primary!7}
+		\begin{tabular}{@{}L{2.5cm} L{5cm} L{5cm}@{}}
+			\toprule
+			\rowcolor{primary}
+			\textcolor{white}{\textbf{ZeRO Stage}} &
+			\textcolor{white}{\textbf{What is sharded}} &
+			\textcolor{white}{\textbf{Memory per GPU}} \\
+			\midrule
+			Stage 1 & Optimizer states ($P_{\mathrm{os}}$) & $\frac{K \Psi}{D} + 2\Psi$ \\
+			Stage 2 & Optimizer states + gradients & $\frac{(K+2)\Psi}{D} + 2\Psi$ \\
+			Stage 3 & Optimizer states + gradients + parameters & $\frac{(K+2+2)\Psi}{D}$ \\
+			\bottomrule
+		\end{tabular}
+		\caption{ZeRO memory breakdown. $\Psi$ = parameter count in BF16; $K$ = optimizer state multiplier (12 for Adam: 4 master + 4 $m$ + 4 $v$ bytes); $D$ = number of GPUs.}
+		\label{tab:zero_stages}
+	\end{table}
+
+	ZeRO Stage~3 achieves linear memory scaling: a 7B model that requires 112~GB per GPU with DDP requires only $112/D$~GB per GPU with Stage~3, enabling training on clusters of commodity 80~GB GPUs. \textbf{PyTorch Fully Sharded Data Parallel (FSDP)} is the official ZeRO Stage~3 implementation, with All-Gather and Reduce-Scatter collectives reconstructing parameter shards on-the-fly during forward and backward passes.
+
+	\subsection{Tensor and pipeline parallelism}
+
+	For models that do not fit on a single GPU even at Stage~3 (e.g.\ 70B+ dense models), the model itself must be split. \textbf{Megatron-LM} \parencite{shoeybi2019megatron, narayanan2021megatron} introduces two complementary strategies:
+
+	\textbf{Tensor Parallelism (TP)} splits each weight matrix column- or row-wise across $T$ GPUs. For the MHA projection $Y = XA$ with $A \in \mathbb{R}^{d \times 4d}$:
+	\begin{equation}
+		Y = X [A_1 \mid A_2 \mid \cdots \mid A_T], \quad Y_t = X A_t \quad \text{(each GPU $t$ holds $A_t$)}.
+	\end{equation}
+	A single All-Reduce over $T$ GPUs synchronises the output after each column-partitioned GeMM, incurring $O(Bnd/T)$ communication per layer where $B$ is batch size and $n$ is sequence length.
+
+	\textbf{Pipeline Parallelism (PP)} partitions the $L$ Transformer layers into $P$ sequential stages, each on a different set of GPUs. A micro-batching schedule (e.g., \emph{1F1B}: one forward, one backward interleaved) keeps all pipeline stages busy, reducing the idle \emph{pipeline bubble} from $O(P)$ to $O(1)$ micro-batches.
+
+	\textbf{3D Parallelism} combines DP, TP, and PP: for a cluster of $D \cdot T \cdot P$ GPUs, DP operates across DP groups, TP within nodes (fast NVLink), and PP across nodes (slower InfiniBand). This is the configuration used to train GPT-3, Megatron-Turing NLG, and Llama 3 at scale.
+
+	\subsection{Gradient checkpointing and mixed precision}
+
+	\textbf{Gradient checkpointing} (also called \emph{activation recomputation}) reduces activation memory from $O(L \cdot n \cdot d)$ to $O(\sqrt{L \cdot n \cdot d})$ by storing only a sparse subset of activations and recomputing intermediate ones during the backward pass, at the cost of $\approx$33\% extra FLOPs.
+
+	\textbf{BF16 mixed-precision training} maintains a master FP32 copy of parameters for the optimizer step, while forward and backward passes use BF16 ($5\times$ more bandwidth than FP32). Dynamic \textbf{loss scaling} prevents BF16 gradient underflow: the loss is multiplied by a scale factor $s$ before the backward pass, and gradients are unscaled before the optimizer step, with $s$ halved on overflow and doubled on clean steps.
+
+	\begin{keyconcept}[Parallelism Strategy Selection]
+		\begin{itemize}[nosep]
+			\item $\le 7$B parameters: DDP (single node, 8$\times$A100).
+			\item $7$--$70$B: FSDP (ZeRO-3) across multiple nodes.
+			\item $70$B+: FSDP + Tensor Parallelism (TP within nodes via NVLink).
+			\item $\ge$200B: 3D Parallelism (DP + TP + PP) as in Megatron-LM.
+		\end{itemize}
+		Gradient checkpointing and BF16 mixed precision are universally applied to maximise batch size and stabilise training.
+	\end{keyconcept}
+
+	\begin{checkpoint}
+		\begin{enumerate}
+			\item Compute the total memory per GPU for Adam optimizer states, gradients, and BF16 parameters for a 13B-parameter model on a 64-GPU ZeRO Stage~3 cluster.
+			\item Why does Tensor Parallelism require fast intra-node interconnect (NVLink) while Pipeline Parallelism is more tolerant of slower inter-node links (InfiniBand)?
+			\item Explain the 1F1B micro-batch schedule in pipeline parallelism: what is the pipeline bubble fraction, and how does increasing the number of micro-batches reduce it?
+		\end{enumerate}
+	\end{checkpoint}
+
+	\begin{sourcesbox}
+		\small
+		\begin{itemize}[nosep]
+			\item \fullcite{rajbhandari2020zero}
+			\item \fullcite{shoeybi2019megatron}
+			\item \fullcite{narayanan2021megatron}
+			\item \fullcite{loshchilov2019}
+			\item \fullcite{kaplan2020}
+		\end{itemize}
+	\end{sourcesbox}
+
+	% =====================================================================
+	\clearpage
+	\section{Evaluation of Language Models}
+	\label{sec:evaluation}
+	% =====================================================================
+
+	\begin{modulecard}{\faChartBar\ Module 10, at a glance \hfill \small\normalfont (Estimated Study: 4 hours \textbullet{} Level: Intermediate--Advanced)}{primary!80!black}
+		\textbf{Focus.} Rigorous evaluation of LLMs across knowledge, reasoning, code, and truthfulness using standardised benchmarks: perplexity, MMLU, HellaSwag, HumanEval, and the HELM holistic evaluation framework.
+
+		\medskip
+		\textbf{Key concepts.} Perplexity, bits-per-character, MMLU, HellaSwag, TruthfulQA, HumanEval pass@$k$, HELM, benchmark contamination, model cards.
+
+		\medskip
+		\textbf{After this module you will be able to} compute perplexity from log-likelihood, interpret accuracy on standard benchmarks, use the \texttt{lm-evaluation-harness} framework, and identify benchmark contamination risks.
+	\end{modulecard}
+
+	\subsection{Perplexity and bits-per-character}
+
+	\textbf{Perplexity (PPL)} is the primary intrinsic metric for language models. For a test corpus $\mathbf{x} = (x_1, \ldots, x_T)$:
+	\begin{equation}
+		\mathrm{PPL}(\mathbf{x}) = \exp\!\left(-\frac{1}{T}\sum_{t=1}^{T} \log_e P_\theta(x_t \mid x_1, \ldots, x_{t-1})\right).
+	\end{equation}
+	A lower perplexity indicates better predictive performance. A PPL of $k$ means the model is, on average, as uncertain as choosing uniformly among $k$ equally likely next tokens. Perplexity is highly sensitive to tokenizer vocabulary: a model with a 100k-vocabulary tokenizer will have lower perplexity on the same text than one with a 32k vocabulary, simply because it produces fewer tokens. \textbf{Bits-per-character (BPC)} normalises by character count and is tokenizer-independent:
+	\begin{equation}
+		\mathrm{BPC}(\mathbf{x}) = -\frac{1}{C}\sum_{t=1}^{T} \log_2 P_\theta(x_t \mid x_{<t}),
+	\end{equation}
+	where $C$ is the total number of Unicode characters. Lower BPC is better; state-of-the-art LLMs achieve $\lesssim 1.0$ BPC on English Wikipedia.
+
+	\subsection{Standard benchmarks}
+
+	\textbf{MMLU (Massive Multitask Language Understanding)} \parencite{hendrycks2021mmlu} measures breadth of world knowledge via 14,079 four-choice multiple-choice questions spanning 57 subjects (STEM, humanities, professional law, medicine). Performance is reported as accuracy; GPT-4 achieves $\approx$86\%, human experts $\approx$89\%.
+
+	\textbf{HellaSwag} \parencite{zellers2019hellaswag} tests commonsense reasoning via adversarially-filtered sentence-completion tasks; models must select the most plausible continuation from 4 options. GPT-2 scored 40\%; GPT-4 scores $\approx$95\%.
+
+	\textbf{TruthfulQA} measures the tendency to reproduce common misconceptions rather than accurate statements. Models optimised only for likelihood can score \emph{below} humans because fluent falsehoods are common in pre-training corpora.
+
+	\textbf{HumanEval} \parencite{chen2021humaneval} assesses functional code generation: 164 Python programming problems, each with a docstring, reference tests, and a canonical solution. The metric is \emph{pass@$k$}, the probability that at least one of $k$ generated samples passes all unit tests:
+	\begin{equation}
+		\mathrm{pass@}k = \mathbb{E}_{\text{problem}}\!\left[1 - \frac{\binom{n-c}{k}}{\binom{n}{k}}\right],
+	\end{equation}
+	where $n$ samples are drawn and $c$ pass all tests. This unbiased estimator avoids the variability of evaluating exactly $k$ samples.
+
+	\subsection{HELM and holistic evaluation}
+
+	\textbf{HELM (Holistic Evaluation of Language Models)} \parencite{liang2022helm} evaluates models across seven \emph{metrics} (accuracy, calibration, robustness, fairness, bias, toxicity, efficiency) on 42 scenarios, revealing that no single model dominates across all dimensions. Key findings: models optimised for NLP benchmarks often exhibit high toxicity; smaller models can outperform larger ones on specific tasks; benchmark contamination --- test data appearing in pre-training corpora --- is widespread and difficult to detect.
+
+	\subsection{Benchmark contamination and the evaluation stack}
+
+	\textbf{Contamination} occurs when evaluation examples appear verbatim or paraphrased in pre-training data. Standard mitigations include: n-gram deduplication between training and test sets, canonical held-out test splits, and perplexity-based contamination detection (unusually low PPL on ``unseen'' examples signals contamination). The \textbf{lm-evaluation-harness} \parencite{gao2021harness} is the standard open-source framework for reproducible zero-shot and few-shot evaluation across 60+ benchmarks, used by EleutherAI, Hugging Face Open LLM Leaderboard, and most academic comparisons.
+
+	\begin{keyconcept}[Evaluation Best Practices]
+		Always report: (1) exact prompt format and number of few-shot examples; (2) model size, quantization level, and decoding strategy; (3) benchmark version and evaluation framework; (4) evidence of contamination checks. A single-number accuracy on a single benchmark is rarely sufficient to characterise a model's capabilities.
+	\end{keyconcept}
+
+	\begin{table}[ht]
+		\centering
+		\small\sffamily
+		\renewcommand{\arraystretch}{1.3}
+		\rowcolors{2}{white}{primary!7}
+		\begin{tabular}{@{}L{3cm} L{3.5cm} L{2.5cm} L{4.5cm}@{}}
+			\toprule
+			\rowcolor{primary}
+			\textcolor{white}{\textbf{Benchmark}} &
+			\textcolor{white}{\textbf{Task type}} &
+			\textcolor{white}{\textbf{Metric}} &
+			\textcolor{white}{\textbf{What it tests}} \\
+			\midrule
+			Perplexity (Wiki) & Language modelling & PPL/BPC       & Fluency and compression \\
+			MMLU              & 4-choice QA        & Accuracy (\%) & World knowledge, 57 subjects \\
+			HellaSwag         & 4-choice completion & Accuracy (\%) & Commonsense reasoning \\
+			TruthfulQA        & 4-choice QA        & Accuracy (\%) & Truthfulness vs.\ popular myths \\
+			HumanEval         & Code generation    & pass@$k$      & Functional correctness \\
+			HELM              & Multi-task         & 7 metrics     & Holistic behaviour \\
+			\bottomrule
+		\end{tabular}
+		\caption{Key LLM evaluation benchmarks, their formats, and primary metrics.}
+		\label{tab:eval_benchmarks}
+	\end{table}
+
+	\begin{checkpoint}
+		\begin{enumerate}
+			\item A model achieves perplexity 15 on a test set tokenized at 1.3 tokens per character. Compute the equivalent BPC.
+			\item Why is pass@$k$ defined using an unbiased combinatorial estimator rather than simply generating exactly $k$ samples?
+			\item Describe two mechanisms by which benchmark contamination inflates reported accuracy, and one method to detect it.
+		\end{enumerate}
+	\end{checkpoint}
+
+	\begin{sourcesbox}
+		\small
+		\begin{itemize}[nosep]
+			\item \fullcite{hendrycks2021mmlu}
+			\item \fullcite{liang2022helm}
+			\item \fullcite{chen2021humaneval}
+			\item \fullcite{gao2021harness}
+			\item \fullcite{zellers2019hellaswag}
+			\item \fullcite{brown2020}
+		\end{itemize}
+	\end{sourcesbox}
+
+	% =====================================================================
+	\clearpage
+	\section{LLM Deployment and Serving}
+	\label{sec:deployment}
+	% =====================================================================
+
+	\begin{modulecard}{\faRocket\ Module 11, at a glance \hfill \small\normalfont (Estimated Study: 4 hours \textbullet{} Level: Advanced)}{primary!80!black}
+		\textbf{Focus.} Serving large language models at production scale: memory management with PagedAttention (vLLM), continuous batching, structured outputs, speculative decoding, and an overview of TGI and TensorRT-LLM.
+
+		\medskip
+		\textbf{Key concepts.} KV-cache fragmentation, PagedAttention, continuous batching, speculative decoding, TTFT, TPOT, structured generation, tensor compilation, FP8 inference.
+
+		\medskip
+		\textbf{After this module you will be able to} explain why KV-cache fragmentation wastes GPU memory and how PagedAttention resolves it, compute serving throughput from TTFT and TPOT, and compare vLLM, TGI, and TensorRT-LLM for different deployment scenarios.
+	\end{modulecard}
+
+	\subsection{The KV-cache management problem}
+
+	During autoregressive generation, each decoder layer caches the Key and Value projections for all preceding tokens (KV-cache). For a model with $L$ layers, $h$ heads, head dimension $d_k$, and maximum context $n$, the KV-cache per sequence occupies:
+	\begin{equation}
+		\mathrm{KV\_mem} = 2 \cdot L \cdot h \cdot d_k \cdot n \cdot \mathrm{sizeof}(\mathrm{dtype})\;\text{bytes}.
+	\end{equation}
+	For Llama 3 70B (BF16, $L=80$, $h=8$, $d_k=128$, $n=8192$): $2 \times 80 \times 8 \times 128 \times 8192 \times 2 \approx 26$~GB per sequence. Serving multiple sequences simultaneously requires careful GPU memory management.
+
+	Naive implementations pre-allocate a contiguous memory block of size $n_{\max}$ per sequence at request arrival, resulting in \textbf{internal fragmentation} (unused space in over-allocated blocks) and \textbf{external fragmentation} (unusable gaps between blocks). \textcite{kwon2023vllm} measure that up to 60--80\% of GPU memory is wasted by fragmentation in naive KV-cache management.
+
+	\subsection{PagedAttention and vLLM}
+
+	\textbf{PagedAttention} \parencite{kwon2023vllm} adapts the OS virtual memory paradigm to KV caches. The KV-cache is divided into fixed-size \textbf{blocks} (analogous to memory pages), each holding $B_k$ tokens of key/value tensors. A per-sequence \textbf{block table} maps logical KV positions to physical block locations:
+	\begin{equation}
+		\mathrm{Attention}(q_t, K_{1:t}, V_{1:t}) = \sum_{b} \mathrm{Attention}\!\bigl(q_t, K_b, V_b\bigr),
+	\end{equation}
+	where blocks $K_b, V_b$ are gathered by the block table indirection. This allows:
+	\begin{itemize}[nosep]
+		\item \textbf{On-demand allocation}: blocks are allocated as new tokens are generated, eliminating internal fragmentation.
+		\item \textbf{Block sharing}: multiple requests sharing a common prefix (system prompt) can share physical blocks via copy-on-write, reducing memory by up to $55\%$ for high-prefix-reuse workloads.
+		\item \textbf{Continuous batching}: the scheduler can swap blocks to/from CPU RAM, preempt sequences, and merge variable-length requests into a single GPU kernel call.
+	\end{itemize}
+	vLLM achieves $2$--$24\times$ higher throughput than naive HuggingFace generation at equivalent quality.
+
+	\subsection{Serving metrics}
+
+	LLM serving is characterized by two latency metrics:
+	\begin{itemize}[nosep]
+		\item \textbf{Time to First Token (TTFT)}: latency from request submission to the first generated token. Determined by prefill (processing the input prompt) compute and batch queuing time. Target: $<500$~ms for interactive applications.
+		\item \textbf{Time Per Output Token (TPOT)}: latency per subsequently generated token after the first. Determined by the decode step and KV-cache memory bandwidth. Target: $<50$~ms/token ($>20$~tokens/s) for perceptible streaming.
+	\end{itemize}
+	\textbf{Throughput} (tokens/s/GPU) is the primary cost metric for batch serving. The throughput--latency trade-off is controlled by \emph{maximum batch size}: larger batches amortize model weight loading across more sequences, improving throughput, but increase queuing latency (higher TTFT).
+
+	\subsection{Speculative decoding}
+
+	\textbf{Speculative decoding} exploits the observation that a small \emph{draft model} $p_{\text{draft}}$ can propose $\gamma$ tokens simultaneously, which the large \emph{target model} $p_{\text{target}}$ verifies in parallel in a single forward pass. Tokens are accepted if $u \le p_{\text{target}}(x)/p_{\text{draft}}(x)$ for a uniform random variable $u \sim U[0,1]$; rejected tokens are resampled from the corrected distribution. The expected number of accepted tokens per target model call is:
+	\begin{equation}
+		\mathbb{E}[\text{accepted}] = \gamma - \sum_{t=1}^{\gamma} \max\!\bigl(0, p_{\text{draft}}(x_t) - p_{\text{target}}(x_t)\bigr),
+	\end{equation}
+	yielding $2$--$3\times$ wall-clock speedup with identical output distribution.
+
+	\subsection{TGI and TensorRT-LLM}
+
+	\textbf{TGI (Text Generation Inference)} by Hugging Face is an open-source serving framework implementing continuous batching, flash attention, and quantization (GPTQ, AWQ, bitsandbytes) with a REST/gRPC API, designed for straightforward deployment of HuggingFace-format models.
+
+	\textbf{TensorRT-LLM} by NVIDIA compiles LLMs into highly optimised GPU kernels using TensorRT graph compilation, fused attention, and INT8/FP8 inference targeting NVIDIA H100/A100 GPUs. It achieves the highest raw throughput on NVIDIA hardware by exploiting hardware-specific features (Tensor Cores, Transformer Engine), at the cost of a more complex build pipeline.
+
+	\begin{keyconcept}[Deployment Framework Selection]
+		\begin{itemize}[nosep]
+			\item \textbf{vLLM}: best throughput-efficiency for NVIDIA and AMD GPUs; PagedAttention + continuous batching; active open-source community; easy to extend.
+			\item \textbf{TGI}: tight HuggingFace ecosystem integration; straightforward API; good for rapid deployment and experimentation.
+			\item \textbf{TensorRT-LLM}: maximum throughput on NVIDIA H100; requires FP8/INT8 calibration; ideal for production at scale on NVIDIA infrastructure.
+			\item \textbf{llama.cpp + GGUF}: CPU and Apple Silicon deployment; no CUDA required; best for edge and laptop inference.
+		\end{itemize}
+	\end{keyconcept}
+
+	\begin{checkpoint}
+		\begin{enumerate}
+			\item Compute the KV-cache memory for Llama~3~8B (BF16, $L=32$, 8~KV heads, $d_k=128$) for a single sequence of length 8192 tokens. Then compute the maximum number of concurrent sequences on an 80~GB A100, assuming model weights require 16~GB.
+			\item Explain why speculative decoding produces \emph{identical} output distribution to the target model, not merely an approximation.
+			\item A serving system must minimise TTFT for interactive chat while maximising throughput for batch summarisation on the same GPU. Describe the scheduling trade-off and a simple strategy to balance both objectives.
+		\end{enumerate}
+	\end{checkpoint}
+
+	\begin{sourcesbox}
+		\small
+		\begin{itemize}[nosep]
+			\item \fullcite{kwon2023vllm}
+			\item \fullcite{dao2022flashattention}
+			\item \fullcite{dao2023flashattention2}
+			\item \fullcite{frantar2022gptq}
+			\item \fullcite{lin2023awq}
+			\item \fullcite{dettmers2024}
+			\item \fullcite{wolf2020}
+		\end{itemize}
+	\end{sourcesbox}
+
+	% =====================================================================
+	\clearpage
 	\section*{Where to go next}
 	\markright{Where to go next}
 	\phantomsection
@@ -2418,6 +2656,10 @@ print(f"InfoNCE Loss (Random Unaligned Pairs):   {loss_unaligned:.4f}")
 		\item \textbf{Go deep on classical ML:} \parencite{hastie2009, bishop2006, pedregosa2011}.
 		\item \textbf{Deep learning proper:} \parencite{goodfellow2016, bishop2024, zhang2023}.
 		\item \textbf{Build with LLMs, LoRA \& RAG:} Hugging Face ecosystem \parencite{wolf2020}, LoRA \parencite{hu2021}, and RAG \parencite{lewis2020}, read alongside \parencite{vaswani2017, brown2020, ouyang2022, rafailov2023}.
+		\item \textbf{Modern open-weight LLMs:} Llama 3 \parencite{dubey2024}, Mistral \parencite{jiang2023mistral}, and Mixtral \parencite{jiang2024mixtral}; architectural deep-dives via FlashAttention \parencite{dao2022flashattention, dao2023flashattention2}.
+		\item \textbf{Efficient deployment and quantization:} GPTQ \parencite{frantar2022gptq}, AWQ \parencite{lin2023awq}, vLLM \parencite{kwon2023vllm}, and TensorRT-LLM for production serving.
+		\item \textbf{Scale training:} ZeRO / FSDP \parencite{rajbhandari2020zero} and 3D parallelism \parencite{narayanan2021megatron} for multi-GPU and multi-node setups.
+		\item \textbf{Rigorous evaluation:} MMLU \parencite{hendrycks2021mmlu}, HELM \parencite{liang2022helm}, HumanEval \parencite{chen2021humaneval}, and the \texttt{lm-evaluation-harness} \parencite{gao2021harness}.
 		\item \textbf{Stay grounded:} \parencite{christian2020, bender2021}.
 	\end{itemize}
 
@@ -2429,38 +2671,38 @@ print(f"InfoNCE Loss (Random Unaligned Pairs):   {loss_unaligned:.4f}")
 	\addcontentsline{toc}{section}{Practical Coding Projects Series}
 	% =====================================================================
 	
-	To accompany the theoretical foundation developed across the five modules, a complete series of six substantial hands-on coding projects is provided in the repository's \texttt{projects/} directory (\url{https://github.com/DanielBerns/AI-course}). Each project bridges theoretical concepts to runnable Python implementation using industry-standard frameworks (\texttt{NumPy}, \texttt{Pandas}, \texttt{Scikit-Learn}, \texttt{XGBoost}, \texttt{PyTorch}, and \texttt{Transformers}), with explicit emphasis on data cleaning, exploratory visualization, model diagnostics, resumable training, and inference pipelines.
+	To accompany the theoretical foundation developed across the eleven modules, a complete series of six substantial hands-on coding projects is provided in the repository's \texttt{projects/} directory (\url{https://github.com/DanielBerns/AI-course}). Each project bridges theoretical concepts to runnable Python implementation using industry-standard frameworks (\texttt{NumPy}, \texttt{Pandas}, \texttt{Scikit-Learn}, \texttt{XGBoost}, \texttt{PyTorch}, \texttt{Transformers}, and \texttt{vLLM}), with explicit emphasis on data cleaning, exploratory visualization, model diagnostics, resumable training, quantization, and inference pipelines.
 
-	% ---------------------------------------------------------------------
+	% 
 	\subsection*{Project 1: Data Pipeline, Exploratory Analysis \& Algorithmic Bias Audit}
-	% ---------------------------------------------------------------------
+	% 
 	\textbf{Curriculum Mapping:} Module 1 (The AI Landscape, Compute/Cloud, Data Pipelines, Ethics \& Safety).
 
 	\textbf{Overview \& Learning Objectives:} Hands-on data engineering and ethical auditing pipeline preceding model training on clinical dataset.
 
-	% ---------------------------------------------------------------------
+	% 
 	\subsection*{Project 2: Math Engine from Scratch (Linear Algebra, Stats \& Optimization)}
-	% ---------------------------------------------------------------------
+	% 
 	\textbf{Curriculum Mapping:} Module 2 (Mathematics and Data Foundations). Pure NumPy matrix calculus, PCA, Adam/AdamW optimizers.
 
-	% ---------------------------------------------------------------------
+	% 
 	\subsection*{Project 3: Classical Machine Learning Pipeline \& Diagnostics}
-	% ---------------------------------------------------------------------
+	% 
 	\textbf{Curriculum Mapping:} Module 3 (Classical Machine Learning). Supervised classification, DBSCAN/K-Means clustering, IsoForest anomaly detection, learning curves.
 
-	% ---------------------------------------------------------------------
+	% 
 	\subsection*{Project 4: Deep Learning Foundations \& Resumable Training Pipeline}
-	% ---------------------------------------------------------------------
+	% 
 	\textbf{Curriculum Mapping:} Module 4 (Neural Networks, Backpropagation, PyTorch/Keras). Manual matrix backprop engine, PyTorch MLP, checkpoint manager.
 
-	% ---------------------------------------------------------------------
+	% 
 	\subsection*{Project 5: Computer Vision \& Sequential Architectures (CNNs \& LSTMs)}
-	% ---------------------------------------------------------------------
+	% 
 	\textbf{Curriculum Mapping:} Module 4 (CNNs, RNNs/LSTMs, Multi-Head Attention). PyTorch 2D CNN with Pre-LN Residual Skip Connections and PyTorch LSTM.
 
-	% ---------------------------------------------------------------------
+	% 
 	\subsection*{Project 6: Transformer Architectures \& LLM Fine-Tuning Pipeline}
-	% ---------------------------------------------------------------------
+	% 
 	\textbf{Curriculum Mapping:} Module 5 (Foundation Models, Generative AI \& LLMs). Causal self-attention from scratch, RoPE, Hugging Face fine-tuning (SFT/LoRA), next-token sampling engine.
 
 	% =====================================================================
@@ -2471,7 +2713,7 @@ print(f"InfoNCE Loss (Random Unaligned Pairs):   {loss_unaligned:.4f}")
 	\addcontentsline{toc}{section}{Appendix: Answer Key for Check Your Understanding}
 	% =====================================================================
 
-	This appendix provides concise model answers for all self-check exercises across the five modules.
+	This appendix provides concise model answers for all self-check exercises across the eleven modules.
 
 	\subsection*{Module 1: Introduction and the AI Landscape}
 	\begin{enumerate}
@@ -2493,6 +2735,7 @@ print(f"InfoNCE Loss (Random Unaligned Pairs):   {loss_unaligned:.4f}")
 		\item \textbf{K-Means on Concentric Rings:} K-Means assumes convex spherical clusters; concentric rings require density-based clustering (DBSCAN) or spectral methods.
 		\item \textbf{K-Armed Bandit $\epsilon$ Trade-off:} Higher $\epsilon$ accelerates early exploration but caps asymptotic long-term return due to persistent suboptimal random actions.
 		\item \textbf{Cross-Validation Score Variance (0.62 to 0.91):} Indicates model instability or fold sample imbalance; use stratified $k$-fold, stronger regularization, or more data.
+		\item \textbf{Self-Supervised Learning \& Self-Annotation:} SSL automatically splits or transforms unlabelled raw inputs to create pseudo-labels $y_{\text{target}}$ without human effort (e.g., Masked Language Modeling self-annotates hidden words from surrounding text context).
 	\end{enumerate}
 
 	\subsection*{Module 4: Neural Networks and Representation Learning}
@@ -2508,8 +2751,50 @@ print(f"InfoNCE Loss (Random Unaligned Pairs):   {loss_unaligned:.4f}")
 		\item \textbf{SSL \& Transformer Synergy:} SSL relies on pseudo-tasks (CLM/MLM) over unlabelled web-scale corpora containing trillions of tokens. Sequential RNNs process inputs sequentially ($O(N)$ steps) with memory bottlenecks in BPTT, making web-scale training computationally intractable. Transformers compute all pairwise token interactions in parallel ($O(1)$ sequential operations) and lack rigid local/temporal inductive biases, enabling parameter capacity to absorb massive scale without early performance saturation.
 		\item \textbf{InfoNCE Temperature $\tau$:} Scales cosine similarities before log-softmax, controlling the relative gradient penalty weight assigned to hard negative samples vs.\ easy negatives.
 		\item \textbf{Subword Tokenization Trade-off:} Balances vocabulary size and sequence length by keeping frequent words intact while breaking rare words into subword pieces, avoiding out-of-vocabulary (OOV) tokens.
-		\item \textbf{Chinchilla Scaling Ratio:} Specifies that for optimal compute allocation, parameter count and training token count should scale at an equal $1:1$ ratio.
+		\item \textbf{Chinchilla Scaling Ratio:} Under a fixed compute budget $C \approx 6ND$, the compute-optimal strategy scales parameters $N$ and training tokens $D$ \emph{equally}---approximately 20 tokens per parameter ($D^* \approx 20N$). This ratio minimises loss for a given $C$; it does not imply $N = D$ in absolute terms. When inference cost dominates (queries $\gg$ 1), practitioners overtrain smaller models beyond this optimum (\emph{inference-optimal} regime, e.g.\ Llama 3), trading additional training compute for cheaper per-query deployment.
 		\item \textbf{LoRA Parameter Reduction:} Replaces full weight matrix update $\Delta W \in \mathbb{R}^{d \times k}$ with low-rank decomposition $B A$ ($B \in \mathbb{R}^{d \times r}, A \in \mathbb{R}^{r \times k}$ with $r \ll \min(d, k)$), drastically reducing trainable parameters from $d \cdot k$ to $r(d + k)$.
+	\end{enumerate}
+
+	\subsection*{Module 6: Modern LLM Architectures}
+	\begin{enumerate}
+		\item \textbf{RMSNorm Variance vs.\ Mean Subtraction:} RMSNorm drops mean subtraction because empirical studies \parencite{zhang2019rmsnorm} demonstrate that activation scaling invariance is the primary factor stabilizing deep network dynamics. Eliminating mean centering reduces memory bandwidth and computation by $\approx 7$--$8\%$ without degrading convergence or model quality.
+		\item \textbf{GQA FLOPs \& KV-Cache Reduction:} Standard MHA uses $h$ Query and $h$ Key/Value heads. Grouped-Query Attention (GQA) uses $h$ Query heads grouped into $G$ KV heads ($1 \le G \le h$). Key/Value projection FLOPs scale down by a factor of $h/G$. Crucially, the inference KV-cache memory decreases from $O(h \cdot n \cdot d_k)$ to $O(G \cdot n \cdot d_k)$, achieving an exact $h/G$ memory reduction factor ($4\times$ reduction in Llama 3 where $h=32, G=8$).
+		\item \textbf{MoE Auxiliary Load-Balancing Loss:} Without load balancing, router networks suffer from a "winner-take-all" collapse where a few experts handle almost all tokens while remaining experts stay underutilized and undertrained. The auxiliary loss $\mathcal{L}_{\mathrm{aux}} = \alpha \cdot E \sum_{i=1}^{E} f_i \cdot P_i$ penalizes imbalance between actual routing frequencies $f_i$ and routing probabilities $P_i$, forcing uniform token distribution across all $E$ experts.
+	\end{enumerate}
+
+	\subsection*{Module 7: Efficient Attention Mechanisms}
+	\begin{enumerate}
+		\item \textbf{Attention Memory-Bandwidth Bottleneck:} Standard self-attention materializes the $n \times n$ attention matrix $A$ in High-Bandwidth Memory (HBM), incurring $\Theta(n d_k + n^2)$ IO accesses per layer. Because modern GPUs feature massive arithmetic compute capacity relative to HBM transfer rates, execution is bottlenecked by waiting for memory reads/writes (memory-bandwidth bound) rather than FLOP execution.
+		\item \textbf{FlashAttention Online Softmax Recurrence:} FlashAttention processes inputs in SRAM-sized tiles and maintains two running row statistics: running maximum $m^{(\mathrm{old})}$ and running exponential sum $\ell^{(\mathrm{old})}$. When a new score block arrives, $m^{(\mathrm{new})} = \max(m^{(\mathrm{old})}, \max(\mathbf{s}^{(\mathrm{new})}))$ is computed, and previous sums are rescaled by $e^{m^{(\mathrm{old})} - m^{(\mathrm{new})}}$. This keeps exponent arguments non-positive ($\le 0$), ensuring complete numerical stability against overflow while eliminating $O(n^2)$ HBM allocation.
+		\item \textbf{Positional Extrapolation (RoPE, ALiBi, Absolute):} Learned absolute embeddings cannot extrapolate beyond $L_{\mathrm{train}}$ because unseen indices lack weights. RoPE embeds relative angles via complex rotations; direct extrapolation past $L_{\mathrm{train}}$ degrades performance unless frequency scaling (NTK/YaRN) is applied. ALiBi adds a static distance penalty $-m \cdot |i - j|$ directly to attention logits, naturally extrapolating to sequence lengths $L' \gg L_{\mathrm{train}}$ zero-shot without fine-tuning.
+	\end{enumerate}
+
+	\subsection*{Module 8: Model Quantization}
+	\begin{enumerate}
+		\item \textbf{Quantization Error Bound Derivation:} Symmetric $b$-bit uniform quantization maps $w \in [-w_{\max}, w_{\max}]$ to $w_q = \mathrm{clip}(\mathrm{round}(w/\Delta), -2^{b-1}, 2^{b-1}-1)$ with scale $\Delta = \frac{\max(|W|)}{2^{b-1}-1}$. Because $\mathrm{round}(x)$ rounds to the nearest integer, the rounding error is bounded by $|\mathrm{round}(x) - x| \le 0.5$. Re-scaling by $\Delta$ gives maximum absolute reconstruction error $|w - \hat{w}| \le \frac{\Delta}{2}$ per element.
+		\item \textbf{GPTQ Inverse Hessian Compensation:} The Hessian $H = 2 X X^\top$ measures the second-order curvature of output reconstruction loss with respect to weight perturbations. When column $j$ is quantized, GPTQ uses the inverse Hessian row $[H^{-1}]_{j,:}$ to compute the optimal compensating weight update $\delta W$ for unquantized columns, minimizing output distortion across calibration inputs $X$.
+		\item \textbf{AWQ Activation-Saliency Scaling:} AWQ observes that output error is dominated by the top $\approx 1\%$ of weight channels corresponding to large input activation magnitudes. By scaling up these salient weight channels by factor $s > 1$ before quantization (and dividing after), AWQ allocates finer quantization resolution to high-impact weights without incurring mixed-precision runtime overhead.
+	\end{enumerate}
+
+	\subsection*{Module 9: Distributed Training}
+	\begin{enumerate}
+		\item \textbf{ZeRO-3 Memory Calculation (13B Model):} For $P = 13 \times 10^9$ parameters, unsharded DDP requires $2P$ (BF16 params) + $2P$ (BF16 grads) + $12P$ (FP32 Adam states) $= 16P = 208$~GB per GPU. Under ZeRO Stage 3 across $D = 64$ GPUs, all parameters, gradients, and optimizer states are sharded equally: $\text{Memory}_{\text{per GPU}} = \frac{16 P}{D} = \frac{208\text{ GB}}{64} = 3.25$~GB per GPU.
+		\item \textbf{Interconnect Demands (TP vs.\ PP):} Tensor Parallelism (TP) splits weight matrices within every layer, requiring two high-frequency All-Reduce operations per layer for each forward and backward pass. This requires high-bandwidth, sub-microsecond NVLink interconnect ($\sim 900$~GB/s). Pipeline Parallelism (PP) only passes activation tensors across stage boundary layers, communicating far less frequently and easily fitting within inter-node InfiniBand bandwidth ($\sim 50$--$100$~GB/s).
+		\item \textbf{1F1B Pipeline Schedule \& Bubble Reduction:} The 1F1B schedule alternates one forward and one backward micro-batch step on each GPU after a warmup period. The idle bubble fraction is $\frac{P - 1}{M + P - 1}$, where $P$ is pipeline stages and $M$ is micro-batches. Increasing $M \gg P$ reduces the bubble fraction toward zero, maximizing cluster utilization.
+	\end{enumerate}
+
+	\subsection*{Module 10: Evaluation of Language Models}
+	\begin{enumerate}
+		\item \textbf{Perplexity to BPC Conversion:} Perplexity $\mathrm{PPL} = 15$ yields cross-entropy $H = \log_2(15) \approx 3.907$ bits/token. Given $\mu = 1.3$ tokens/character, Bits-Per-Character is $\mathrm{BPC} = H \times \mu = 3.907 \times 1.3 \approx 5.079$ bits/character.
+		\item \textbf{Unbiased pass@$k$ Estimator:} Evaluating exactly $k$ generated samples introduces high variance across runs. The combinatorial estimator $\mathrm{pass@}k = \mathbb{E}\left[1 - \frac{\binom{n-c}{k}}{\binom{n}{k}}\right]$ draws a larger sample pool $n \ge k$ with $c$ correct solutions and computes the exact expected pass probability across all possible $k$-subsets, eliminating sampling variance.
+		\item \textbf{Contamination Inflation \& Detection:} Contamination inflates accuracy via (1) verbatim memorization of test QA pairs and (2) task/format exposure in pre-training corpora. Detection is performed via Perplexity Drop Analysis: an anomalous drop in model perplexity on benchmark test sets relative to clean reference text indicates prior training exposure.
+	\end{enumerate}
+
+	\subsection*{Module 11: LLM Deployment and Serving}
+	\begin{enumerate}
+		\item \textbf{KV-Cache Footprint \& GPU Concurrency:} For Llama 3 8B ($L=32, h=8, d_k=128, n=8192$ in BF16): $\mathrm{KV\_mem} = 2 \times 32 \times 8 \times 128 \times 8192 \times 2 = 1.073$~GB per sequence ($\approx 1.0$~GB). On an 80~GB A100 with 16~GB reserved for weights, remaining VRAM is $64$~GB, supporting $\frac{64\text{ GB}}{1.0\text{ GB/seq}} = 64$ concurrent sequences.
+		\item \textbf{Exactness of Speculative Decoding:} Speculative decoding uses rejection sampling with draft acceptance probability $\min\left(1, \frac{p_{\text{target}}(x)}{p_{\text{draft}}(x)}\right)$ and resamples rejected tokens from $p_{\mathrm{adj}}(x) = \frac{\max(0, p_{\text{target}}(x) - p_{\text{draft}}(x))}{\sum_y \max(0, p_{\text{target}}(y) - p_{\text{draft}}(y))}$. Summing probabilities across accepted and rejected branches recovers $p_{\text{target}}(x)$ exactly.
+		\item \textbf{TTFT vs.\ Throughput Trade-off \& Scheduling:} Large batch sizes maximize throughput during decode but increase prefill queuing delay (TTFT). Small batch sizes minimize TTFT but underutilize memory bandwidth. The trade-off is resolved using Chunked Prefills and Priority Queuing: prefill requests are chunked (e.g. 512 tokens) and piggybacked with decode steps, while interactive chat requests are prioritized over background batch tasks.
 	\end{enumerate}
 
 	% =====================================================================
@@ -2565,7 +2850,7 @@ print(f"InfoNCE Loss (Random Unaligned Pairs):   {loss_unaligned:.4f}")
 	\vfill
 	\begin{center}
 		{\small\sffamily\color{textgray}\rule{0.3\linewidth}{0.6pt}\\[0.5em]
-			--- End of document ---}
+			End of document}
 	\end{center}
 	
 \end{document}

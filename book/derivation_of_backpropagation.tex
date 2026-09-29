@@ -1,0 +1,153 @@
+\documentclass[11pt, a4paper]{article}
+\usepackage[a4paper, margin=2.5cm]{geometry}
+\usepackage{fontspec}
+\usepackage[english, bidi=basic, provide=*]{babel}
+\babelprovide[import, onchar=ids fonts]{english}
+\babelfont{rm}{Noto Sans}
+\usepackage{amsmath, amssymb}
+\usepackage{booktabs}
+\usepackage[colorlinks=true, linkcolor=blue, urlcolor=blue]{hyperref}
+
+\title{\vspace{-2cm}\textbf{Derivation of the Backpropagation Algorithm}}
+\author{A Rigorous Approach using the Multivariable Chain Rule}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Backpropagation is the fundamental algorithm used to train artificial neural networks. By applying the multivariable chain rule of calculus, backpropagation computes the gradient of a loss function with respect to the weights and biases of the network. This document provides a rigorous, step-by-step derivation of these update rules, which form the core of modern machine learning optimization.
+\end{abstract}
+
+\section{Network Architecture and Forward Pass}
+
+Consider a standard feedforward artificial neural network with $L$ layers. We denote the input layer as layer $0$ and the output layer as layer $L$. Let $N_l$ be the number of neurons in layer $l$.
+
+For a specific layer $l$ (where $1 \le l \le L$), the forward propagation equations are:
+\begin{align}
+    z_j^{(l)} &= \sum_{k=1}^{N_{l-1}} W_{jk}^{(l)} a_k^{(l-1)} + b_j^{(l)} \\
+    a_j^{(l)} &= \sigma^{(l)}\left( z_j^{(l)} \right)
+\end{align}
+where:
+\begin{itemize}
+    \item $W_{jk}^{(l)}$ is the weight connecting neuron $k$ in layer $l-1$ to neuron $j$ in layer $l$.
+    \item $b_j^{(l)}$ is the bias of neuron $j$ in layer $l$.
+    \item $z_j^{(l)}$ is the weighted input (pre-activation) to neuron $j$ in layer $l$.
+    \item $a_j^{(l)}$ is the activation output of neuron $j$ in layer $l$. $a_k^{(0)}$ represents the raw input features.
+    \item $\sigma^{(l)}$ is the non-linear activation function for layer $l$ (e.g., ReLU, Sigmoid, Tanh).
+\end{itemize}
+
+\section{The Loss Function and the Goal}
+
+Let $\mathcal{L}$ be the scalar loss function that compares the network's final output $a^{(L)}$ to the true target values $y$. Common choices include Mean Squared Error (MSE) or Cross-Entropy. 
+
+Our goal is to minimize $\mathcal{L}$ by adjusting the parameters $W_{jk}^{(l)}$ and $b_j^{(l)}$. To do this using gradient descent, we must compute the partial derivatives:
+\begin{equation}
+    \frac{\partial \mathcal{L}}{\partial W_{jk}^{(l)}} \quad \text{and} \quad \frac{\partial \mathcal{L}}{\partial b_j^{(l)}}
+\end{equation}
+
+\section{The Error Term ($\delta$)}
+
+To simplify the application of the chain rule, we define an intermediate ``error term" for each neuron, denoted as $\delta_j^{(l)}$. This term represents the sensitivity of the overall loss to changes in the pre-activation $z_j^{(l)}$:
+\begin{equation}
+    \delta_j^{(l)} = \frac{\partial \mathcal{L}}{\partial z_j^{(l)}}
+\end{equation}
+By computing this error term for every neuron in the network, we can easily find the gradients for the weights and biases.
+
+\section{Deriving Gradients using the Chain Rule}
+
+The chain rule states that if a variable $y$ depends on $u$, and $u$ depends on $x$, then $\frac{\partial y}{\partial x} = \frac{\partial y}{\partial u} \frac{\partial u}{\partial x}$. We apply this to our network variables.
+
+\subsection{Gradient with respect to Weights}
+We want to find how the loss changes as we vary a specific weight $W_{jk}^{(l)}$. Notice that $W_{jk}^{(l)}$ only affects the network through $z_j^{(l)}$. Applying the chain rule:
+\begin{equation}
+    \frac{\partial \mathcal{L}}{\partial W_{jk}^{(l)}} = \frac{\partial \mathcal{L}}{\partial z_j^{(l)}} \frac{\partial z_j^{(l)}}{\partial W_{jk}^{(l)}}
+\end{equation}
+From our definition, the first term is exactly $\delta_j^{(l)}$. For the second term, differentiating equation (1) with respect to $W_{jk}^{(l)}$ yields:
+\begin{equation}
+    \frac{\partial z_j^{(l)}}{\partial W_{jk}^{(l)}} = a_k^{(l-1)}
+\end{equation}
+Therefore, the weight gradient is:
+\begin{equation}
+    \frac{\partial \mathcal{L}}{\partial W_{jk}^{(l)}} = \delta_j^{(l)} a_k^{(l-1)}
+\end{equation}
+
+\subsection{Gradient with respect to Biases}
+Similarly, $b_j^{(l)}$ only influences the loss through $z_j^{(l)}$:
+\begin{equation}
+    \frac{\partial \mathcal{L}}{\partial b_j^{(l)}} = \frac{\partial \mathcal{L}}{\partial z_j^{(l)}} \frac{\partial z_j^{(l)}}{\partial b_j^{(l)}}
+\end{equation}
+Differentiating equation (1) with respect to $b_j^{(l)}$ gives $1$. Thus, the bias gradient is simply:
+\begin{equation}
+    \frac{\partial \mathcal{L}}{\partial b_j^{(l)}} = \delta_j^{(l)}
+\end{equation}
+
+\section{Backpropagating the Error}
+
+Equations (6) and (8) show that if we know $\delta_j^{(l)}$, computing the parameter gradients is trivial. We now derive how to compute $\delta_j^{(l)}$ recursively, starting from the output layer and moving backwards to the first layer.
+
+\subsection{Step 1: Error at the Output Layer ($l=L$)}
+By definition and the chain rule:
+\begin{equation}
+    \delta_j^{(L)} = \frac{\partial \mathcal{L}}{\partial z_j^{(L)}} = \frac{\partial \mathcal{L}}{\partial a_j^{(L)}} \frac{\partial a_j^{(L)}}{\partial z_j^{(L)}}
+\end{equation}
+Using equation (2), the derivative of the activation function is ${\sigma^{(L)}}'(z_j^{(L)})$. This yields the output error equation:
+\begin{equation}
+    \delta_j^{(L)} = \frac{\partial \mathcal{L}}{\partial a_j^{(L)}} \odot {\sigma^{(L)}}'(z_j^{(L)})
+\end{equation}
+
+\subsection{Step 2: Error at Hidden Layers ($l < L$)}
+To find $\delta_k^{(l-1)}$ for a neuron $k$ in layer $l-1$, we must look at how its pre-activation $z_k^{(l-1)}$ affects the loss. The output of this neuron, $a_k^{(l-1)}$, acts as an input to \textit{every} neuron $j$ in the subsequent layer $l$. 
+
+By the multivariable chain rule, we must sum the contributions over all neurons $j$ in layer $l$:
+\begin{equation}
+    \delta_k^{(l-1)} = \frac{\partial \mathcal{L}}{\partial z_k^{(l-1)}} = \sum_{j=1}^{N_l} \frac{\partial \mathcal{L}}{\partial z_j^{(l)}} \frac{\partial z_j^{(l)}}{\partial z_k^{(l-1)}}
+\end{equation}
+Substitute $\delta_j^{(l)} = \frac{\partial \mathcal{L}}{\partial z_j^{(l)}}$. Now we need the derivative of $z_j^{(l)}$ with respect to $z_k^{(l-1)}$. 
+\begin{equation}
+    z_j^{(l)} = \sum_{k=1}^{N_{l-1}} W_{jk}^{(l)} \sigma^{(l-1)}(z_k^{(l-1)}) + b_j^{(l)}
+\end{equation}
+Differentiating this gives:
+\begin{equation}
+    \frac{\partial z_j^{(l)}}{\partial z_k^{(l-1)}} = W_{jk}^{(l)} {\sigma^{(l-1)}}'(z_k^{(l-1)})
+\end{equation}
+Substituting this back into our multivariable chain rule expression:
+\begin{equation}
+    \delta_k^{(l-1)} = \sum_{j=1}^{N_l} \delta_j^{(l)} W_{jk}^{(l)} {\sigma^{(l-1)}}'(z_k^{(l-1)})
+\end{equation}
+This is the recursive step of backpropagation: it allows us to calculate the error at layer $l-1$ using the weights $W$ and the error $\delta$ from layer $l$.
+
+\section{Summary of the Backpropagation Algorithm}
+
+In modern deep learning frameworks, these operations are heavily vectorized. Let $\mathbf{W}^{(l)}$ be the weight matrix, $\mathbf{b}^{(l)}$ be the bias vector, and $\odot$ denote element-wise multiplication. The four fundamental equations of backpropagation are:
+
+\vspace{0.5cm}
+\noindent\textbf{1. Output Layer Error:}
+\begin{equation}
+    \mathbf{\delta}^{(L)} = \nabla_{\mathbf{a}^{(L)}} \mathcal{L} \odot {\sigma^{(L)}}'(\mathbf{z}^{(L)})
+\end{equation}
+
+\noindent\textbf{2. Hidden Layer Error (Backpropagation Step):}
+\begin{equation}
+    \mathbf{\delta}^{(l)} = \left( (\mathbf{W}^{(l+1)})^T \mathbf{\delta}^{(l+1)} \right) \odot {\sigma^{(l)}}'(\mathbf{z}^{(l)})
+\end{equation}
+
+\noindent\textbf{3. Gradient with respect to Biases:}
+\begin{equation}
+    \nabla_{\mathbf{b}^{(l)}} \mathcal{L} = \mathbf{\delta}^{(l)}
+\end{equation}
+
+\noindent\textbf{4. Gradient with respect to Weights:}
+\begin{equation}
+    \nabla_{\mathbf{W}^{(l)}} \mathcal{L} = \mathbf{\delta}^{(l)} (\mathbf{a}^{(l-1)})^T
+\end{equation}
+\vspace{0.5cm}
+
+Once these gradients are computed, the parameters are updated using gradient descent (or variants like Adam) with a learning rate $\eta$:
+\begin{align}
+    \mathbf{W}^{(l)} &\leftarrow \mathbf{W}^{(l)} - \eta \nabla_{\mathbf{W}^{(l)}} \mathcal{L} \\
+    \mathbf{b}^{(l)} &\leftarrow \mathbf{b}^{(l)} - \eta \nabla_{\mathbf{b}^{(l)}} \mathcal{L}
+\end{align}
+
+\end{document}
