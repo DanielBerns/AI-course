@@ -1,0 +1,1920 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Single Neuron Demo — Neural Network Visualization</title>
+  <meta name="description" content="Interactive visualization of a single neuron output with configurable rotation matrix, bias vector, scaling parameters, and activation functions." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    /* ─── Design Tokens ─────────────────────────────────────────────────── */
+    :root {
+      --bg-deep:      #080c14;
+      --bg-panel:     #0e1422;
+      --bg-card:      #141927;
+      --bg-glass:     rgba(20, 25, 39, 0.7);
+      --border:       rgba(100, 140, 255, 0.12);
+      --border-glow:  rgba(100, 140, 255, 0.35);
+      --text-primary: #e8eaf6;
+      --text-muted:   #6b7499;
+      --accent:       #5c8aff;
+      --accent-soft:  rgba(92, 138, 255, 0.15);
+      --accent2:      #a78bfa;
+      --accent3:      #34d399;
+      --red:          #f87171;
+      --yellow:       #fbbf24;
+      --radius:       14px;
+      --radius-sm:    8px;
+      --shadow:       0 8px 32px rgba(0,0,0,0.5);
+    }
+
+    /* ─── Reset & Base ──────────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg-deep);
+      color: var(--text-primary);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Subtle grid background */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(92,138,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(92,138,255,0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ─── Layout ────────────────────────────────────────────────────────── */
+    .app-wrapper {
+      position: relative;
+      z-index: 1;
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 24px 20px;
+    }
+
+    /* ─── Header ────────────────────────────────────────────────────────── */
+    header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+
+    .header-icon {
+      width: 48px;
+      height: 48px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      flex-shrink: 0;
+      box-shadow: 0 0 24px rgba(92,138,255,0.4);
+    }
+
+    .header-text h1 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #e8eaf6, var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      letter-spacing: -0.02em;
+    }
+
+    .header-text p {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    /* ─── Main Grid ─────────────────────────────────────────────────────── */
+    .main-grid {
+      display: grid;
+      grid-template-columns: 340px 1fr;
+      gap: 20px;
+      align-items: start;
+    }
+
+    @media (max-width: 900px) {
+      .main-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ─── Card ──────────────────────────────────────────────────────────── */
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 22px;
+      backdrop-filter: blur(12px);
+      box-shadow: var(--shadow);
+    }
+
+    .card-title {
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 18px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .card-title::before {
+      content: '';
+      display: block;
+      width: 3px;
+      height: 14px;
+      background: linear-gradient(to bottom, var(--accent), var(--accent2));
+      border-radius: 2px;
+    }
+
+    /* ─── Activation Selector ───────────────────────────────────────────── */
+    .activation-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+      margin-bottom: 4px;
+    }
+
+    .act-btn {
+      background: var(--bg-panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      color: var(--text-muted);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      padding: 8px 4px;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.2s;
+    }
+
+    .act-btn:hover {
+      border-color: var(--accent);
+      color: var(--text-primary);
+    }
+
+    .act-btn.active {
+      background: var(--accent-soft);
+      border-color: var(--accent);
+      color: var(--accent);
+      font-weight: 600;
+      box-shadow: 0 0 12px rgba(92,138,255,0.2);
+    }
+
+    /* ─── Sliders ───────────────────────────────────────────────────────── */
+    .slider-group {
+      margin-bottom: 16px;
+    }
+
+    .slider-label {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 8px;
+    }
+
+    .slider-name {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .slider-name .sym {
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+
+    .slider-val {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.82rem;
+      color: var(--accent);
+      min-width: 55px;
+      text-align: right;
+    }
+
+    .slider-track {
+      position: relative;
+      height: 4px;
+      background: var(--bg-panel);
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    input[type="range"] {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 100%;
+      height: 4px;
+      background: transparent;
+      outline: none;
+      cursor: pointer;
+    }
+
+    input[type="range"]::-webkit-slider-runnable-track {
+      width: 100%;
+      height: 4px;
+      background: linear-gradient(to right, var(--accent) var(--pct, 50%), var(--bg-panel) var(--pct, 50%));
+      border-radius: 4px;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 16px;
+      height: 16px;
+      background: var(--accent);
+      border-radius: 50%;
+      margin-top: -6px;
+      box-shadow: 0 0 8px rgba(92,138,255,0.5);
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+
+    input[type="range"]::-webkit-slider-thumb:hover {
+      transform: scale(1.2);
+      box-shadow: 0 0 16px rgba(92,138,255,0.7);
+    }
+
+    input[type="range"]::-moz-range-track {
+      height: 4px;
+      background: var(--bg-panel);
+      border-radius: 4px;
+    }
+
+    input[type="range"]::-moz-range-thumb {
+      width: 16px;
+      height: 16px;
+      background: var(--accent);
+      border-radius: 50%;
+      border: none;
+      box-shadow: 0 0 8px rgba(92,138,255,0.5);
+    }
+
+    /* Color variants */
+    .slider-r input[type="range"]::-webkit-slider-runnable-track { background: linear-gradient(to right, var(--accent2) var(--pct, 50%), var(--bg-panel) var(--pct, 50%)); }
+    .slider-r input[type="range"]::-webkit-slider-thumb { background: var(--accent2); box-shadow: 0 0 8px rgba(167,139,250,0.5); }
+    .slider-r .slider-val { color: var(--accent2); }
+
+    .slider-s input[type="range"]::-webkit-slider-runnable-track { background: linear-gradient(to right, var(--accent3) var(--pct, 50%), var(--bg-panel) var(--pct, 50%)); }
+    .slider-s input[type="range"]::-webkit-slider-thumb { background: var(--accent3); box-shadow: 0 0 8px rgba(52,211,153,0.5); }
+    .slider-s .slider-val { color: var(--accent3); }
+
+    .slider-alpha input[type="range"]::-webkit-slider-runnable-track { background: linear-gradient(to right, var(--yellow) var(--pct, 50%), var(--bg-panel) var(--pct, 50%)); }
+    .slider-alpha input[type="range"]::-webkit-slider-thumb { background: var(--yellow); box-shadow: 0 0 8px rgba(251,191,36,0.5); }
+    .slider-alpha .slider-val { color: var(--yellow); }
+
+    /* ─── Formula Box ───────────────────────────────────────────────────── */
+    .formula-box {
+      background: var(--bg-panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 14px 16px;
+      margin-top: 4px;
+    }
+
+    .formula-line {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      line-height: 1.9;
+    }
+
+    .formula-line .hl { color: var(--text-primary); }
+    .formula-line .sym-r { color: var(--accent2); }
+    .formula-line .sym-s { color: var(--accent3); }
+    .formula-line .sym-th { color: var(--accent); }
+    .formula-line .sym-al { color: var(--yellow); }
+    .formula-line .sym-sig { color: var(--red); }
+
+    /* ─── Output Panel ──────────────────────────────────────────────────── */
+    .output-col {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    /* Canvas container */
+    .canvas-wrap {
+      position: relative;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+
+    .canvas-wrap canvas {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    .canvas-label {
+      position: absolute;
+      top: 12px;
+      left: 14px;
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.4);
+      pointer-events: none;
+    }
+
+    /* Colorbar */
+    .colorbar-wrap {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .colorbar {
+      width: 10px;
+      height: 180px;
+      border-radius: 4px;
+      background: linear-gradient(to bottom, #f97316, #eab308, #22c55e, #3b82f6, #8b5cf6);
+    }
+
+    .colorbar-labels {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 180px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.62rem;
+      color: var(--text-muted);
+    }
+
+    /* ─── Stats Row ─────────────────────────────────────────────────────── */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+
+    .stat-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 14px;
+      text-align: center;
+    }
+
+    .stat-card .stat-label {
+      font-size: 0.65rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 6px;
+    }
+
+    .stat-card .stat-value {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1rem;
+      font-weight: 600;
+    }
+
+    /* ─── Activation Plot ───────────────────────────────────────────────── */
+    .act-plot-wrap {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px;
+      box-shadow: var(--shadow);
+    }
+
+    /* ─── Separator ─────────────────────────────────────────────────────── */
+    .sep {
+      height: 1px;
+      background: var(--border);
+      margin: 16px 0;
+    }
+
+    /* ─── Tooltip ───────────────────────────────────────────────────────── */
+    #tooltip {
+      position: fixed;
+      background: var(--bg-panel);
+      border: 1px solid var(--border-glow);
+      border-radius: var(--radius-sm);
+      padding: 8px 12px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--text-primary);
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.15s;
+      z-index: 999;
+      white-space: pre;
+      line-height: 1.7;
+    }
+
+    #tooltip.visible { opacity: 1; }
+
+    /* ─── Legend ────────────────────────────────────────────────────────── */
+    .legend {
+      position: absolute;
+      bottom: 12px;
+      left: 14px;
+      display: flex;
+      gap: 14px;
+      pointer-events: none;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 0.62rem;
+      color: rgba(255,255,255,0.5);
+    }
+
+    .legend-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    /* ─── Animations ────────────────────────────────────────────────────── */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .card, .canvas-wrap, .act-plot-wrap {
+      animation: fadeIn 0.5s ease both;
+    }
+
+    .card:nth-child(2) { animation-delay: 0.1s; }
+
+    /* ─── Probe cursor ──────────────────────────────────────────────────── */
+    .probe-indicator {
+      position: absolute;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      border: 2px solid white;
+      background: rgba(255,255,255,0.3);
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      transition: opacity 0.2s;
+      display: none;
+    }
+  /* ════════════════════════════════════════════════════════════════════
+     Part 2 — Multi-Layer Network
+     ═══════════════════════════════════════════════════════════════════ */
+
+  /* Divider */
+  .part-divider {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin: 52px 0 32px;
+  }
+  .part-divider::before, .part-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--border-glow), transparent);
+  }
+  .part-badge {
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    color: #fff;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 6px 18px;
+    border-radius: 20px;
+    white-space: nowrap;
+    box-shadow: 0 0 24px rgba(92,138,255,0.35);
+  }
+
+  /* Layer count toggle */
+  .layer-toggle {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 20px;
+  }
+  .layer-btn {
+    flex: 1;
+    background: var(--bg-panel);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    color: var(--text-muted);
+    font-family: 'Inter', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 10px 0;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+  }
+  .layer-btn:hover {
+    border-color: var(--accent);
+    color: var(--text-primary);
+  }
+  .layer-btn.active {
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    border-color: transparent;
+    color: #fff;
+    box-shadow: 0 0 16px rgba(92,138,255,0.35);
+  }
+
+  /* Layer card */
+  .layer-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin-bottom: 12px;
+    overflow: hidden;
+    transition: opacity 0.3s, filter 0.3s;
+  }
+  .layer-card.inactive {
+    opacity: 0.35;
+    filter: grayscale(0.6);
+    pointer-events: none;
+  }
+  .layer-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    background: var(--bg-panel);
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    user-select: none;
+  }
+  .layer-card-header:hover { background: rgba(92,138,255,0.06); }
+  .layer-hdr-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .layer-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .layer-hdr-title {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+  .layer-chevron {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    transition: transform 0.2s;
+  }
+  .layer-card.collapsed .layer-chevron { transform: rotate(-90deg); }
+  .layer-body {
+    padding: 14px 16px;
+  }
+  .layer-card.collapsed .layer-body { display: none; }
+
+  /* Two-neuron grid inside a layer card */
+  .neurons-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .neuron-col {
+    background: var(--bg-panel);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 10px;
+  }
+  .neuron-label {
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  /* Compact slider */
+  .cslider-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 8px;
+  }
+  .cslider-sym {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    width: 10px;
+    flex-shrink: 0;
+  }
+  .cslider-row input[type="range"] {
+    flex: 1;
+    height: 3px;
+    -webkit-appearance: none;
+    appearance: none;
+    background: transparent;
+    outline: none;
+    cursor: pointer;
+    min-width: 0;
+  }
+  .cslider-row input[type="range"]::-webkit-slider-runnable-track {
+    height: 3px;
+    background: linear-gradient(to right, var(--accent) var(--pct,50%), rgba(255,255,255,0.08) var(--pct,50%));
+    border-radius: 3px;
+  }
+  .cslider-row input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 11px;
+    height: 11px;
+    background: var(--accent);
+    border-radius: 50%;
+    margin-top: -4px;
+    box-shadow: 0 0 6px rgba(92,138,255,0.6);
+    transition: transform 0.15s;
+  }
+  .cslider-row input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.3); }
+  .cslider-row input[type="range"]::-moz-range-thumb {
+    width: 11px; height: 11px;
+    background: var(--accent);
+    border-radius: 50%; border: none;
+  }
+  .cslider-val {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.62rem;
+    color: var(--accent);
+    width: 36px;
+    text-align: right;
+    flex-shrink: 0;
+  }
+
+  /* Intermediate maps grid */
+  .intermaps-grid {
+    display: grid;
+    gap: 8px;
+  }
+  .intermap-row {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+  .intermap-wrap {
+    position: relative;
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    background: var(--bg-panel);
+    border: 1px solid var(--border);
+  }
+  .intermap-wrap canvas {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .intermap-lbl {
+    position: absolute;
+    top: 5px;
+    left: 7px;
+    font-size: 0.58rem;
+    font-weight: 600;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.5);
+    pointer-events: none;
+  }
+
+  /* Network diagram */
+  .net-diagram-wrap {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px;
+    box-shadow: var(--shadow);
+  }
+
+  /* Final heatmap container for Part 2 */
+  #p2-heatmap-wrap {
+    position: relative;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+  #p2-heatmap-wrap canvas { display: block; width: 100%; height: auto; }
+
+  /* Part 2 right column layout */
+  .p2-right {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .p2-maps-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    align-items: start;
+  }
+  </style>
+</head>
+<body>
+
+<div id="tooltip"></div>
+
+<div class="app-wrapper">
+  <header>
+    <div class="header-icon">🧠</div>
+    <div class="header-text">
+      <h1>Single Neuron Visualizer</h1>
+      <p>y = σ(r·A·x + s·b) &nbsp;·&nbsp; A = rotation(θ) &nbsp;·&nbsp; b = unit vector(α)</p>
+    </div>
+  </header>
+
+  <div class="main-grid">
+    <!-- ── LEFT: Controls ── -->
+    <div class="controls-col">
+
+      <div class="card">
+        <div class="card-title">Activation Function σ</div>
+        <div class="activation-grid">
+          <button class="act-btn active" data-fn="sigmoid" id="btn-sigmoid">sigmoid</button>
+          <button class="act-btn" data-fn="tanh"    id="btn-tanh">tanh</button>
+          <button class="act-btn" data-fn="relu"    id="btn-relu">ReLU</button>
+          <button class="act-btn" data-fn="lrelu"   id="btn-lrelu">L-ReLU</button>
+          <button class="act-btn" data-fn="elu"     id="btn-elu">ELU</button>
+          <button class="act-btn" data-fn="softplus" id="btn-softplus">softplus</button>
+          <button class="act-btn" data-fn="gelu"    id="btn-gelu">GELU</button>
+          <button class="act-btn" data-fn="sine"    id="btn-sine">sine</button>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:16px;">
+        <div class="card-title">Parameters</div>
+
+        <!-- r slider -->
+        <div class="slider-group slider-r">
+          <div class="slider-label">
+            <span class="slider-name"><span class="sym">r</span> &nbsp; scale (matrix)</span>
+            <span class="slider-val" id="val-r">0.00</span>
+          </div>
+          <input type="range" id="slider-r" min="-0.99" max="0.99" step="0.01" value="0.7" />
+        </div>
+
+        <!-- s slider -->
+        <div class="slider-group slider-s">
+          <div class="slider-label">
+            <span class="slider-name"><span class="sym">s</span> &nbsp; scale (bias)</span>
+            <span class="slider-val" id="val-s">0.00</span>
+          </div>
+          <input type="range" id="slider-s" min="-0.99" max="0.99" step="0.01" value="0.3" />
+        </div>
+
+        <!-- theta slider -->
+        <div class="slider-group">
+          <div class="slider-label">
+            <span class="slider-name"><span class="sym">θ</span> &nbsp; rotation angle</span>
+            <span class="slider-val" id="val-theta">0.00</span>
+          </div>
+          <input type="range" id="slider-theta" min="-3.14159" max="3.14159" step="0.01" value="0.5" />
+        </div>
+
+        <!-- alpha slider -->
+        <div class="slider-group slider-alpha">
+          <div class="slider-label">
+            <span class="slider-name"><span class="sym">α</span> &nbsp; bias direction</span>
+            <span class="slider-val" id="val-alpha">0.00</span>
+          </div>
+          <input type="range" id="slider-alpha" min="-3.14159" max="3.14159" step="0.01" value="1.0" />
+        </div>
+
+        <div class="sep"></div>
+
+        <!-- Formula display -->
+        <div class="formula-box">
+          <div class="formula-line">
+            A = [<span class="sym-th" id="fm-cos">cos(θ)</span>, <span class="sym-th" id="fm-sin">sin(θ)</span>;<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;-<span class="sym-th" id="fm-sin2">sin(θ)</span>, <span class="sym-th" id="fm-cos2">cos(θ)</span>]
+          </div>
+          <div class="formula-line" style="margin-top:8px;">
+            b = [<span class="sym-al" id="fm-cal">cos(α)</span>; <span class="sym-al" id="fm-sal">sin(α)</span>]
+          </div>
+          <div class="formula-line" style="margin-top:8px;">
+            h = <span class="sym-r" id="fm-r">r</span>·A·x + <span class="sym-s" id="fm-s">s</span>·b
+          </div>
+          <div class="formula-line">
+            y = <span class="sym-sig" id="fm-sig">σ</span>(h)
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ── RIGHT: Visualization ── -->
+    <div class="output-col">
+
+      <!-- Heatmap -->
+      <div class="canvas-wrap" id="heatmap-wrap">
+        <div class="canvas-label">y = σ(h) over input space x = (x₁, x₂)</div>
+        <canvas id="heatmap" width="600" height="600"></canvas>
+        <div class="probe-indicator" id="probe"></div>
+        <div class="colorbar-wrap">
+          <div class="colorbar-labels">
+            <span id="cb-max">1.0</span>
+            <span></span>
+            <span id="cb-mid">0.5</span>
+            <span></span>
+            <span id="cb-min">0.0</span>
+          </div>
+          <div class="colorbar" id="colorbar"></div>
+        </div>
+        <div class="legend">
+          <div class="legend-item"><div class="legend-dot" style="background:#f97316;"></div>high output</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#22c55e;"></div>mid</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#8b5cf6;"></div>low output</div>
+          <div class="legend-item"><div class="legend-dot" style="background:rgba(255,255,255,0.7);border:1px solid rgba(255,255,255,0.4);"></div>bias b</div>
+        </div>
+      </div>
+
+      <!-- Stats -->
+      <div class="stats-row">
+        <div class="stat-card">
+          <div class="stat-label">y at cursor</div>
+          <div class="stat-value" id="stat-y" style="color:var(--accent);">—</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">h at cursor</div>
+          <div class="stat-value" id="stat-h" style="color:var(--accent2);">—</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Output range</div>
+          <div class="stat-value" id="stat-range" style="color:var(--accent3);">—</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">‖b‖ (always 1)</div>
+          <div class="stat-value" id="stat-bnorm" style="color:var(--yellow);">1.000</div>
+        </div>
+      </div>
+
+      <!-- Activation plot -->
+      <div class="act-plot-wrap">
+        <div class="card-title" style="margin-bottom:12px;">σ(t) — Activation Function</div>
+        <canvas id="act-plot" width="600" height="150"></canvas>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════════════════════════
+   Neuron Math
+   ══════════════════════════════════════════════════════════════════════════ */
+
+const activations = {
+  sigmoid:  t => 1 / (1 + Math.exp(-t)),
+  tanh:     t => Math.tanh(t),
+  relu:     t => Math.max(0, t),
+  lrelu:    t => t >= 0 ? t : 0.1 * t,
+  elu:      t => t >= 0 ? t : (Math.exp(t) - 1),
+  softplus: t => Math.log(1 + Math.exp(Math.min(t, 30))),
+  gelu:     t => 0.5 * t * (1 + Math.tanh(Math.sqrt(2 / Math.PI) * (t + 0.044715 * t ** 3))),
+  sine:     t => Math.sin(t),
+};
+
+// Output range for each activation (for colorbar labelling)
+const actRanges = {
+  sigmoid:  [0, 1],
+  tanh:     [-1, 1],
+  relu:     [0, Infinity],
+  lrelu:    [-Infinity, Infinity],
+  elu:      [-1, Infinity],
+  softplus: [0, Infinity],
+  gelu:     [-Infinity, Infinity],
+  sine:     [-1, 1],
+};
+
+let currentAct = 'sigmoid';
+
+// State
+let params = { r: 0.7, s: 0.3, theta: 0.5, alpha: 1.0 };
+
+function getMatrix(theta) {
+  const c = Math.cos(theta), s = Math.sin(theta);
+  return [[c, s], [-s, c]];
+}
+
+function getBias(alpha) {
+  return [Math.cos(alpha), Math.sin(alpha)];
+}
+
+function neuronOutput(x1, x2) {
+  const { r, s, theta, alpha } = params;
+  const A = getMatrix(theta);
+  const b = getBias(alpha);
+  const sig = activations[currentAct];
+
+  // h = r * A * x + s * b
+  const h = r * (A[0][0] * x1 + A[0][1] * x2) + s * b[0];
+  // Note: h is scalar for a single-output neuron; but A*x is a 2-vector.
+  // The problem states y = sigma(h) where h = r*A*x + s*b.
+  // Since A*x and b are both 2-vectors, h is a 2-vector, and we visualize
+  // the FIRST component (the dot-product view) as the scalar pre-activation.
+  // Actually re-reading: h = r*A*x + s*b is a 2-vector, sigma applied element-wise.
+  // We visualize component 1 (x-axis of the transformed space) as the neuron.
+  // Let's compute h_full and return both components + |h| for flexibility.
+  const Ax = [A[0][0]*x1 + A[0][1]*x2, A[1][0]*x1 + A[1][1]*x2];
+  const h1 = r * Ax[0] + s * b[0];
+  const h2 = r * Ax[1] + s * b[1];
+  // Single neuron = maps 2D input to scalar via a weight row + bias scalar.
+  // Standard form: h = w·x + b_scalar.
+  // Here A is 2×2, so h = r·A·x + s·b is a 2-vector.
+  // We take h as the L2 norm: ||h|| signed by sign of first component.
+  // This gives a rich scalar that depends on all parameters.
+  const hNorm = Math.sqrt(h1*h1 + h2*h2) * Math.sign(h1 || 1);
+  return { h1, h2, hNorm, y: sig(hNorm) };
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Canvas Rendering
+   ══════════════════════════════════════════════════════════════════════════ */
+
+const heatmapCanvas = document.getElementById('heatmap');
+const hCtx = heatmapCanvas.getContext('2d');
+const SIZE = 600;
+
+// Color mapping: maps value in [0,1] to RGBA
+function valueToColor(t) {
+  // Beautiful perceptual colormap: purple → blue → green → yellow → orange
+  const stops = [
+    [139, 92, 246],  // 0.0 – purple
+    [59, 130, 246],  // 0.25 – blue
+    [34, 197, 94],   // 0.5  – green
+    [234, 179, 8],   // 0.75 – yellow
+    [249, 115, 22],  // 1.0  – orange
+  ];
+
+  t = Math.max(0, Math.min(1, t));
+  const idx = t * (stops.length - 1);
+  const lo = Math.floor(idx);
+  const hi = Math.min(lo + 1, stops.length - 1);
+  const frac = idx - lo;
+
+  const r = Math.round(stops[lo][0] + frac * (stops[hi][0] - stops[lo][0]));
+  const g = Math.round(stops[lo][1] + frac * (stops[hi][1] - stops[lo][1]));
+  const b = Math.round(stops[lo][2] + frac * (stops[hi][2] - stops[lo][2]));
+  return [r, g, b];
+}
+
+// X domain: [-2, 2]
+const XMIN = -2.5, XMAX = 2.5;
+
+function canvasToWorld(px, py) {
+  return [
+    XMIN + (px / SIZE) * (XMAX - XMIN),
+    XMAX - (py / SIZE) * (XMAX - XMIN),  // flip y
+  ];
+}
+
+function worldToCanvas(wx, wy) {
+  return [
+    ((wx - XMIN) / (XMAX - XMIN)) * SIZE,
+    ((XMAX - wy) / (XMAX - XMIN)) * SIZE,
+  ];
+}
+
+let yMin = 0, yMax = 1;
+
+function renderHeatmap() {
+  const imageData = hCtx.createImageData(SIZE, SIZE);
+  const data = imageData.data;
+
+  // Collect all y values first to normalize
+  const ys = new Float32Array(SIZE * SIZE);
+  let mn = Infinity, mx = -Infinity;
+
+  for (let py = 0; py < SIZE; py++) {
+    for (let px = 0; px < SIZE; px++) {
+      const [wx, wy] = canvasToWorld(px + 0.5, py + 0.5);
+      const { y } = neuronOutput(wx, wy);
+      ys[py * SIZE + px] = y;
+      if (y < mn) mn = y;
+      if (y > mx) mx = y;
+    }
+  }
+
+  yMin = mn; yMax = mx;
+  const span = mx - mn || 1;
+
+  for (let py = 0; py < SIZE; py++) {
+    for (let px = 0; px < SIZE; px++) {
+      const y = ys[py * SIZE + px];
+      const t = (y - mn) / span;
+      const [r, g, b] = valueToColor(t);
+      const i = (py * SIZE + px) * 4;
+      data[i] = r; data[i+1] = g; data[i+2] = b; data[i+3] = 255;
+    }
+  }
+
+  hCtx.putImageData(imageData, 0, 0);
+
+  // Draw axes
+  hCtx.save();
+  hCtx.strokeStyle = 'rgba(255,255,255,0.2)';
+  hCtx.lineWidth = 1;
+  hCtx.setLineDash([4, 4]);
+
+  // x-axis
+  const [,ay] = worldToCanvas(0, 0);
+  hCtx.beginPath(); hCtx.moveTo(0, ay); hCtx.lineTo(SIZE, ay); hCtx.stroke();
+  // y-axis
+  const [ax] = worldToCanvas(0, 0);
+  hCtx.beginPath(); hCtx.moveTo(ax, 0); hCtx.lineTo(ax, SIZE); hCtx.stroke();
+  hCtx.setLineDash([]);
+
+  // Draw bias vector b
+  const b = getBias(params.alpha);
+  const [bx, by] = worldToCanvas(b[0], b[1]);
+  const [ox, oy] = worldToCanvas(0, 0);
+
+  // Arrow for b
+  hCtx.strokeStyle = 'rgba(251,191,36,0.9)';
+  hCtx.lineWidth = 2.5;
+  hCtx.beginPath();
+  hCtx.moveTo(ox, oy);
+  hCtx.lineTo(bx, by);
+  hCtx.stroke();
+
+  // Arrowhead
+  const angle = Math.atan2(by - oy, bx - ox);
+  hCtx.fillStyle = 'rgba(251,191,36,0.9)';
+  hCtx.beginPath();
+  hCtx.moveTo(bx, by);
+  hCtx.lineTo(bx - 10*Math.cos(angle - 0.4), by - 10*Math.sin(angle - 0.4));
+  hCtx.lineTo(bx - 10*Math.cos(angle + 0.4), by - 10*Math.sin(angle + 0.4));
+  hCtx.closePath();
+  hCtx.fill();
+
+  // Label b
+  hCtx.fillStyle = 'rgba(251,191,36,0.9)';
+  hCtx.font = '500 13px Inter, sans-serif';
+  hCtx.fillText('b', bx + 8, by - 8);
+
+  // Draw a rotated axis showing first row of A (principal direction)
+  const A = getMatrix(params.theta);
+  const d1 = [A[0][0], A[0][1]]; // first row (filter direction)
+  const [d1cx, d1cy] = worldToCanvas(d1[0] * 1.5, d1[1] * 1.5);
+
+  hCtx.strokeStyle = 'rgba(92,138,255,0.6)';
+  hCtx.lineWidth = 2;
+  hCtx.setLineDash([6, 3]);
+  hCtx.beginPath();
+  hCtx.moveTo(ox, oy);
+  hCtx.lineTo(d1cx, d1cy);
+  hCtx.stroke();
+  hCtx.setLineDash([]);
+
+  // Label the direction
+  hCtx.fillStyle = 'rgba(92,138,255,0.8)';
+  hCtx.font = '500 12px Inter, sans-serif';
+  hCtx.fillText('A₁', d1cx + 6, d1cy - 6);
+
+  hCtx.restore();
+
+  // Update colorbar labels
+  document.getElementById('cb-max').textContent = yMax.toFixed(2);
+  document.getElementById('cb-mid').textContent = ((yMax + yMin) / 2).toFixed(2);
+  document.getElementById('cb-min').textContent = yMin.toFixed(2);
+
+  // Update stat
+  document.getElementById('stat-range').textContent =
+    `[${yMin.toFixed(2)}, ${yMax.toFixed(2)}]`;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Activation Function Plot
+   ══════════════════════════════════════════════════════════════════════════ */
+const actCanvas = document.getElementById('act-plot');
+const aCtx = actCanvas.getContext('2d');
+
+function renderActPlot() {
+  const W = actCanvas.offsetWidth || 600;
+  const H = actCanvas.offsetHeight || 150;
+  actCanvas.width = W * devicePixelRatio;
+  actCanvas.height = H * devicePixelRatio;
+  aCtx.scale(devicePixelRatio, devicePixelRatio);
+
+  aCtx.clearRect(0, 0, W, H);
+  aCtx.fillStyle = 'transparent';
+
+  const tMin = -5, tMax = 5;
+  const sig = activations[currentAct];
+  const pts = 300;
+
+  // Collect y range
+  let mn = Infinity, mx = -Infinity;
+  for (let i = 0; i <= pts; i++) {
+    const t = tMin + (i / pts) * (tMax - tMin);
+    const v = sig(t);
+    if (v < mn) mn = v; if (v > mx) mx = v;
+  }
+  mn = isFinite(mn) ? mn : -2; mx = isFinite(mx) ? mx : 2;
+  const pad = (mx - mn) * 0.15 || 0.5;
+  mn -= pad; mx += pad;
+
+  const tx = (t) => ((t - tMin) / (tMax - tMin)) * (W - 40) + 20;
+  const ty = (v) => H - 10 - ((v - mn) / (mx - mn)) * (H - 20);
+
+  // Grid lines
+  aCtx.strokeStyle = 'rgba(100,140,255,0.1)';
+  aCtx.lineWidth = 1;
+  for (let v = Math.ceil(mn); v <= Math.floor(mx); v++) {
+    const y = ty(v);
+    aCtx.beginPath(); aCtx.moveTo(20, y); aCtx.lineTo(W-20, y); aCtx.stroke();
+    aCtx.fillStyle = 'rgba(100,140,255,0.4)';
+    aCtx.font = '10px JetBrains Mono, monospace';
+    aCtx.fillText(v, 2, y + 4);
+  }
+
+  // Axes
+  aCtx.strokeStyle = 'rgba(255,255,255,0.15)';
+  aCtx.lineWidth = 1;
+  const y0 = ty(0);
+  aCtx.beginPath(); aCtx.moveTo(20, y0); aCtx.lineTo(W-20, y0); aCtx.stroke();
+  const x0 = tx(0);
+  aCtx.beginPath(); aCtx.moveTo(x0, 10); aCtx.lineTo(x0, H-10); aCtx.stroke();
+
+  // Gradient stroke
+  const grad = aCtx.createLinearGradient(20, 0, W-20, 0);
+  grad.addColorStop(0, '#8b5cf6');
+  grad.addColorStop(0.5, '#3b82f6');
+  grad.addColorStop(1, '#f97316');
+
+  aCtx.strokeStyle = grad;
+  aCtx.lineWidth = 2.5;
+  aCtx.lineJoin = 'round';
+  aCtx.lineCap = 'round';
+
+  aCtx.beginPath();
+  let first = true;
+  for (let i = 0; i <= pts; i++) {
+    const t = tMin + (i / pts) * (tMax - tMin);
+    const v = sig(t);
+    if (!isFinite(v)) { first = true; continue; }
+    const x = tx(t), y = ty(Math.max(mn - 1, Math.min(mx + 1, v)));
+    if (first) { aCtx.moveTo(x, y); first = false; }
+    else        aCtx.lineTo(x, y);
+  }
+  aCtx.stroke();
+
+  // Label
+  aCtx.fillStyle = 'rgba(248, 113, 113, 0.8)';
+  aCtx.font = '500 12px Inter, sans-serif';
+  aCtx.fillText(`σ = ${currentAct}`, W - 90, 18);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Formula Update
+   ══════════════════════════════════════════════════════════════════════════ */
+function updateFormula() {
+  const { r, s, theta, alpha } = params;
+  const fmt = (v, d=3) => v.toFixed(d);
+  document.getElementById('fm-cos').textContent  = fmt(Math.cos(theta));
+  document.getElementById('fm-sin').textContent  = fmt(Math.sin(theta));
+  document.getElementById('fm-sin2').textContent = fmt(Math.sin(theta));
+  document.getElementById('fm-cos2').textContent = fmt(Math.cos(theta));
+  document.getElementById('fm-cal').textContent  = fmt(Math.cos(alpha));
+  document.getElementById('fm-sal').textContent  = fmt(Math.sin(alpha));
+  document.getElementById('fm-r').textContent    = fmt(r);
+  document.getElementById('fm-s').textContent    = fmt(s);
+  document.getElementById('fm-sig').textContent  = currentAct;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Render All
+   ══════════════════════════════════════════════════════════════════════════ */
+function renderAll() {
+  renderHeatmap();
+  renderActPlot();
+  updateFormula();
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Slider helpers
+   ══════════════════════════════════════════════════════════════════════════ */
+function updateSliderFill(input) {
+  const min = parseFloat(input.min);
+  const max = parseFloat(input.max);
+  const val = parseFloat(input.value);
+  const pct = ((val - min) / (max - min) * 100).toFixed(1) + '%';
+  input.style.setProperty('--pct', pct);
+}
+
+function bindSlider(id, param, displayId, transform) {
+  const el = document.getElementById(id);
+  const disp = document.getElementById(displayId);
+  updateSliderFill(el);
+  disp.textContent = parseFloat(el.value).toFixed(2);
+
+  el.addEventListener('input', () => {
+    params[param] = parseFloat(el.value);
+    disp.textContent = parseFloat(el.value).toFixed(2);
+    updateSliderFill(el);
+    scheduleRender();
+  });
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Debounced Render
+   ══════════════════════════════════════════════════════════════════════════ */
+let renderTimer = null;
+function scheduleRender() {
+  if (renderTimer) cancelAnimationFrame(renderTimer);
+  renderTimer = requestAnimationFrame(() => { renderAll(); renderTimer = null; });
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Activation Buttons
+   ══════════════════════════════════════════════════════════════════════════ */
+document.querySelectorAll('.act-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.act-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentAct = btn.dataset.fn;
+    scheduleRender();
+  });
+});
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Mouse Probe
+   ══════════════════════════════════════════════════════════════════════════ */
+const tooltip  = document.getElementById('tooltip');
+const probe    = document.getElementById('probe');
+const canvasWrap = document.getElementById('heatmap-wrap');
+
+heatmapCanvas.addEventListener('mousemove', (e) => {
+  const rect = heatmapCanvas.getBoundingClientRect();
+  const scaleX = SIZE / rect.width;
+  const scaleY = SIZE / rect.height;
+  const px = (e.clientX - rect.left) * scaleX;
+  const py = (e.clientY - rect.top)  * scaleY;
+
+  const [wx, wy] = canvasToWorld(px, py);
+  const { h1, h2, hNorm, y } = neuronOutput(wx, wy);
+
+  // Position probe
+  probe.style.display = 'block';
+  probe.style.left = `${(px / SIZE * 100).toFixed(2)}%`;
+  probe.style.top  = `${(py / SIZE * 100).toFixed(2)}%`;
+
+  // Tooltip
+  tooltip.textContent =
+    `x  = (${wx.toFixed(3)}, ${wy.toFixed(3)})\n` +
+    `h  = (${h1.toFixed(3)}, ${h2.toFixed(3)})\n` +
+    `‖h‖ = ${hNorm.toFixed(3)}\n` +
+    `y  = σ(‖h‖) = ${y.toFixed(4)}`;
+  tooltip.classList.add('visible');
+  tooltip.style.left = (e.clientX + 14) + 'px';
+  tooltip.style.top  = (e.clientY - 10) + 'px';
+
+  // Update stat cards
+  document.getElementById('stat-y').textContent = y.toFixed(4);
+  document.getElementById('stat-h').textContent = hNorm.toFixed(4);
+});
+
+heatmapCanvas.addEventListener('mouseleave', () => {
+  tooltip.classList.remove('visible');
+  probe.style.display = 'none';
+  document.getElementById('stat-y').textContent = '—';
+  document.getElementById('stat-h').textContent = '—';
+});
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Init
+   ══════════════════════════════════════════════════════════════════════════ */
+bindSlider('slider-r',     'r',     'val-r',     null);
+bindSlider('slider-s',     's',     'val-s',     null);
+bindSlider('slider-theta', 'theta', 'val-theta', null);
+bindSlider('slider-alpha', 'alpha', 'val-alpha', null);
+
+// Resize observer for act plot
+const ro = new ResizeObserver(() => scheduleRender());
+ro.observe(actCanvas.parentElement);
+
+renderAll();
+</script>
+<!-- ════════════════════════════════════════════════════════════════════════
+     PART 2 — Multi-Layer Network
+     ══════════════════════════════════════════════════════════════════════ -->
+<div class="app-wrapper" id="part2-root">
+
+  <div class="part-divider">
+    <div class="part-badge">Part 2 — Multi-Layer Network</div>
+  </div>
+
+  <p style="color:var(--text-muted);font-size:0.82rem;margin-bottom:24px;line-height:1.7;">
+    A network of up to <strong style="color:var(--text-primary)">3 layers</strong>,
+    each with <strong style="color:var(--text-primary)">2 neurons</strong> of the same type as above.
+    Layer output feeds the next layer: <code style="color:var(--accent2);font-size:0.78rem;">z<sup>ℓ+1</sup> = [y₁<sup>ℓ</sup>, y₂<sup>ℓ</sup>]</code>.
+    The final output is the mean of the last layer's neurons.
+  </p>
+
+  <div class="main-grid">
+    <!-- ── LEFT: Net Controls ── -->
+    <div>
+
+      <div class="card" style="margin-bottom:16px;">
+        <div class="card-title">Network Depth</div>
+        <div class="layer-toggle">
+          <button class="layer-btn" data-layers="1" id="lbtn-1">1 Layer</button>
+          <button class="layer-btn active" data-layers="2" id="lbtn-2">2 Layers</button>
+          <button class="layer-btn" data-layers="3" id="lbtn-3">3 Layers</button>
+        </div>
+        <div class="card-title" style="margin-top:4px;">Shared Activation σ</div>
+        <div class="activation-grid" id="p2-act-grid">
+          <button class="act-btn active" data-fn="sigmoid">sigmoid</button>
+          <button class="act-btn" data-fn="tanh">tanh</button>
+          <button class="act-btn" data-fn="relu">ReLU</button>
+          <button class="act-btn" data-fn="lrelu">L-ReLU</button>
+          <button class="act-btn" data-fn="elu">ELU</button>
+          <button class="act-btn" data-fn="softplus">softplus</button>
+          <button class="act-btn" data-fn="gelu">GELU</button>
+          <button class="act-btn" data-fn="sine">sine</button>
+        </div>
+      </div>
+
+      <!-- Layer 1 -->
+      <div class="layer-card" id="p2-layer-card-0">
+        <div class="layer-card-header" onclick="toggleLayerCard(0)">
+          <div class="layer-hdr-left">
+            <div class="layer-dot" style="background:var(--accent);"></div>
+            <span class="layer-hdr-title">Layer 1</span>
+          </div>
+          <span class="layer-chevron">▼</span>
+        </div>
+        <div class="layer-body" id="p2-layer-body-0"></div>
+      </div>
+
+      <!-- Layer 2 -->
+      <div class="layer-card" id="p2-layer-card-1">
+        <div class="layer-card-header" onclick="toggleLayerCard(1)">
+          <div class="layer-hdr-left">
+            <div class="layer-dot" style="background:var(--accent2);"></div>
+            <span class="layer-hdr-title">Layer 2</span>
+          </div>
+          <span class="layer-chevron">▼</span>
+        </div>
+        <div class="layer-body" id="p2-layer-body-1"></div>
+      </div>
+
+      <!-- Layer 3 -->
+      <div class="layer-card" id="p2-layer-card-2">
+        <div class="layer-card-header" onclick="toggleLayerCard(2)">
+          <div class="layer-hdr-left">
+            <div class="layer-dot" style="background:var(--accent3);"></div>
+            <span class="layer-hdr-title">Layer 3</span>
+          </div>
+          <span class="layer-chevron">▼</span>
+        </div>
+        <div class="layer-body" id="p2-layer-body-2"></div>
+      </div>
+
+    </div>
+
+    <!-- ── RIGHT: Visualizations ── -->
+    <div class="p2-right">
+
+      <!-- Final output heatmap -->
+      <div id="p2-heatmap-wrap">
+        <div class="canvas-label">Network Output y_final over input (x₁, x₂)</div>
+        <canvas id="p2-heatmap" width="500" height="500"></canvas>
+        <div class="probe-indicator" id="p2-probe"></div>
+        <div class="colorbar-wrap">
+          <div class="colorbar-labels">
+            <span id="p2-cb-max">1.0</span>
+            <span></span>
+            <span id="p2-cb-mid">0.5</span>
+            <span></span>
+            <span id="p2-cb-min">0.0</span>
+          </div>
+          <div class="colorbar"></div>
+        </div>
+        <div class="legend">
+          <div class="legend-item"><div class="legend-dot" style="background:#f97316;"></div>high</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#22c55e;"></div>mid</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#8b5cf6;"></div>low</div>
+        </div>
+      </div>
+
+      <!-- Stats -->
+      <div class="stats-row">
+        <div class="stat-card">
+          <div class="stat-label">y at cursor</div>
+          <div class="stat-value" id="p2-stat-y" style="color:var(--accent);">—</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Active layers</div>
+          <div class="stat-value" id="p2-stat-layers" style="color:var(--accent2);">2</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Output range</div>
+          <div class="stat-value" id="p2-stat-range" style="color:var(--accent3);">—</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Total neurons</div>
+          <div class="stat-value" id="p2-stat-neurons" style="color:var(--yellow);">4</div>
+        </div>
+      </div>
+
+      <!-- Intermediate activation maps -->
+      <div class="net-diagram-wrap">
+        <div class="card-title" style="margin-bottom:12px;">Intermediate Activations (per neuron per layer)</div>
+        <div class="intermaps-grid" id="p2-intermaps"></div>
+      </div>
+
+      <!-- Network diagram canvas -->
+      <div class="net-diagram-wrap">
+        <div class="card-title" style="margin-bottom:10px;">Network Diagram</div>
+        <canvas id="p2-netdiag" width="600" height="100"></canvas>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════════════════════════
+   PART 2 — Multi-Layer Network
+   ══════════════════════════════════════════════════════════════════════════ */
+
+// ── Defaults for each neuron [r, s, theta, alpha] ──────────────────────────
+const NET_DEFAULTS = [
+  // Layer 0
+  [ [0.80,  0.30,  0.50,  0.80],
+    [0.60, -0.30, -0.80,  2.00] ],
+  // Layer 1
+  [ [0.70,  0.40,  1.20, -0.50],
+    [0.50, -0.40, -0.30,  1.50] ],
+  // Layer 2
+  [ [0.90,  0.20,  0.10, -1.00],
+    [0.40,  0.60, -1.50,  0.30] ],
+];
+
+// Live network parameter state
+const netState = {
+  numLayers: 2,
+  actFn: 'sigmoid',
+  layers: NET_DEFAULTS.map(lyr =>
+    lyr.map(([r,s,theta,alpha]) => ({ r, s, theta, alpha }))
+  ),
+};
+
+// ── Helpers ────────────────────────────────────────────────────────────────
+function netNeuronScalar(input2d, r, s, theta, alpha, sigFn) {
+  const c = Math.cos(theta), st = Math.sin(theta);
+  const [x1, x2] = input2d;
+  const h1 = r * ( c*x1 + st*x2) + s * Math.cos(alpha);
+  const h2 = r * (-st*x1 + c*x2) + s * Math.sin(alpha);
+  const hNorm = Math.sqrt(h1*h1 + h2*h2) * Math.sign(h1 || 1);
+  return sigFn(hNorm);
+}
+
+function netForward(x1, x2) {
+  const sigFn = activations[netState.actFn];
+  let inp = [x1, x2];
+  const layerOutputs = [];  // layerOutputs[l] = [y0, y1]
+  for (let l = 0; l < netState.numLayers; l++) {
+    const p0 = netState.layers[l][0];
+    const p1 = netState.layers[l][1];
+    const y0 = netNeuronScalar(inp, p0.r, p0.s, p0.theta, p0.alpha, sigFn);
+    const y1 = netNeuronScalar(inp, p1.r, p1.s, p1.theta, p1.alpha, sigFn);
+    layerOutputs.push([y0, y1]);
+    inp = [y0, y1];
+  }
+  const last = layerOutputs[netState.numLayers - 1];
+  const finalOutput = (last[0] + last[1]) / 2;
+  return { layerOutputs, finalOutput };
+}
+
+// ── Rendering ──────────────────────────────────────────────────────────────
+const P2SIZE = 500;
+const p2Canvas  = document.getElementById('p2-heatmap');
+const p2Ctx     = p2Canvas.getContext('2d');
+
+// Reuse same world-to-canvas mapping (same XMIN/XMAX from Part 1)
+function p2canvasToWorld(px, py) {
+  return [
+    XMIN + (px / P2SIZE) * (XMAX - XMIN),
+    XMAX - (py / P2SIZE) * (XMAX - XMIN),
+  ];
+}
+function p2worldToCanvas(wx, wy) {
+  return [
+    ((wx - XMIN) / (XMAX - XMIN)) * P2SIZE,
+    ((XMAX - wy) / (XMAX - XMIN)) * P2SIZE,
+  ];
+}
+
+function renderP2Heatmap() {
+  const imgData = p2Ctx.createImageData(P2SIZE, P2SIZE);
+  const data = imgData.data;
+  const ys = new Float32Array(P2SIZE * P2SIZE);
+  let mn = Infinity, mx = -Infinity;
+
+  for (let py = 0; py < P2SIZE; py++) {
+    for (let px = 0; px < P2SIZE; px++) {
+      const [wx, wy] = p2canvasToWorld(px + 0.5, py + 0.5);
+      const { finalOutput } = netForward(wx, wy);
+      ys[py*P2SIZE + px] = finalOutput;
+      if (finalOutput < mn) mn = finalOutput;
+      if (finalOutput > mx) mx = finalOutput;
+    }
+  }
+
+  const span = mx - mn || 1;
+  for (let i = 0; i < P2SIZE * P2SIZE; i++) {
+    const t = (ys[i] - mn) / span;
+    const [r, g, b] = valueToColor(t);
+    data[i*4]   = r; data[i*4+1] = g;
+    data[i*4+2] = b; data[i*4+3] = 255;
+  }
+  p2Ctx.putImageData(imgData, 0, 0);
+
+  // Axes
+  p2Ctx.save();
+  p2Ctx.strokeStyle = 'rgba(255,255,255,0.18)';
+  p2Ctx.lineWidth = 1;
+  p2Ctx.setLineDash([4,4]);
+  const [,ay] = p2worldToCanvas(0, 0);
+  p2Ctx.beginPath(); p2Ctx.moveTo(0, ay); p2Ctx.lineTo(P2SIZE, ay); p2Ctx.stroke();
+  const [ax] = p2worldToCanvas(0, 0);
+  p2Ctx.beginPath(); p2Ctx.moveTo(ax, 0); p2Ctx.lineTo(ax, P2SIZE); p2Ctx.stroke();
+  p2Ctx.setLineDash([]);
+  p2Ctx.restore();
+
+  // Update colorbar labels
+  document.getElementById('p2-cb-max').textContent = mx.toFixed(2);
+  document.getElementById('p2-cb-mid').textContent = ((mx+mn)/2).toFixed(2);
+  document.getElementById('p2-cb-min').textContent = mn.toFixed(2);
+  document.getElementById('p2-stat-range').textContent = `[${mn.toFixed(2)}, ${mx.toFixed(2)}]`;
+}
+
+// ── Intermediate maps ──────────────────────────────────────────────────────
+const ISIZE = 150; // small maps resolution
+const intermapCanvases = [];  // [layer][neuron] = canvas element
+
+function buildIntermapGrid() {
+  const container = document.getElementById('p2-intermaps');
+  container.innerHTML = '';
+  intermapCanvases.length = 0;
+
+  const layerColors = ['var(--accent)', 'var(--accent2)', 'var(--accent3)'];
+
+  for (let l = 0; l < netState.numLayers; l++) {
+    const row = document.createElement('div');
+    row.className = 'intermap-row';
+    const rowCanvases = [];
+
+    for (let n = 0; n < 2; n++) {
+      const wrap = document.createElement('div');
+      wrap.className = 'intermap-wrap';
+      const lbl = document.createElement('div');
+      lbl.className = 'intermap-lbl';
+      lbl.textContent = `L${l+1} · N${n+1}`;
+      lbl.style.color = layerColors[l];
+      const cv = document.createElement('canvas');
+      cv.width  = ISIZE;
+      cv.height = ISIZE;
+      wrap.appendChild(lbl);
+      wrap.appendChild(cv);
+      row.appendChild(wrap);
+      rowCanvases.push(cv);
+    }
+    intermapCanvases.push(rowCanvases);
+    container.appendChild(row);
+  }
+}
+
+function renderIntermaps() {
+  for (let l = 0; l < netState.numLayers; l++) {
+    for (let n = 0; n < 2; n++) {
+      const cv  = intermapCanvases[l]?.[n];
+      if (!cv) continue;
+      const ctx = cv.getContext('2d');
+      const img = ctx.createImageData(ISIZE, ISIZE);
+      const d   = img.data;
+      const ys  = new Float32Array(ISIZE * ISIZE);
+      let mn = Infinity, mx = -Infinity;
+
+      const sigFn = activations[netState.actFn];
+
+      for (let py = 0; py < ISIZE; py++) {
+        for (let px = 0; px < ISIZE; px++) {
+          // Compute the actual input to this layer at this pixel
+          const [wx, wy] = [
+            XMIN + (px / ISIZE) * (XMAX - XMIN),
+            XMAX - (py / ISIZE) * (XMAX - XMIN),
+          ];
+          // Forward up to layer l, then pick neuron n's output
+          let inp = [wx, wy];
+          for (let ll = 0; ll < l; ll++) {
+            const p0 = netState.layers[ll][0];
+            const p1 = netState.layers[ll][1];
+            inp = [
+              netNeuronScalar(inp, p0.r, p0.s, p0.theta, p0.alpha, sigFn),
+              netNeuronScalar(inp, p1.r, p1.s, p1.theta, p1.alpha, sigFn),
+            ];
+          }
+          const p  = netState.layers[l][n];
+          const yv = netNeuronScalar(inp, p.r, p.s, p.theta, p.alpha, sigFn);
+          ys[py*ISIZE + px] = yv;
+          if (yv < mn) mn = yv;
+          if (yv > mx) mx = yv;
+        }
+      }
+
+      const span = mx - mn || 1;
+      for (let i = 0; i < ISIZE*ISIZE; i++) {
+        const t = (ys[i]-mn)/span;
+        const [r,g,b] = valueToColor(t);
+        d[i*4]=r; d[i*4+1]=g; d[i*4+2]=b; d[i*4+3]=255;
+      }
+      ctx.putImageData(img, 0, 0);
+    }
+  }
+}
+
+// ── Network diagram ────────────────────────────────────────────────────────
+const diagCanvas = document.getElementById('p2-netdiag');
+const dCtx = diagCanvas.getContext('2d');
+const layerColors = ['#5c8aff', '#a78bfa', '#34d399'];
+
+function renderNetDiagram() {
+  const W = diagCanvas.offsetWidth || 600;
+  const H = diagCanvas.offsetHeight || 100;
+  diagCanvas.width  = W * devicePixelRatio;
+  diagCanvas.height = H * devicePixelRatio;
+  dCtx.scale(devicePixelRatio, devicePixelRatio);
+  dCtx.clearRect(0, 0, W, H);
+
+  const totalCols = netState.numLayers + 2; // input + layers + output
+  const colW = W / totalCols;
+  const positions = [];
+
+  const nodeDraw = (x, y, color, label, val) => {
+    dCtx.beginPath();
+    dCtx.arc(x, y, 14, 0, Math.PI*2);
+    const g = dCtx.createRadialGradient(x-3, y-3, 2, x, y, 14);
+    g.addColorStop(0, color + 'dd');
+    g.addColorStop(1, color + '44');
+    dCtx.fillStyle = g;
+    dCtx.fill();
+    dCtx.strokeStyle = color;
+    dCtx.lineWidth = 1.5;
+    dCtx.stroke();
+    dCtx.fillStyle = '#fff';
+    dCtx.font = `bold 8px Inter`;
+    dCtx.textAlign = 'center';
+    dCtx.fillText(label, x, y + 3);
+    if (val !== undefined) {
+      dCtx.fillStyle = 'rgba(255,255,255,0.5)';
+      dCtx.font = `8px JetBrains Mono`;
+      dCtx.fillText(val.toFixed(2), x, y + 22);
+    }
+  };
+
+  const edgeDraw = (x1, y1, x2, y2, color) => {
+    dCtx.beginPath();
+    dCtx.moveTo(x1, y1); dCtx.lineTo(x2, y2);
+    dCtx.strokeStyle = color + '55';
+    dCtx.lineWidth = 1;
+    dCtx.stroke();
+  };
+
+  // Column x positions
+  const colX = i => colW * i + colW / 2;
+  // Node y for neuron n in {0,1}
+  const nodeY = n => H * 0.3 + n * H * 0.42;
+
+  // Input column
+  positions.push([{x: colX(0), y: nodeY(0)}, {x: colX(0), y: nodeY(1)}]);
+  nodeDraw(colX(0), nodeY(0), '#6b7499', 'x₁');
+  nodeDraw(colX(0), nodeY(1), '#6b7499', 'x₂');
+
+  // Layer columns
+  for (let l = 0; l < netState.numLayers; l++) {
+    const col = l + 1;
+    const color = layerColors[l];
+    positions.push([{x: colX(col), y: nodeY(0)}, {x: colX(col), y: nodeY(1)}]);
+    // Draw edges from previous column
+    const prev = positions[positions.length - 2];
+    prev.forEach(src => {
+      positions[positions.length - 1].forEach(dst => {
+        edgeDraw(src.x, src.y, dst.x, dst.y, color);
+      });
+    });
+    nodeDraw(colX(col), nodeY(0), color, `N${l+1}A`);
+    nodeDraw(colX(col), nodeY(1), color, `N${l+1}B`);
+  }
+
+  // Output node
+  const outX = colX(netState.numLayers + 1);
+  const outY = H / 2;
+  const lastCol = positions[positions.length - 1];
+  lastCol.forEach(src => {
+    edgeDraw(src.x, src.y, outX, outY, '#f97316');
+  });
+  nodeDraw(outX, outY, '#f97316', 'y');
+
+  // Labels at bottom
+  dCtx.fillStyle = 'rgba(255,255,255,0.25)';
+  dCtx.font = '8px Inter';
+  dCtx.textAlign = 'center';
+  dCtx.fillText('Input', colX(0), H - 4);
+  for (let l = 0; l < netState.numLayers; l++) {
+    dCtx.fillStyle = layerColors[l] + 'aa';
+    dCtx.fillText(`L${l+1}`, colX(l+1), H - 4);
+  }
+  dCtx.fillStyle = 'rgba(255,255,255,0.25)';
+  dCtx.fillText('Output', outX, H - 4);
+}
+
+// ── Sliders build ──────────────────────────────────────────────────────────
+const SLIDER_META = [
+  { key: 'r',     min: -0.99, max: 0.99,          label: 'r' },
+  { key: 's',     min: -0.99, max: 0.99,          label: 's' },
+  { key: 'theta', min: -Math.PI, max: Math.PI,    label: 'θ' },
+  { key: 'alpha', min: -Math.PI, max: Math.PI,    label: 'α' },
+];
+
+function buildLayerSliders() {
+  for (let l = 0; l < 3; l++) {
+    const body = document.getElementById(`p2-layer-body-${l}`);
+    body.innerHTML = '';
+    const grid = document.createElement('div');
+    grid.className = 'neurons-grid';
+
+    for (let n = 0; n < 2; n++) {
+      const col = document.createElement('div');
+      col.className = 'neuron-col';
+      const nlbl = document.createElement('div');
+      nlbl.className = 'neuron-label';
+      const colors = ['var(--accent)', 'var(--accent2)', 'var(--accent3)'];
+      nlbl.style.color = colors[l];
+      nlbl.textContent = `Neuron ${n === 0 ? 'A' : 'B'}`;
+      col.appendChild(nlbl);
+
+      SLIDER_META.forEach(({ key, min, max, label }) => {
+        const row = document.createElement('div');
+        row.className = 'cslider-row';
+
+        const sym = document.createElement('span');
+        sym.className = 'cslider-sym';
+        sym.textContent = label;
+        row.appendChild(sym);
+
+        const inp = document.createElement('input');
+        inp.type = 'range';
+        inp.min  = min;
+        inp.max  = max;
+        inp.step = 0.01;
+        inp.value = netState.layers[l][n][key];
+        const pct = ((netState.layers[l][n][key] - min) / (max - min) * 100).toFixed(1) + '%';
+        inp.style.setProperty('--pct', pct);
+        row.appendChild(inp);
+
+        const valSpan = document.createElement('span');
+        valSpan.className = 'cslider-val';
+        valSpan.textContent = netState.layers[l][n][key].toFixed(2);
+        row.appendChild(valSpan);
+
+        inp.addEventListener('input', () => {
+          const v = parseFloat(inp.value);
+          netState.layers[l][n][key] = v;
+          valSpan.textContent = v.toFixed(2);
+          const p2 = ((v - min) / (max - min) * 100).toFixed(1) + '%';
+          inp.style.setProperty('--pct', p2);
+          scheduleNetRender();
+        });
+
+        col.appendChild(row);
+      });
+      grid.appendChild(col);
+    }
+    body.appendChild(grid);
+  }
+}
+
+// ── Layer card toggle (collapse) ───────────────────────────────────────────
+function toggleLayerCard(l) {
+  const card = document.getElementById(`p2-layer-card-${l}`);
+  card.classList.toggle('collapsed');
+}
+
+// ── Depth toggle ───────────────────────────────────────────────────────────
+document.querySelectorAll('.layer-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.layer-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    netState.numLayers = parseInt(btn.dataset.layers);
+    updateLayerCardsVisibility();
+    buildIntermapGrid();
+    document.getElementById('p2-stat-layers').textContent  = netState.numLayers;
+    document.getElementById('p2-stat-neurons').textContent = netState.numLayers * 2;
+    scheduleNetRender();
+  });
+});
+
+function updateLayerCardsVisibility() {
+  for (let l = 0; l < 3; l++) {
+    const card = document.getElementById(`p2-layer-card-${l}`);
+    if (l < netState.numLayers) {
+      card.classList.remove('inactive');
+    } else {
+      card.classList.add('inactive');
+    }
+  }
+}
+
+// ── Activation for Part 2 ──────────────────────────────────────────────────
+document.querySelectorAll('#p2-act-grid .act-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('#p2-act-grid .act-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    netState.actFn = btn.dataset.fn;
+    scheduleNetRender();
+  });
+});
+
+// ── Mouse probe Part 2 ─────────────────────────────────────────────────────
+const p2probe = document.getElementById('p2-probe');
+
+p2Canvas.addEventListener('mousemove', e => {
+  const rect = p2Canvas.getBoundingClientRect();
+  const sx = P2SIZE / rect.width;
+  const sy = P2SIZE / rect.height;
+  const px = (e.clientX - rect.left) * sx;
+  const py = (e.clientY - rect.top)  * sy;
+  const [wx, wy] = p2canvasToWorld(px, py);
+  const { finalOutput } = netForward(wx, wy);
+
+  p2probe.style.display = 'block';
+  p2probe.style.left = `${(px/P2SIZE*100).toFixed(2)}%`;
+  p2probe.style.top  = `${(py/P2SIZE*100).toFixed(2)}%`;
+
+  tooltip.textContent =
+    `x = (${wx.toFixed(3)}, ${wy.toFixed(3)})\n` +
+    `y_final = ${finalOutput.toFixed(4)}`;
+  tooltip.classList.add('visible');
+  tooltip.style.left = (e.clientX + 14) + 'px';
+  tooltip.style.top  = (e.clientY - 10) + 'px';
+
+  document.getElementById('p2-stat-y').textContent = finalOutput.toFixed(4);
+});
+
+p2Canvas.addEventListener('mouseleave', () => {
+  tooltip.classList.remove('visible');
+  p2probe.style.display = 'none';
+  document.getElementById('p2-stat-y').textContent = '—';
+});
+
+// ── Debounced render ───────────────────────────────────────────────────────
+let netRenderTimer = null;
+function scheduleNetRender() {
+  if (netRenderTimer) cancelAnimationFrame(netRenderTimer);
+  netRenderTimer = requestAnimationFrame(() => {
+    renderP2Heatmap();
+    renderIntermaps();
+    renderNetDiagram();
+    netRenderTimer = null;
+  });
+}
+
+// ── Init Part 2 ────────────────────────────────────────────────────────────
+buildLayerSliders();
+updateLayerCardsVisibility();
+buildIntermapGrid();
+scheduleNetRender();
+
+// Resize observer for net diagram
+new ResizeObserver(() => scheduleNetRender()).observe(diagCanvas.parentElement);
+</script>
+</body>
+</html>

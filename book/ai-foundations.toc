@@ -7,67 +7,67 @@
 \contentsline {subsection}{\numberline {1.4}Ethics, safety, and security: the non-optional module}{8}{subsection.1.4}%
 \contentsline {section}{\numberline {2}Mathematics and Data Foundations}{11}{section.2}%
 \contentsline {subsection}{\numberline {2.1}Linear algebra: the language of data}{11}{subsection.2.1}%
-\contentsline {subsection}{\numberline {2.2}Probability and statistics: the language of uncertainty}{15}{subsection.2.2}%
-\contentsline {subsection}{\numberline {2.3}Optimisation: how models learn}{17}{subsection.2.3}%
-\contentsline {section}{\numberline {3}Classical Machine Learning: The Core Engine}{20}{section.3}%
-\contentsline {subsection}{\numberline {3.1}Supervised learning}{20}{subsection.3.1}%
-\contentsline {subsection}{\numberline {3.2}Unsupervised learning}{27}{subsection.3.2}%
-\contentsline {subsection}{\numberline {3.3}Self-supervised learning: data self-annotation}{28}{subsection.3.3}%
-\contentsline {subsection}{\numberline {3.4}Reinforcement learning}{29}{subsection.3.4}%
-\contentsline {subsection}{\numberline {3.5}Modern evaluation methodology \& diagnostics}{30}{subsection.3.5}%
-\contentsline {section}{\numberline {4}Transition to Deep Learning and Modern AI}{32}{section.4}%
-\contentsline {subsection}{\numberline {4.1}Neural networks: perceptrons, activations, backpropagation}{32}{subsection.4.1}%
-\contentsline {section}{\numberline {5}Network Architecture and Forward Pass}{33}{section.5}%
-\contentsline {section}{\numberline {6}The Loss Function and the Goal}{33}{section.6}%
-\contentsline {section}{\numberline {7}The Error Term ($\delta $)}{34}{section.7}%
-\contentsline {section}{\numberline {8}Deriving Gradients using the Chain Rule}{34}{section.8}%
-\contentsline {subsection}{\numberline {8.1}Gradient with respect to Weights}{34}{subsection.8.1}%
-\contentsline {subsection}{\numberline {8.2}Gradient with respect to Biases}{34}{subsection.8.2}%
-\contentsline {section}{\numberline {9}Backpropagating the Error}{35}{section.9}%
-\contentsline {subsection}{\numberline {9.1}Step 1: Error at the Output Layer ($l=L$)}{35}{subsection.9.1}%
-\contentsline {subsection}{\numberline {9.2}Step 2: Error at Hidden Layers ($l < L$)}{35}{subsection.9.2}%
-\contentsline {section}{\numberline {10}Summary of the Backpropagation Algorithm}{36}{section.10}%
-\contentsline {subsection}{\numberline {10.1}Representation learning: from manual engineering to latent spaces}{39}{subsection.10.1}%
-\contentsline {subsection}{\numberline {10.2}Architectures: CNNs, RNNs, and transformers}{42}{subsection.10.2}%
-\contentsline {subsection}{\numberline {10.3}Transformer architecture variants: encoder, decoder, and encoder--decoder}{44}{subsection.10.3}%
-\contentsline {section}{\numberline {11}Foundation Models and Generative AI}{47}{section.11}%
-\contentsline {subsection}{\numberline {11.1}Self-supervised learning and subword tokenization}{47}{subsection.11.1}%
-\contentsline {subsection}{\numberline {11.2}Scaling laws and generative architectures}{51}{subsection.11.2}%
-\contentsline {subsection}{\numberline {11.3}Fine-tuning, parameter efficiency, and preference alignment}{52}{subsection.11.3}%
-\contentsline {subsection}{\numberline {11.4}Foundation model inference, KV-caching, and RAG}{53}{subsection.11.4}%
-\contentsline {subsection}{\numberline {11.5}Ethics, alignment, and safety revisited: the generative AI frontier}{53}{subsection.11.5}%
-\contentsline {section}{\numberline {12}Modern LLM Architectures}{56}{section.12}%
-\contentsline {subsection}{\numberline {12.1}Core modifications in modern decoder-only LLMs}{56}{subsection.12.1}%
-\contentsline {subsection}{\numberline {12.2}Grouped-Query Attention (GQA)}{56}{subsection.12.2}%
-\contentsline {subsection}{\numberline {12.3}Mixture-of-Experts (MoE)}{57}{subsection.12.3}%
-\contentsline {section}{\numberline {13}Efficient Attention Mechanisms}{59}{section.13}%
-\contentsline {subsection}{\numberline {13.1}The memory bottleneck: IO complexity of self-attention}{59}{subsection.13.1}%
-\contentsline {subsection}{\numberline {13.2}FlashAttention: IO-aware tiled attention}{59}{subsection.13.2}%
-\contentsline {subsection}{\numberline {13.3}Sliding-Window Attention (SWA)}{59}{subsection.13.3}%
-\contentsline {subsection}{\numberline {13.4}Positional encoding and length extrapolation}{60}{subsection.13.4}%
-\contentsline {section}{\numberline {14}Model Quantization}{61}{section.14}%
-\contentsline {subsection}{\numberline {14.1}Quantization fundamentals}{61}{subsection.14.1}%
-\contentsline {subsection}{\numberline {14.2}GPTQ: second-order post-training quantization}{61}{subsection.14.2}%
-\contentsline {subsection}{\numberline {14.3}AWQ: activation-aware weight quantization}{62}{subsection.14.3}%
-\contentsline {subsection}{\numberline {14.4}bitsandbytes and NF4}{62}{subsection.14.4}%
-\contentsline {section}{\numberline {15}Distributed Training}{64}{section.15}%
-\contentsline {subsection}{\numberline {15.1}Data parallelism and the All-Reduce bottleneck}{64}{subsection.15.1}%
-\contentsline {subsection}{\numberline {15.2}ZeRO: sharding optimizer state, gradients, and parameters}{64}{subsection.15.2}%
-\contentsline {subsection}{\numberline {15.3}Tensor and pipeline parallelism}{65}{subsection.15.3}%
-\contentsline {subsection}{\numberline {15.4}Gradient checkpointing and mixed precision}{65}{subsection.15.4}%
-\contentsline {section}{\numberline {16}Evaluation of Language Models}{67}{section.16}%
-\contentsline {subsection}{\numberline {16.1}Perplexity and bits-per-character}{67}{subsection.16.1}%
-\contentsline {subsection}{\numberline {16.2}Standard benchmarks}{67}{subsection.16.2}%
-\contentsline {subsection}{\numberline {16.3}HELM and holistic evaluation}{68}{subsection.16.3}%
-\contentsline {subsection}{\numberline {16.4}Benchmark contamination and the evaluation stack}{68}{subsection.16.4}%
-\contentsline {section}{\numberline {17}LLM Deployment and Serving}{70}{section.17}%
-\contentsline {subsection}{\numberline {17.1}The KV-cache management problem}{70}{subsection.17.1}%
-\contentsline {subsection}{\numberline {17.2}PagedAttention and vLLM}{70}{subsection.17.2}%
-\contentsline {subsection}{\numberline {17.3}Serving metrics}{71}{subsection.17.3}%
-\contentsline {subsection}{\numberline {17.4}Speculative decoding}{71}{subsection.17.4}%
-\contentsline {subsection}{\numberline {17.5}TGI and TensorRT-LLM}{71}{subsection.17.5}%
-\contentsline {section}{Where to go next}{73}{section*.19}%
-\contentsline {section}{Practical Coding Projects Series}{74}{section*.20}%
-\contentsline {section}{Appendix: Answer Key for Check Your Understanding}{75}{section*.21}%
-\contentsline {section}{Glossary}{79}{section*.22}%
-\contentsline {section}{References}{81}{table.caption.23}%
+\contentsline {subsection}{\numberline {2.2}Probability and statistics: the language of uncertainty}{19}{subsection.2.2}%
+\contentsline {subsection}{\numberline {2.3}Optimisation: how models learn}{20}{subsection.2.3}%
+\contentsline {section}{\numberline {3}Classical Machine Learning: The Core Engine}{23}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Supervised learning}{23}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}Unsupervised learning}{30}{subsection.3.2}%
+\contentsline {subsection}{\numberline {3.3}Self-supervised learning: data self-annotation}{31}{subsection.3.3}%
+\contentsline {subsection}{\numberline {3.4}Reinforcement learning}{32}{subsection.3.4}%
+\contentsline {subsection}{\numberline {3.5}Modern evaluation methodology \& diagnostics}{33}{subsection.3.5}%
+\contentsline {section}{\numberline {4}Transition to Deep Learning and Modern AI}{35}{section.4}%
+\contentsline {subsection}{\numberline {4.1}Neural networks: perceptrons, activations, backpropagation}{35}{subsection.4.1}%
+\contentsline {section}{\numberline {5}Network Architecture and Forward Pass}{36}{section.5}%
+\contentsline {section}{\numberline {6}The Loss Function and the Goal}{36}{section.6}%
+\contentsline {section}{\numberline {7}The Error Term ($\delta $)}{37}{section.7}%
+\contentsline {section}{\numberline {8}Deriving Gradients using the Chain Rule}{37}{section.8}%
+\contentsline {subsection}{\numberline {8.1}Gradient with respect to Weights}{37}{subsection.8.1}%
+\contentsline {subsection}{\numberline {8.2}Gradient with respect to Biases}{37}{subsection.8.2}%
+\contentsline {section}{\numberline {9}Backpropagating the Error}{38}{section.9}%
+\contentsline {subsection}{\numberline {9.1}Step 1: Error at the Output Layer ($l=L$)}{38}{subsection.9.1}%
+\contentsline {subsection}{\numberline {9.2}Step 2: Error at Hidden Layers ($l < L$)}{38}{subsection.9.2}%
+\contentsline {section}{\numberline {10}Summary of the Backpropagation Algorithm}{39}{section.10}%
+\contentsline {subsection}{\numberline {10.1}Representation learning: from manual engineering to latent spaces}{42}{subsection.10.1}%
+\contentsline {subsection}{\numberline {10.2}Architectures: CNNs, RNNs, and transformers}{45}{subsection.10.2}%
+\contentsline {subsection}{\numberline {10.3}Transformer architecture variants: encoder, decoder, and encoder--decoder}{47}{subsection.10.3}%
+\contentsline {section}{\numberline {11}Foundation Models and Generative AI}{50}{section.11}%
+\contentsline {subsection}{\numberline {11.1}Self-supervised learning and subword tokenization}{50}{subsection.11.1}%
+\contentsline {subsection}{\numberline {11.2}Scaling laws and generative architectures}{54}{subsection.11.2}%
+\contentsline {subsection}{\numberline {11.3}Fine-tuning, parameter efficiency, and preference alignment}{55}{subsection.11.3}%
+\contentsline {subsection}{\numberline {11.4}Foundation model inference, KV-caching, and RAG}{56}{subsection.11.4}%
+\contentsline {subsection}{\numberline {11.5}Ethics, alignment, and safety revisited: the generative AI frontier}{56}{subsection.11.5}%
+\contentsline {section}{\numberline {12}Modern LLM Architectures}{59}{section.12}%
+\contentsline {subsection}{\numberline {12.1}Core modifications in modern decoder-only LLMs}{59}{subsection.12.1}%
+\contentsline {subsection}{\numberline {12.2}Grouped-Query Attention (GQA)}{59}{subsection.12.2}%
+\contentsline {subsection}{\numberline {12.3}Mixture-of-Experts (MoE)}{60}{subsection.12.3}%
+\contentsline {section}{\numberline {13}Efficient Attention Mechanisms}{62}{section.13}%
+\contentsline {subsection}{\numberline {13.1}The memory bottleneck: IO complexity of self-attention}{62}{subsection.13.1}%
+\contentsline {subsection}{\numberline {13.2}FlashAttention: IO-aware tiled attention}{62}{subsection.13.2}%
+\contentsline {subsection}{\numberline {13.3}Sliding-Window Attention (SWA)}{62}{subsection.13.3}%
+\contentsline {subsection}{\numberline {13.4}Positional encoding and length extrapolation}{63}{subsection.13.4}%
+\contentsline {section}{\numberline {14}Model Quantization}{64}{section.14}%
+\contentsline {subsection}{\numberline {14.1}Quantization fundamentals}{64}{subsection.14.1}%
+\contentsline {subsection}{\numberline {14.2}GPTQ: second-order post-training quantization}{64}{subsection.14.2}%
+\contentsline {subsection}{\numberline {14.3}AWQ: activation-aware weight quantization}{65}{subsection.14.3}%
+\contentsline {subsection}{\numberline {14.4}bitsandbytes and NF4}{65}{subsection.14.4}%
+\contentsline {section}{\numberline {15}Distributed Training}{67}{section.15}%
+\contentsline {subsection}{\numberline {15.1}Data parallelism and the All-Reduce bottleneck}{67}{subsection.15.1}%
+\contentsline {subsection}{\numberline {15.2}ZeRO: sharding optimizer state, gradients, and parameters}{67}{subsection.15.2}%
+\contentsline {subsection}{\numberline {15.3}Tensor and pipeline parallelism}{68}{subsection.15.3}%
+\contentsline {subsection}{\numberline {15.4}Gradient checkpointing and mixed precision}{68}{subsection.15.4}%
+\contentsline {section}{\numberline {16}Evaluation of Language Models}{70}{section.16}%
+\contentsline {subsection}{\numberline {16.1}Perplexity and bits-per-character}{70}{subsection.16.1}%
+\contentsline {subsection}{\numberline {16.2}Standard benchmarks}{70}{subsection.16.2}%
+\contentsline {subsection}{\numberline {16.3}HELM and holistic evaluation}{71}{subsection.16.3}%
+\contentsline {subsection}{\numberline {16.4}Benchmark contamination and the evaluation stack}{71}{subsection.16.4}%
+\contentsline {section}{\numberline {17}LLM Deployment and Serving}{73}{section.17}%
+\contentsline {subsection}{\numberline {17.1}The KV-cache management problem}{73}{subsection.17.1}%
+\contentsline {subsection}{\numberline {17.2}PagedAttention and vLLM}{73}{subsection.17.2}%
+\contentsline {subsection}{\numberline {17.3}Serving metrics}{74}{subsection.17.3}%
+\contentsline {subsection}{\numberline {17.4}Speculative decoding}{74}{subsection.17.4}%
+\contentsline {subsection}{\numberline {17.5}TGI and TensorRT-LLM}{74}{subsection.17.5}%
+\contentsline {section}{Where to go next}{76}{section*.19}%
+\contentsline {section}{Practical Coding Projects Series}{77}{section*.20}%
+\contentsline {section}{Appendix: Answer Key for Check Your Understanding}{78}{section*.21}%
+\contentsline {section}{Glossary}{82}{section*.22}%
+\contentsline {section}{References}{84}{table.caption.23}%

@@ -141,7 +141,7 @@
       return matchesCat && matchesYr && matchesSearch;
     }).sort((a, b) => {
       if (currentSort === 'newest') return (parseInt(b.year) || 0) - (parseInt(a.year) || 0);
-      if (currentSort === 'oldest') return (parseInt(a.year) || 0) - (parseInt(a.year) || 0);
+      if (currentSort === 'oldest') return (parseInt(a.year) || 0) - (parseInt(b.year) || 0);
       if (currentSort === 'title') return (a.title || '').localeCompare(b.title || '');
       if (currentSort === 'author') return (a.author || '').localeCompare(b.author || '');
       return 0;

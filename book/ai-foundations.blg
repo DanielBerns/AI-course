@@ -1,15 +1,15 @@
 [0] Config.pm:329> INFO - This is Biber 2.22
 [0] Config.pm:332> INFO - Logfile is 'ai-foundations.blg'
-[153] biber:342> INFO - === Mon Sep 28, 2026, 19:14:57
-[442] Biber.pm:421> INFO - Reading 'ai-foundations.bcf'
-[553] Biber.pm:1002> INFO - Found 106 citekeys in bib section 0
-[565] Biber.pm:4487> INFO - Processing section 0
-[640] Biber.pm:4680> INFO - Looking for bibtex file 'ai-foundations.bib' for section 0
-[703] bibtex.pm:1713> INFO - LaTeX decoding ...
-[780] bibtex.pm:1519> INFO - Found BibTeX data source 'ai-foundations.bib'
-[2443] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'variable = shifted' with 'variable = non-ignorable'
-[2443] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'normalization = NFD' with 'normalization = prenormalized'
-[2443] Biber.pm:4307> INFO - Sorting list 'nyt/global//global/global/global' of type 'entry' with template 'nyt' and locale 'en-US'
-[2443] Biber.pm:4313> INFO - No sort tailoring available for locale 'en-US'
-[2545] bbl.pm:676> INFO - Writing 'ai-foundations.bbl' with encoding 'UTF-8'
-[2594] bbl.pm:779> INFO - Output to ai-foundations.bbl
+[118] biber:342> INFO - === Wed Oct  7, 2026, 15:48:17
+[133] Biber.pm:421> INFO - Reading 'ai-foundations.bcf'
+[275] Biber.pm:1002> INFO - Found 107 citekeys in bib section 0
+[287] Biber.pm:4487> INFO - Processing section 0
+[296] Biber.pm:4680> INFO - Looking for bibtex file 'ai-foundations.bib' for section 0
+[298] bibtex.pm:1713> INFO - LaTeX decoding ...
+[372] bibtex.pm:1519> INFO - Found BibTeX data source 'ai-foundations.bib'
+[1520] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'normalization = NFD' with 'normalization = prenormalized'
+[1520] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'variable = shifted' with 'variable = non-ignorable'
+[1520] Biber.pm:4307> INFO - Sorting list 'nyt/global//global/global/global' of type 'entry' with template 'nyt' and locale 'en-US'
+[1520] Biber.pm:4313> INFO - No sort tailoring available for locale 'en-US'
+[1624] bbl.pm:676> INFO - Writing 'ai-foundations.bbl' with encoding 'UTF-8'
+[1673] bbl.pm:779> INFO - Output to ai-foundations.bbl

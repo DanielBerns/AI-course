@@ -18,9 +18,18 @@ b = np.array([10, 12], dtype=float)
 x = np.linalg.solve(A, b)
 print("Solution x:", x)                           # [1. 2.]
 
-# --- Singular Value Decomposition (SVD) ---
+# --- Singular Value Decomposition (SVD) and Outer-Product Sum ---
 U, s, Vt = np.linalg.svd(A, full_matrices=False)
 print("Singular values:", s)                      # [8.60, 0.70]
-# Reconstruct: A = U @ diag(s) @ Vt
-A_reconstructed = U @ np.diag(s) @ Vt
+# Reconstruct via outer-product expansion: A = sum_i s_i u_i v_i^T
+A_reconstructed = sum(s[i] * np.outer(U[:, i], Vt[i, :]) for i in range(len(s)))
 print("Reconstruction error:", np.max(np.abs(A - A_reconstructed)))
+
+# --- Condition Number and Pseudoinverse ---
+cond_num = np.linalg.cond(A)
+print(f"Condition number kappa(A): {cond_num:.2f}")
+
+A_pinv = np.linalg.pinv(A)
+print("Moore-Penrose Pseudoinverse A^+ =\n", A_pinv)
+print("Verify A @ A^+ @ A = A:", np.allclose(A @ A_pinv @ A, A))
+

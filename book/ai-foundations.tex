@@ -692,195 +692,194 @@ pdfkeywords={AI, machine learning, deep learning, transformers, LLM}]{hyperref}
 	
 	\subsection{Linear algebra: the language of data}
 
-	Machine-learning data lives in vectors, matrices, and tensors \parencite{strang2012linear}. A house
-	becomes a vector of measurements
-	$\mathbf{x} = [\text{area}, \text{rooms}, \text{age}]^\top$; a dataset of $m$
-	houses becomes a matrix $X \in \mathbb{R}^{m \times n}$; a colour image a
-	$H \times W \times 3$ tensor. The dot product $\mathbf{u}^\top\mathbf{v}$
-	measures alignment between vectors (its normalised form, cosine similarity,
-	powers recommendation systems and semantic search), and a matrix--vector
-	product $W\mathbf{x}$ is a \emph{change of representation}: it rotates,
-	stretches, and mixes coordinates \parencite{strang2012linear}. In Module~4 this becomes literal:
-	every neural-network layer \emph{is} one such matrix.
+	Machine-learning data lives in vectors, matrices, and tensors \parencite{strang2012linear, strang2019, deisenroth2020}. A sample instance becomes a feature vector
+	$\mathbf{x} = [x_1, x_2, \dots, x_n]^\top \in \mathbb{R}^n$; a dataset of $m$ instances becomes a design matrix $X \in \mathbb{R}^{m \times n}$; a multi-channel image or sequence batch becomes a tensor $\mathcal{T} \in \mathbb{R}^{B \times C \times H \times W}$. Linear algebra provides both the representation language for high-dimensional data and the geometric framework for modern AI architectures \parencite{goodfellow2016}.
 
-	% ---- Matrix fundamentals -----------------------------------------------
-	\textbf{Matrix fundamentals.}
-	A matrix $A \in \mathbb{R}^{m \times n}$ is a rectangular array of scalars.
-	Five properties are used repeatedly throughout this course:
+	% ---- Theme 1: Vectors, Matrices, and Tensors ---------------------------
+	\textbf{Vectors, inner products, and matrix multiplication perspectives.}
+	The inner product (dot product) of two vectors $\mathbf{u}, \mathbf{v} \in \mathbb{R}^n$, defined as $\mathbf{u}^\top \mathbf{v} = \sum_{i=1}^n u_i v_i = \|\mathbf{u}\|_2 \|\mathbf{v}\|_2 \cos \theta$, measures directional alignment. Cosine similarity $\frac{\mathbf{u}^\top \mathbf{v}}{\|\mathbf{u}\|_2 \|\mathbf{v}\|_2}$ directly underpins modern semantic retrieval, embedding search, and vector databases \parencite{strang2019}.
+
+	Matrix multiplication $C = AB$, where $A \in \mathbb{R}^{m \times k}$ and $B \in \mathbb{R}^{k \times n}$, can be understood through five distinct mathematical perspectives highlighted by \textcite[Chapter~1]{strang2012linear}:
+	\begin{enumerate}[nosep]
+		\item \textbf{Entrywise (dot product):} $c_{ij} = \mathbf{a}_{i,:}^\top \mathbf{b}_{:,j} = \sum_{p=1}^k a_{ip} b_{pj}$.
+		\item \textbf{Column perspective:} Column $j$ of $C$ is a linear combination of columns of $A$: $\mathbf{c}_{:,j} = A \mathbf{b}_{:,j} = \sum_{p=1}^k b_{pj} \mathbf{a}_{:,p}$.
+		\item \textbf{Row perspective:} Row $i$ of $C$ is a linear combination of rows of $B$: $\mathbf{c}_{i,:} = \mathbf{a}_{i,:}^\top B = \sum_{p=1}^k a_{ip} \mathbf{b}_{p,:}$.
+		\item \textbf{Outer product expansion (column-by-row):} $C$ is the sum of $k$ rank-1 matrices:
+		      \begin{equation}
+			      C = \sum_{p=1}^{k} \mathbf{a}_{:,p} \mathbf{b}_{p,:}^{\!\top}.
+			      \label{eq:outer_product_sum}
+		      \end{equation}
+		\item \textbf{Block matrix multiplication:} Partitioning $A$ and $B$ into sub-blocks for distributed/parallel GEMM execution \parencite{golub2013}.
+	\end{enumerate}
+	The outer-product expansion~\eqref{eq:outer_product_sum} is foundational to low-rank weight updates (such as LoRA \parencite{hu2021}) and low-rank matrix approximations (SVD compression).
+
+	\begin{practicebox}[Matrix operations: rank, determinant, inverse, condition number, SVD outer product]
+\lstinputlisting[language=Python]{code/matrix_operations.py}
+	\end{practicebox}
+
+	% ---- Theme 2: Vector Spaces & Four Fundamental Subspaces ----------------
+	\textbf{Vector spaces and Strang's Four Fundamental Subspaces.}
+	A matrix $A \in \mathbb{R}^{m \times n}$ defines a linear transformation $T: \mathbb{R}^n \to \mathbb{R}^m$ via $T(\mathbf{x}) = A\mathbf{x}$. \textcite[Chapter~2]{strang2012linear} and \textcite[Chapter~1]{strang2019} establish that every matrix connects four fundamental orthogonal vector spaces:
 
 	\begin{itemize}[nosep]
-		\item \textbf{Transpose} $A^{\!\top} \in \mathbb{R}^{n \times m}$:
-		      rows become columns. $(AB)^{\!\top} = B^{\!\top}A^{\!\top}$.
-		\item \textbf{Rank} $r = \mathrm{rank}(A) \le \min(m,n)$: the dimension of
-		      the column space (or equivalently, the row space) \parencite{strang2012linear}. A square matrix is
-		      \emph{invertible} if and only if $r = n$.
-		\item \textbf{Determinant} $\det(A)$ (square matrices only): scales the
-		      volume of the unit cube; $\det(A) = 0$ iff $A$ is singular (not
-		      invertible). For a $2\times2$ matrix,
-		      $\det\begin{pmatrix}a&b\\c&d\end{pmatrix} = ad - bc$.
-		\item \textbf{Trace} $\mathrm{tr}(A) = \sum_{i} a_{ii}$: sum of diagonal
-		      entries; equals the sum of all eigenvalues.
-		\item \textbf{Symmetry}: $A = A^{\!\top}$ holds for covariance matrices and
-		      Gram matrices ($X^{\!\top}X$). Symmetric matrices always have real
-		      eigenvalues and mutually orthogonal eigenvectors (Spectral Theorem
-		      \parencite[Chapter~6]{strang2019}, \parencite{strang2012linear}).
+		\item \textbf{Column Space} $\mathcal{C}(A) \subseteq \mathbb{R}^m$: The span of the columns of $A$, representing all attainable outputs $\mathbf{b} = A\mathbf{x}$. $\dim(\mathcal{C}(A)) = r$ (the matrix rank).
+		\item \textbf{Nullspace} $\mathcal{N}(A) \subseteq \mathbb{R}^n$: The subspace of all inputs mapping to zero, $\{\mathbf{x} \in \mathbb{R}^n : A\mathbf{x} = \mathbf{0}\}$. $\dim(\mathcal{N}(A)) = n - r$.
+		\item \textbf{Row Space} $\mathcal{C}(A^{\!\top}) \subseteq \mathbb{R}^n$: The span of the rows of $A$ (or column space of $A^{\!\top}$). $\dim(\mathcal{C}(A^{\!\top})) = r$.
+		\item \textbf{Left Nullspace} $\mathcal{N}(A^{\!\top}) \subseteq \mathbb{R}^m$: The subspace of vectors mapping to zero under $A^{\!\top}$, $\{\mathbf{y} \in \mathbb{R}^m : A^{\!\top}\mathbf{y} = \mathbf{0}\}$. $\dim(\mathcal{N}(A^{\!\top})) = m - r$.
 	\end{itemize}
 
-	\begin{keyconcept}[Special matrix types encountered in ML]
+	\begin{keyconcept}[The Fundamental Theorem of Linear Algebra \parencite{strang2012linear}]
+		The four subspaces are pairwise orthogonal complements:
+		\begin{equation}
+			\mathcal{C}(A^{\!\top}) \perp \mathcal{N}(A) \quad\text{in } \mathbb{R}^n, \qquad
+			\mathcal{C}(A) \perp \mathcal{N}(A^{\!\top}) \quad\text{in } \mathbb{R}^m.
+		\end{equation}
+		Furthermore, the \textbf{Rank-Nullity Theorem} dictates:
+		\begin{equation}
+			\mathrm{rank}(A) + \mathrm{nullity}(A) = r + (n - r) = n.
+		\end{equation}
+		In overparameterized deep networks ($n \gg m$), the nullspace $\mathcal{N}(W)$ has high dimension ($n - m$), creating large invariant directions where parameter shifts produce zero change in output.
+	\end{keyconcept}
+
+	\begin{practicebox}[Strang's Four Fundamental Subspaces and Orthogonality in Python]
+\lstinputlisting[language=Python]{code/four_subspaces.py}
+	\end{practicebox}
+
+	% ---- Theme 3: Linear Systems, Least Squares, Pseudoinverses ------------
+	\textbf{Linear systems, projections, and least squares.}
+	A linear system $A\mathbf{x} = \mathbf{b}$ has an exact solution if and only if $\mathbf{b} \in \mathcal{C}(A)$. When $m > n$ (overdetermined system), data is noisy and no exact solution exists. The \textbf{Ordinary Least Squares (OLS)} objective minimizes the residual Euclidean norm:
+	\begin{equation}
+		\hat{\mathbf{x}} = \arg\min_{\mathbf{x} \in \mathbb{R}^n} \|\mathbf{b} - A\mathbf{x}\|_2^2.
+	\end{equation}
+	Geometrically, the error vector $\mathbf{e} = \mathbf{b} - A\hat{\mathbf{x}}$ must be orthogonal to every column of $A$, meaning $\mathbf{e} \in \mathcal{N}(A^{\!\top}) = \mathcal{C}(A)^\perp$ \parencite[Chapter~4]{strang2012linear}. Thus $A^{\!\top}(\mathbf{b} - A\hat{\mathbf{x}}) = \mathbf{0}$, yielding the famous \textbf{Normal Equations}:
+	\begin{equation}
+		A^{\!\top}A \hat{\mathbf{x}} = A^{\!\top}\mathbf{b} \quad\implies\quad \hat{\mathbf{x}} = (A^{\!\top}A)^{-1}A^{\!\top}\mathbf{b}.
+		\label{eq:normal_equations}
+	\end{equation}
+	The \textbf{Projection Matrix} $P = A(A^{\!\top}A)^{-1}A^{\!\top} \in \mathbb{R}^{m \times m}$ projects any vector $\mathbf{b} \in \mathbb{R}^m$ orthogonally onto $\mathcal{C}(A)$, satisfying $P^2 = P$ (idempotent) and $P^\top = P$ (symmetric). When $A$ is singular or non-square, the general solution uses the \textbf{Moore-Penrose Pseudoinverse} $A^+ = V \Sigma^+ U^\top$ \parencite{golub2013, strang2019}.
+
+	% ---- Theme 4: Vector and Matrix Norms & Condition Numbers --------------
+	\textbf{Vector and matrix norms, condition numbers, and optimization stability.}
+	Norms quantify vector magnitude and matrix scaling operator strength:
+	\begin{itemize}[nosep]
+		\item \textbf{Vector $\ell_p$ norms:} $\|\mathbf{x}\|_p = \left(\sum_{i=1}^n |x_i|^p\right)^{1/p}$. $\ell_1$ encourages sparsity (Lasso), $\ell_2$ measures Euclidean length (Ridge), $\ell_\infty = \max_i |x_i|$.
+		\item \textbf{Frobenius matrix norm:} $\|A\|_F = \sqrt{\sum_{i,j} a_{ij}^2} = \sqrt{\mathrm{tr}(A^\top A)} = \sqrt{\sum_{i=1}^r \sigma_i^2}$.
+		\item \textbf{Spectral matrix norm:} $\|A\|_2 = \sigma_{\max}(A) = \max_{\|\mathbf{x}\|_2=1} \|A\mathbf{x}\|_2$.
+	\end{itemize}
+
+	The \textbf{condition number} of a matrix $A$ under the spectral norm is defined as:
+	\begin{equation}
+		\kappa(A) = \|A\|_2 \|A^{-1}\|_2 = \frac{\sigma_{\max}(A)}{\sigma_{\min}(A)}.
+		\label{eq:condition_number}
+	\end{equation}
+	When $\kappa(A) \gg 1$, the matrix is \emph{ill-conditioned}. In optimization, ill-conditioned Hessian matrices create elongated "ravines" in the loss surface, forcing standard gradient descent to oscillate inefficiently. This directly motivates momentum, preconditioning, and adaptive optimizers such as Adam \parencite{boyd2004, strang2019, trefethen1997}.
+
+	% ---- Theme 5: Quadratic Forms & Positive Definiteness -----------------
+	\textbf{Quadratic forms, positive definiteness, and loss landscapes.}
+	For a symmetric matrix $A = A^{\!\top} \in \mathbb{R}^{n \times n}$, the function $f(\mathbf{x}) = \mathbf{x}^{\!\top}A\mathbf{x}$ is a \textbf{quadratic form}.
+	$A$ is \textbf{positive definite} ($A \succ 0$) if $\mathbf{x}^{\!\top}A\mathbf{x} > 0$ for all non-zero $\mathbf{x} \in \mathbb{R}^n$, and \textbf{positive semi-definite} ($A \succeq 0$) if $\mathbf{x}^{\!\top}A\mathbf{x} \ge 0$.
+
+	Equivalently, $A \succ 0$ if and only if all eigenvalues $\lambda_i > 0$. Covariance matrices $\hat\Sigma = \frac{1}{m-1} X_c^\top X_c$ and Gram matrices $K_{ij} = k(\mathbf{x}_i, \mathbf{x}_j)$ are guaranteed to be positive semi-definite \parencite{bishop2006}. In deep learning optimization, the \textbf{Hessian matrix} $H = \nabla^2 J(\boldsymbol{\theta})$ governs local curvature:
+	\begin{itemize}[nosep]
+		\item $H \succ 0$ (all $\lambda_i > 0$): Strict local minimum.
+		\item $H \prec 0$ (all $\lambda_i < 0$): Strict local maximum.
+		\item Indefinite $H$ (mixed positive and negative $\lambda_i$): \textbf{Saddle point}. High-dimensional neural network loss landscapes are dominated by saddle points \parencite{goodfellow2016}.
+	\end{itemize}
+
+	% ---- Theme 6: Spectral Theory & Rayleigh Quotient ----------------------
+	\textbf{Eigenvalues, eigenvectors, and the Rayleigh quotient.}
+	For a square matrix $A \in \mathbb{R}^{n \times n}$, a non-zero vector $\mathbf{v}$ is an \emph{eigenvector} with eigenvalue $\lambda$ if $A\mathbf{v} = \lambda \mathbf{v}$. Geometrically, $A$ acts on $\mathbf{v}$ purely by scaling \parencite{strang2012linear}.
+
+	\begin{keyconcept}[{Spectral Theorem for Symmetric Matrices \parencite[Chapter~6]{strang2012linear}}]
+		If $A = A^{\!\top} \in \mathbb{R}^{n \times n}$, then all $n$ eigenvalues $\lambda_i$ are real, and there exists an orthonormal matrix of eigenvectors $V = [\mathbf{v}_1 \mid \cdots \mid \mathbf{v}_n]$ such that:
+		\begin{equation}
+			A = V \Lambda V^{\!\top} = \sum_{i=1}^{n} \lambda_i \mathbf{v}_i \mathbf{v}_i^{\!\top}, \qquad V^{\!\top}V = I.
+			\label{eq:spectral_decomp}
+		\end{equation}
+	\end{keyconcept}
+
+	For a symmetric matrix $A$, the \textbf{Rayleigh quotient} $R(\mathbf{x}) = \frac{\mathbf{x}^{\!\top}A\mathbf{x}}{\mathbf{x}^{\!\top}\mathbf{x}}$ measures variance along direction $\mathbf{x}$. By the Courant--Fischer minimax theorem \parencite{golub2013, strang2019}:
+	\begin{equation}
+		\max_{\|\mathbf{x}\|_2=1} \mathbf{x}^{\!\top}A\mathbf{x} = \lambda_{\max}(A), \quad \text{achieved at } \mathbf{x} = \mathbf{v}_1; \quad
+		\min_{\|\mathbf{x}\|_2=1} \mathbf{x}^{\!\top}A\mathbf{x} = \lambda_{\min}(A), \quad \text{achieved at } \mathbf{x} = \mathbf{v}_n.
+		\label{eq:rayleigh_max}
+	\end{equation}
+
+	\begin{practicebox}[Eigendecomposition: verifying $A\mathbf{v}=\lambda\mathbf{v}$ and Rayleigh quotient]
+\lstinputlisting[language=Python]{code/eigendecomposition.py}
+	\end{practicebox}
+
+	% ---- Theme 7: SVD & Low-Rank Approximations ----------------------------
+	\textbf{Singular Value Decomposition (SVD) and low-rank adaptation.}
+	Every real matrix $A \in \mathbb{R}^{m \times n}$ admits the factorisation:
+	\begin{equation}
+		A = U \Sigma V^{\!\top} = \sum_{i=1}^{r} \sigma_i \mathbf{u}_i \mathbf{v}_i^{\!\top},
+		\label{eq:svd_full}
+	\end{equation}
+	where $U \in \mathbb{R}^{m \times m}$ and $V \in \mathbb{R}^{n \times n}$ are orthogonal matrices, and $\Sigma \in \mathbb{R}^{m \times n}$ is diagonal with non-negative singular values $\sigma_1 \ge \sigma_2 \ge \dots \ge \sigma_r > 0$ \parencite{trefethen1997, strang2019}. The singular values are square roots of eigenvalues of $A^{\!\top}A$ (and $AA^{\!\top}$).
+
+	\begin{keyconcept}[Eckart--Young--Mirsky Theorem \parencite{golub2013, strang2012linear}]
+		The optimal rank-$k$ matrix approximation $A_k = \sum_{i=1}^k \sigma_i \mathbf{u}_i \mathbf{v}_i^\top$ (where $k < r$) minimizes the reconstruction error under both Frobenius and Spectral norms:
+		\begin{equation}
+			\min_{\mathrm{rank}(B) \le k} \|A - B\|_F = \|A - A_k\|_F = \sqrt{\sum_{i=k+1}^r \sigma_i^2}, \qquad
+			\min_{\mathrm{rank}(B) \le k} \|A - B\|_2 = \|A - A_k\|_2 = \sigma_{k+1}.
+		\end{equation}
+	\end{keyconcept}
+	In modern LLM fine-tuning, \textbf{Low-Rank Adaptation (LoRA)} parameterizes weight updates as low-rank decompositions $\Delta W = B A$ (where $B \in \mathbb{R}^{d \times r}, A \in \mathbb{R}^{r \times k}$ with $r \ll \min(d, k)$), freezing base weights $W_0$ while training only $r(d+k)$ parameters \parencite{hu2021}.
+
+	% ---- Theme 8: Strang's Great Factorizations ---------------------------
+	\textbf{Matrix factorizations: Strang's "Great Factorizations".}
+	\textcite[Chapter~7]{strang2019} classifies five fundamental matrix factorizations that serve as the computational backbone of scientific computing and machine learning:
+
+	\begin{keyconcept}[Summary of the 5 Great Matrix Factorizations]
 		\begin{center}
 			\small\sffamily
 			\renewcommand{\arraystretch}{1.25}
-			\begin{tabular}{@{}L{3.6cm} L{10.7cm}@{}}
+			\begin{tabular}{@{}L{2.8cm} L{3.8cm} L{3.0cm} L{4.2cm}@{}}
 				\toprule
 				\rowcolor{primary}
-				\textcolor{white}{\textbf{Type}} &
-				\textcolor{white}{\textbf{Definition and role}} \\
+				\textcolor{white}{\textbf{Factorization}} &
+				\textcolor{white}{\textbf{Formula}} &
+				\textcolor{white}{\textbf{Matrix Requirements}} &
+				\textcolor{white}{\textbf{Primary ML Role}} \\
 				\midrule
-				Identity $I$             & $I_{ij}=\delta_{ij}$; $AI=IA=A$; basis of no-op transformations. \\
-				Diagonal $D$             & $D_{ij}=0$ for $i\neq j$; scales each axis independently. \\
-				Orthogonal $Q$           & $Q^{\!\top}Q = I$; preserves lengths and angles; rotations and reflections. \\
-				Symmetric PSD $\Sigma$   & $\Sigma = \Sigma^{\!\top}$, $\mathbf{v}^{\!\top}\Sigma\mathbf{v} \ge 0$; covariance matrices are always PSD. \\
-				Low-rank $UV^{\!\top}$   & $U \in \mathbb{R}^{m\times r}$, $V \in \mathbb{R}^{n\times r}$, $r \ll \min(m,n)$; used in LoRA and SVD compression. \\
+				$LU$ (Elimination) & $A = LU$ (or $PA=LU$) & Square, non-singular & Solving linear systems $A\mathbf{x}=\mathbf{b}$ efficiently. \\
+				$QR$ (Orthogonal) & $A = QR$ & Rectangular $m \ge n$ & Stable OLS, Gram-Schmidt, Householder solver. \\
+				Cholesky & $A = L L^{\!\top}$ & Symmetric $A \succ 0$ & Gaussian processes, MVN sampling \parencite{golub2013}. \\
+				Spectral & $A = V \Lambda V^{\!\top}$ & Symmetric $A = A^{\!\top}$ & PCA, Graph Laplacians, Rayleigh optimization. \\
+				SVD & $A = U \Sigma V^{\!\top}$ & Any rectangular matrix & Low-rank compression, LoRA, pseudoinverse. \\
 				\bottomrule
 			\end{tabular}
 		\end{center}
 	\end{keyconcept}
 
-	\textbf{Singular Value Decomposition (SVD).}
-	Every matrix $A \in \mathbb{R}^{m \times n}$ admits the factorisation
-	\begin{equation}
-		A = U \Sigma_{\!s} V^{\!\top},
-		\label{eq:svd}
-	\end{equation}
-	where $U \in \mathbb{R}^{m \times m}$ and $V \in \mathbb{R}^{n \times n}$
-	are orthogonal, and $\Sigma_{\!s}$ is diagonal with non-negative entries
-	$\sigma_1 \ge \sigma_2 \ge \dots \ge \sigma_r > 0$ (the \textbf{singular values})
-	\parencite{trefethen1997}. The \textbf{best rank-$k$ approximation} is:
-	\begin{equation}
-		A_k = \sum_{i=1}^{k} \sigma_i \,\mathbf{u}_i \mathbf{v}_i^{\!\top}, \qquad
-		\|A - A_k\|_F = \sqrt{\sum_{i=k+1}^{r}\sigma_i^2}.
-	\end{equation}
-	This Eckart--Young theorem underpins image compression, recommendation
-	systems, and numerical stability of OLS \parencite{golub2013, strang2012linear}.
-
-	\begin{practicebox}[Matrix operations: rank, determinant, inverse, SVD]
-\lstinputlisting[language=Python]{code/matrix_operations.py}
+	\begin{practicebox}[Executing the 5 Matrix Factorizations in Python]
+\lstinputlisting[language=Python]{code/matrix_factorizations.py}
 	\end{practicebox}
 
-	% ---- Eigenvalues and eigenvectors ---------------------------------------
-	\textbf{Eigenvalues and eigenvectors.}
-	For a square matrix $A \in \mathbb{R}^{n \times n}$, a non-zero vector
-	$\mathbf{v}$ is an \emph{eigenvector} with eigenvalue $\lambda$ if
+	% ---- Theme 9: PCA --------------------------------------------------------
+	\textbf{Principal Component Analysis (PCA) revisited.}
+	PCA, introduced by \textcite{pearson1901}, finds orthogonal directions that maximize variance. Given centered dataset $X_c \in \mathbb{R}^{m \times d}$ ($X_c = X - \mathbf{1}\bar{\mathbf{x}}^\top$) with sample covariance matrix $\hat\Sigma = \frac{1}{m-1}X_c^\top X_c$:
 	\begin{equation}
-		A\mathbf{v} = \lambda \mathbf{v}.
-		\label{eq:eigen}
+		\mathbf{v}_1 = \arg\max_{\|\mathbf{v}\|_2=1} \mathbf{v}^\top \hat\Sigma \mathbf{v}.
+		\label{eq:pca_opt}
 	\end{equation}
-	Geometrically, $A$ acts on $\mathbf{v}$ purely by scaling: the direction
-	is preserved while the magnitude is multiplied by $\lambda$ \parencite{strang2012linear}.
-	When $|\lambda| > 1$ the transformation stretches; when $|\lambda| < 1$
-	it compresses; when $\lambda < 0$ it reverses orientation.
-	Eigenvalues are roots of $\det(A - \lambda I) = 0$, but in practice
-	iterative algorithms (QR iteration, Lanczos) solve large-scale problems
-	\parencite{trefethen1997}.
-
-	\begin{keyconcept}[Spectral theorem for symmetric matrices]
-		If $A = A^{\!\top}$ then: (i) all eigenvalues $\lambda_i \in \mathbb{R}$;
-		(ii) eigenvectors for distinct eigenvalues are orthogonal;
-		(iii) there exist $n$ orthonormal eigenvectors forming the decomposition
-		\begin{equation}
-			A = V \Lambda V^{\!\top}, \qquad
-			V = [\mathbf{v}_1 \mid \cdots \mid \mathbf{v}_n],\quad
-			\Lambda = \mathrm{diag}(\lambda_1, \ldots, \lambda_n).
-			\label{eq:spectral}
-		\end{equation}
-		The columns of $V$ are an orthonormal basis of $\mathbb{R}^n$; the
-		eigenvalues measure variance along each basis direction.
-	\end{keyconcept}
-
-	\textbf{Rayleigh quotient.}
-	For a symmetric positive semi-definite matrix $A$ and a unit vector, the
-	\textbf{Rayleigh quotient} $R(\mathbf{v}) = \mathbf{v}^{\!\top}A\mathbf{v}$
-	is maximised by the leading eigenvector:
-	\begin{equation}
-		\max_{\|\mathbf{v}\|=1}\; \mathbf{v}^{\!\top}A\mathbf{v}
-		= \lambda_{\max}(A),\quad \text{achieved at } \mathbf{v} = \mathbf{v}_1.
-		\label{eq:rayleigh}
-	\end{equation}
-	This variational characterisation is the direct mathematical foundation of
-	PCA \parencite{bishop2006, strang2012linear}.
-
-	\begin{practicebox}[Eigendecomposition: verifying $A\mathbf{v}=\lambda\mathbf{v}$ and the Rayleigh quotient]
-\lstinputlisting[language=Python]{code/eigendecomposition.py}
-	\end{practicebox}
-
-	% ---- PCA ----------------------------------------------------------------
-	\textbf{Principal component analysis (PCA).}
-	PCA, introduced by \textcite{pearson1901}, finds a sequence of orthogonal
-	directions that capture maximum variance. Given centred data
-	$X_c \in \mathbb{R}^{m \times d}$ with sample covariance
-	$\hat\Sigma = \frac{1}{m-1}X_c^{\!\top}X_c$, the first principal component is
-	\begin{equation}
-		\mathbf{v}_1 = \arg\max_{\|\mathbf{v}\|=1}\;
-		\mathbf{v}^{\!\top}\hat\Sigma\,\mathbf{v}.
-		\label{eq:pc1}
-	\end{equation}
-	By equation~\eqref{eq:rayleigh} the solution is the eigenvector of
-	$\hat\Sigma$ for $\lambda_{\max}$ \parencite{strang2012linear}. The full algorithm has five steps:
-
+	By the Rayleigh quotient theorem~\eqref{eq:rayleigh_max}, $\mathbf{v}_1$ is the principal eigenvector of $\hat\Sigma$ corresponding to $\lambda_{\max}$ \parencite{strang2012linear, bishop2006}. The complete PCA algorithm follows five steps:
 	\begin{enumerate}[nosep]
-		\item \textbf{Centre.} $X_c = X - \mathbf{1}\bar{\mathbf{x}}^{\!\top}$.
-		\item \textbf{Covariance.} $\hat\Sigma = \frac{1}{m-1}X_c^{\!\top}X_c \in \mathbb{R}^{d\times d}$.
-		\item \textbf{Eigen-decompose.} $\hat\Sigma = V\Lambda V^{\!\top}$; sort by $\lambda_i$ descending.
-		\item \textbf{Project.} $Z = X_c W_k$, \; $W_k = [\mathbf{v}_1, \ldots, \mathbf{v}_k] \in \mathbb{R}^{d\times k}$.
-		\item \textbf{Reconstruct (optional).} $\hat X_c = Z W_k^{\!\top}$;
-		      reconstruction MSE $= \sum_{i>k}\lambda_i$ (discarded eigenvalues).
+		\item \textbf{Center data:} $X_c = X - \mathbf{1}\bar{\mathbf{x}}^\top \in \mathbb{R}^{m \times d}$.
+		\item \textbf{Compute covariance:} $\hat\Sigma = \frac{1}{m-1}X_c^\top X_c \in \mathbb{R}^{d \times d}$.
+		\item \textbf{Eigen-decompose:} $\hat\Sigma = V \Lambda V^\top$; sort eigenvalues $\lambda_1 \ge \lambda_2 \ge \dots \ge \lambda_d \ge 0$.
+		\item \textbf{Project onto $k$ PCs:} $Z = X_c W_k \in \mathbb{R}^{m \times k}$, where $W_k = [\mathbf{v}_1, \dots, \mathbf{v}_k] \in \mathbb{R}^{d \times k}$.
+		\item \textbf{Reconstruct:} $\hat X_c = Z W_k^\top$; reconstruction MSE equals the sum of discarded eigenvalues $\sum_{i=k+1}^d \lambda_i$.
 	\end{enumerate}
 
-	\textbf{Worked example.}
-	Consider $m=200$ observations with $d=2$ correlated features drawn from
-	$\mathcal{N}(\boldsymbol{\mu},\Sigma_0)$, where
-	$\boldsymbol{\mu}=[2,3]^{\!\top}$ and
-	$\Sigma_0 = \bigl(\begin{smallmatrix}4&3.2\\3.2&4\end{smallmatrix}\bigr)$
-	(Pearson correlation $\rho=0.8$).
-	Centring and eigen-decomposing the sample covariance gives, approximately:
-	\begin{equation}
-		\lambda_1 \approx 7.2, \quad
-		\lambda_2 \approx 0.8, \quad
-		\mathbf{v}_1 \approx \tfrac{1}{\sqrt{2}}\begin{pmatrix}1\\1\end{pmatrix},\quad
-		\mathbf{v}_2 \approx \tfrac{1}{\sqrt{2}}\begin{pmatrix}-1\\1\end{pmatrix}.
-	\end{equation}
-	The first PC captures $\lambda_1/(\lambda_1+\lambda_2)\approx 90\%$ of
-	variance---the ``sum'' direction dominates, as expected from positive
-	correlation. Projecting onto $k=1$ halves storage while retaining 90\%
-	of signal; the mean squared reconstruction error equals $\lambda_2 \approx 0.8$.
-
-	\textbf{Scree plot and choosing $k$.}
-	The \textbf{explained variance ratio} $\lambda_i/\sum_j\lambda_j$ plotted
-	against $i$ is called a \emph{scree plot}. Practitioners look for an
-	elbow after which components contribute negligible variance; retaining
-	90--95\% is a common heuristic \parencite[Chapter~14]{hastie2009}.
-
 	\textbf{PCA via SVD.}
-	An equivalent, numerically more stable route applies SVD directly to $X_c$:
-	\begin{equation}
-		X_c = U\Sigma_{\!s} V^{\!\top}
-		\;\Longrightarrow\;
-		\hat\Sigma = \tfrac{1}{m-1}V \Sigma_{\!s}^2 V^{\!\top},
-		\quad \sigma_i^2 = (m-1)\,\lambda_i.
-		\label{eq:pca_svd}
-	\end{equation}
-	The principal directions $W_k$ are right singular vectors $V_k$.
-	For $d \gg m$ (more features than samples), SVD on $X_c$ avoids forming
-	the large $d \times d$ covariance matrix \parencite{trefethen1997, strang2012linear}.
-
-	\textbf{Limitations.} PCA finds the best \emph{linear} projection.
-	Non-linear manifolds require t-SNE \parencite{vanDerMaaten2008} or UMAP
-	\parencite{mcinnes2018} (revisited in Module~3). Features should be
-	$z$-score standardised before PCA on heterogeneous datasets.
+	Applying SVD directly to centered data $X_c = U \Sigma_s V^\top$ yields right singular vectors $V$ identical to covariance eigenvectors, with $\sigma_i^2 = (m-1)\lambda_i$ \parencite{trefethen1997, strang2019}. For high-dimensional regimes ($d \gg m$), SVD on $X_c$ computes PCs in $O(m^2 d)$ operations, avoiding the formation of the huge $d \times d$ covariance matrix.
 
 	\begin{practicebox}[PCA from scratch: centring, covariance, eigen-decomposition, scree table]
 \lstinputlisting[language=Python]{code/pca_from_scratch.py}
 	\end{practicebox}
+
 	
 	\subsection{Probability and statistics: the language of uncertainty}
 	
